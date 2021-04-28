@@ -18,17 +18,17 @@ class DemoWidget extends StatelessWidget {
                 child: Row(
               children: [
                 Expanded(
-                  child: Text("Технические работы",
-                      style: TextStyle(color: Color.fromRGBO(174, 1, 72, 1)), textAlign: TextAlign.center),
-                )
+                    child: Text("Технические работы",
+                        style: TextStyle(color: Color.fromRGBO(174, 1, 72, 1)), textAlign: TextAlign.center))
               ],
+              crossAxisAlignment: CrossAxisAlignment.start,
             )),
             Text("Уважаемые клиенты! 22 ноября 2020 года мы будем проводить технические работы в ароол...",
                 style: TextStyle(color: Color.fromRGBO(46, 49, 55, 1)), textAlign: TextAlign.left),
             Text("22 ноября 2020  |  13:05",
                 style: TextStyle(color: Color.fromRGBO(90, 103, 113, 1)), textAlign: TextAlign.left)
           ],
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
         ));
   }
 }
