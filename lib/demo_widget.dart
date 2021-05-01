@@ -18,7 +18,7 @@ class DemoWidget extends StatelessWidget {
                 child: Row(
               children: [
                 Expanded(
-                    child: Text("Технические работы",
+                    child: Text("Технические работы11",
                         style: TextStyle(color: Color.fromRGBO(174, 1, 72, 1)), textAlign: TextAlign.center))
               ],
               crossAxisAlignment: CrossAxisAlignment.start,
