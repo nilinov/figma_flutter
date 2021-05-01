@@ -25,6 +25,10 @@ Future main() async {
         request.response.write('start restart');
         Process.run('chmod +x restart.sh && ./restart.sh', []);
         break;
+      case '/install':
+        request.response.write('start install');
+        Process.run('chmod +x install.sh && ./install.sh', []);
+        break;
       default:
         request.response.write('no found command');
     }
