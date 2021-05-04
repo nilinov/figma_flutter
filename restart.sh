@@ -4,3 +4,4 @@ set -e && set -x
 ./update.sh
 
 screen -S ServerFault -p 0 -X stuff "R"
+
