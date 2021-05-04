@@ -6,3 +6,4 @@ git reset --hard origin/main
 flutter pub get
 
 screen -S ServerFault -p 0 -X stuff "R"
+
