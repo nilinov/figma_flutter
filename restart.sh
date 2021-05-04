@@ -6,3 +6,4 @@ set -e && set -x
 echo '$1'
 
 screen -S ServerFault -p 0 -X stuff "R"
+
