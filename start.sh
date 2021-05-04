@@ -3,7 +3,7 @@ set -e && set -x
 
 # update
 git fetch origin
-git reset --hard origin/main
+git reset --hard origin/master
 flutter pub get
 
 # start
