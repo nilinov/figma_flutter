@@ -2,9 +2,8 @@
 set -e && set -x
 
 # update
-git fetch origin
-git reset --hard origin/main
-flutter pub get
+chmod +x update.sh
+./update.sh
 
 # start
 flutter run -d web-server --web-port 3000
