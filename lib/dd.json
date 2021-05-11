@@ -1,0 +1,100 @@
+{
+  "type": "TEXT",
+  "id": "7:207",
+  "parent": {
+    "id": "16:0"
+  },
+  "name": "message text",
+  "removed": false,
+  "visible": true,
+  "locked": false,
+  "opacity": 1,
+  "blendMode": "PASS_THROUGH",
+  "isMask": false,
+  "effects": [],
+  "effectStyleId": "",
+  "fills": [
+    {
+      "type": "SOLID",
+      "visible": true,
+      "opacity": 1,
+      "blendMode": "NORMAL",
+      "color": {
+        "r": 0.18039216101169586,
+        "g": 0.1921568661928177,
+        "b": 0.21568627655506134
+      }
+    }
+  ],
+  "fillStyleId": "S:39f79c8de5cf82e77da0193aeed4527d14de7844,134:4",
+  "strokes": [],
+  "strokeStyleId": "",
+  "strokeWeight": 1,
+  "strokeAlign": "OUTSIDE",
+  "strokeCap": "NONE",
+  "strokeJoin": "MITER",
+  "strokeMiterLimit": 4,
+  "dashPattern": [],
+  "relativeTransform": [
+    [
+      1,
+      0,
+      16
+    ],
+    [
+      0,
+      1,
+      44
+    ]
+  ],
+  "absoluteTransform": [
+    [
+      1,
+      0,
+      78
+    ],
+    [
+      0,
+      1,
+      612
+    ]
+  ],
+  "x": 16,
+  "y": 44,
+  "width": 388,
+  "height": 36,
+  "rotation": 0,
+  "layoutAlign": "STRETCH",
+  "constrainProportions": false,
+  "layoutGrow": 0,
+  "exportSettings": [],
+  "constraints": {
+    "horizontal": "STRETCH",
+    "vertical": "MIN"
+  },
+  "textStyleId": "",
+  "characters": "Уважаемые клиенты! 22 ноября 2020 года мы будем проводить технические работы в ароол...",
+  "hasMissingFont": false,
+  "autoRename": false,
+  "fontSize": 13,
+  "paragraphIndent": 0,
+  "paragraphSpacing": 0,
+  "textAlignHorizontal": "LEFT",
+  "textAlignVertical": "CENTER",
+  "textCase": "ORIGINAL",
+  "textDecoration": "NONE",
+  "textAutoResize": "HEIGHT",
+  "letterSpacing": {
+    "unit": "PIXELS",
+    "value": -0.07999999821186066
+  },
+  "lineHeight": {
+    "unit": "PIXELS",
+    "value": 18
+  },
+  "fontName": {
+    "family": "Actor",
+    "style": "Regular"
+  },
+  "reactions": []
+}
