@@ -3,7 +3,7 @@ function getData() {
 }
 
 window.addEventListener('message', receiver, false);
+
 function receiver(e) {
-    console.log({message: e})
-    window.figma_json = e;
+    window.figma_json = e.data;
 }
