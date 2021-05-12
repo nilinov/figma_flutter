@@ -14,6 +14,8 @@ extension ContainerExt on Container {
 
 extension WidgetExt on Widget {
   String toCode() {
+    if (this == null) return null;
+
     if (this is Container) {
       return '''
       Container(
@@ -54,6 +56,20 @@ extension WidgetExt on Widget {
         height: ${(this as Positioned).height},
       )
       ''';
+    } else if (this is Expanded) {
+      return '''
+      Expanded(
+        child: ${(this as Expanded).child.toCode()},
+      )
+      ''';
+    } else if (this is SizedBox) {
+      return '''
+      SizedBox(
+        child: ${(this as SizedBox).child.toCode()},
+        width: ${(this as SizedBox).width},
+        height: ${(this as SizedBox).height},
+      )
+      ''';
     } else if (this is Text) {
       return '''
         Text("${(this as Text).data}", textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style.toCode()})
@@ -83,7 +99,7 @@ extension BoxDecorationExt on BoxDecoration {
     return '''
         BoxDecoration(
           color: $color,
-          border: ${(border as Border).toCode()},
+          ${(border as Border) != null ? "border: ${(border as Border).toCode()}," : ""}
           borderRadius: $borderRadius,
         )
         ''';
@@ -92,6 +108,8 @@ extension BoxDecorationExt on BoxDecoration {
 
 extension BorderExt on Border {
   toCode() {
+    if (bottom.width == 0) return null;
+
     return '''
       Border.all(
         color: ${bottom.color},
