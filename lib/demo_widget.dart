@@ -29,7 +29,7 @@ class _DemoWidgetState extends State<DemoWidget> {
       print(res.toCode());
       return Row(
         children: [
-          Expanded(child: Container(child: res)),
+          Expanded(child: Padding(child: FittedBox(child: Container(child: res), fit: BoxFit.contain,), padding: EdgeInsets.all(20),)),
           Expanded(
               child: GestureDetector(
                 onTap: () {
