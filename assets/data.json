@@ -40,7 +40,7 @@
   "x": 2768,
   "y": 1001,
   "width": 375,
-  "height": 272,
+  "height": 176,
   "rotation": 0,
   "constrainProportions": false,
   "layoutGrow": 0,
@@ -253,7 +253,7 @@
       },
       "name": "input / filled in",
       "removed": false,
-      "visible": true,
+      "visible": false,
       "locked": false,
       "opacity": 1,
       "blendMode": "PASS_THROUGH",
@@ -919,12 +919,12 @@
       "reactions": []
     },
     {
-      "type": "INSTANCE",
-      "id": "124:145",
+      "type": "FRAME",
+      "id": "125:12",
       "parent": {
         "id": "124:283"
       },
-      "name": "btn / primary",
+      "name": "Frame 4",
       "removed": false,
       "visible": true,
       "locked": false,
@@ -941,8 +941,8 @@
         ],
         [
           0,
-          1,
-          222
+          -1,
+          176
         ]
       ],
       "absoluteTransform": [
@@ -953,14 +953,14 @@
         ],
         [
           0,
-          1,
-          1223
+          -1,
+          1177
         ]
       ],
       "x": 16,
-      "y": 222,
+      "y": 176,
       "width": 343,
-      "height": 50,
+      "height": 45,
       "rotation": 0,
       "layoutAlign": "STRETCH",
       "constrainProportions": false,
@@ -968,11 +968,11 @@
       "children": [
         {
           "type": "TEXT",
-          "id": "I124:145;6:186",
+          "id": "125:13",
           "parent": {
-            "id": "124:145"
+            "id": "125:12"
           },
-          "name": "label",
+          "name": "Поделиться",
           "removed": false,
           "visible": true,
           "locked": false,
@@ -1007,43 +1007,43 @@
             [
               1,
               0,
-              124
+              10
             ],
             [
               0,
-              1,
-              14
+              -1,
+              33.5
             ]
           ],
           "absoluteTransform": [
             [
               1,
               0,
-              2908
+              2794
             ],
             [
               0,
               1,
-              1237
+              1143.5
             ]
           ],
-          "x": 124,
-          "y": 14,
-          "width": 94,
+          "x": 10,
+          "y": 33.5,
+          "width": 323,
           "height": 22,
           "rotation": 0,
           "layoutAlign": "STRETCH",
           "constrainProportions": false,
-          "layoutGrow": 0,
+          "layoutGrow": 1,
           "exportSettings": [],
           "constraints": {
-            "horizontal": "SCALE",
-            "vertical": "SCALE"
+            "horizontal": "CENTER",
+            "vertical": "CENTER"
           },
           "textStyleId": "",
           "characters": "Поделиться",
           "hasMissingFont": false,
-          "autoRename": false,
+          "autoRename": true,
           "fontSize": 17,
           "paragraphIndent": 0,
           "paragraphSpacing": 0,
@@ -1051,7 +1051,7 @@
           "textAlignVertical": "CENTER",
           "textCase": "ORIGINAL",
           "textDecoration": "NONE",
-          "textAutoResize": "WIDTH_AND_HEIGHT",
+          "textAutoResize": "HEIGHT",
           "letterSpacing": {
             "unit": "PIXELS",
             "value": -0.4099999964237213
@@ -1081,7 +1081,7 @@
           }
         }
       ],
-      "fillStyleId": "S:2c6c8455efbf2bc77c6284396d3a94dee8e9109a,823:1",
+      "fillStyleId": "",
       "strokes": [],
       "strokeStyleId": "",
       "strokeWeight": 1,
@@ -1091,18 +1091,18 @@
       "strokeMiterLimit": 4,
       "dashPattern": [],
       "cornerRadius": 8,
-      "cornerSmoothing": 0.6000000238418579,
+      "cornerSmoothing": 0,
       "topLeftRadius": 8,
       "topRightRadius": 8,
       "bottomLeftRadius": 8,
       "bottomRightRadius": 8,
-      "paddingLeft": 0,
-      "paddingRight": 0,
-      "paddingTop": 0,
-      "paddingBottom": 0,
-      "primaryAxisAlignItems": "MIN",
-      "counterAxisAlignItems": "MIN",
-      "primaryAxisSizingMode": "AUTO",
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 13,
+      "paddingBottom": 13,
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER",
+      "primaryAxisSizingMode": "FIXED",
       "layoutGrids": [],
       "gridStyleId": "",
       "backgrounds": [
@@ -1118,19 +1118,19 @@
           }
         }
       ],
-      "backgroundStyleId": "S:2c6c8455efbf2bc77c6284396d3a94dee8e9109a,823:1",
+      "backgroundStyleId": "",
       "clipsContent": false,
       "guides": [],
-      "expanded": false,
+      "expanded": true,
       "constraints": {
         "horizontal": "CENTER",
-        "vertical": "MIN"
+        "vertical": "CENTER"
       },
-      "layoutMode": "NONE",
+      "layoutMode": "HORIZONTAL",
       "counterAxisSizingMode": "FIXED",
-      "horizontalPadding": 0,
-      "verticalPadding": 0,
-      "itemSpacing": 0,
+      "horizontalPadding": 10,
+      "verticalPadding": 13,
+      "itemSpacing": 10,
       "overflowDirection": "NONE",
       "numberOfFixedChildren": 0,
       "overlayPositionType": "CENTER",
@@ -1138,33 +1138,7 @@
         "type": "NONE"
       },
       "overlayBackgroundInteraction": "NONE",
-      "mainComponent": {
-        "id": "124:68"
-      },
-      "masterComponent": {
-        "id": "124:68"
-      },
-      "scaleFactor": 1,
-      "reactions": [
-        {
-          "action": {
-            "type": "NODE",
-            "destinationId": null,
-            "navigation": "NAVIGATE",
-            "transition": {
-              "type": "DISSOLVE",
-              "easing": {
-                "type": "EASE_OUT"
-              },
-              "duration": 0.30000001192092896
-            },
-            "preserveScrollPosition": false
-          },
-          "trigger": {
-            "type": "ON_CLICK"
-          }
-        }
-      ]
+      "reactions": []
     }
   ],
   "exportSettings": [],

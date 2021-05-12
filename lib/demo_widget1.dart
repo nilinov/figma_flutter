@@ -52,95 +52,10 @@ class _DemoWidgetState extends State<DemoWidget> {
                   color: Color(0xff141e2e),
                 )),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0x00000000),
-              border: null,
-              borderRadius: BorderRadius.zero,
-            ),
-            padding: EdgeInsets.only(
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  child: Expanded(
-                    child: Text("+7 (999) 678-99-00|",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: null,
-                        )),
-                  ),
-                  left: 16,
-                  top: 32,
-                  width: 319,
-                  height: 20,
-                ),
-                Positioned(
-                  child: Expanded(
-                    child: Text("Номер телефона",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Color(0xff8a96a5),
-                        )),
-                  ),
-                  left: 16,
-                  top: 12,
-                  width: 343,
-                  height: 16,
-                ),
-                Positioned(
-                  child: SizedBox(
-                    child: null,
-                    width: null,
-                    height: null,
-                  ),
-                  left: 16,
-                  top: 64,
-                  width: 359,
-                  height: 0,
-                ),
-                Positioned(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xffffffff),
-                      border: null,
-                      borderRadius: BorderRadius.zero,
-                    ),
-                    padding: EdgeInsets.only(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          child: SizedBox(
-                            child: null,
-                            width: null,
-                            height: null,
-                          ),
-                          left: 5.5,
-                          top: 13,
-                          width: 10,
-                          height: 5,
-                        )
-                      ],
-                    ),
-                  ),
-                  left: 351,
-                  top: 24,
-                  width: 16,
-                  height: 16,
-                )
-              ],
-            ),
+          SizedBox(
+            child: null,
+            width: null,
+            height: null,
           ),
           Container(
             decoration: BoxDecoration(
