@@ -49,6 +49,8 @@ extension WidgetExt on Widget {
 
 extension EdgeInsetsExt on EdgeInsets {
   toCode() {
+    if (this == null) return null;
+
     return '''
     EdgeInsets.only(
       top: $top,
