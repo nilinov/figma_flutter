@@ -15,15 +15,17 @@ class _DemoWidgetState extends State<DemoWidget> {
   @override
   Future<void> didChangeDependencies() async {
     json = jsonDecode(await getData());
-    setState(() {
-
-    });
+    setState(() {});
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (json != null) return getWidgetByMap(json);
+    if (json != null) {
+      final res = getWidgetByMap(json);
+      print(res);
+      return res;
+    }
 
     return Center(child: CircularProgressIndicator());
   }
