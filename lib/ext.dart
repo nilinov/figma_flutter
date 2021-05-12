@@ -38,6 +38,22 @@ extension WidgetExt on Widget {
         mainAxisAlignment: ${(this as Column).mainAxisAlignment},
       )
       ''';
+    } else if (this is Stack) {
+      return '''
+      Stack(
+        children: [${(this as Stack).children.map((e) => e.toCode()).join(', ')}],
+      )
+      ''';
+    } else if (this is Positioned) {
+      return '''
+      Positioned(
+        child: ${(this as Positioned).child.toCode()},
+        left: ${(this as Positioned).left},
+        top: ${(this as Positioned).top},
+        width: ${(this as Positioned).width},
+        height: ${(this as Positioned).height},
+      )
+      ''';
     } else if (this is Text) {
       return '''
         Text("${(this as Text).data}", textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style.toCode()})
