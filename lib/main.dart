@@ -28,13 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[Container(child: DemoWidget(), constraints: BoxConstraints(maxHeight: 300, maxWidth: 300))],
-        ),
-      ),
+      body: Container(child: DemoWidget()),
     );
   }
 }

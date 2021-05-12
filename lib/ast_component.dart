@@ -5,12 +5,12 @@ abstract class AstComponent {
 
   AstComponent({@required this.name});
 
-  Widget toComponent();
+  dynamic toComponent();
 
   String print();
 }
 
-mixin AstComponentExt {
+mixin AstComponentExt implements AstComponent {
   String name;
 
   toComponent();
@@ -90,7 +90,7 @@ class AstBorderRadius with AstComponentExt {
 
   @override
   toComponent() {
-    return  BorderRadius.only(
+    return BorderRadius.only(
       topLeft: Radius.circular(topLeft ?? 0),
       topRight: Radius.circular(topRight ?? 0),
       bottomLeft: Radius.circular(bottomLeft ?? 0),
@@ -241,7 +241,7 @@ class AstEdgeInsets with AstComponentExt {
   }
 }
 
-class AstContainer with AstComponentExt implements AstChild  {
+class AstContainer with AstComponentExt implements AstChild, AstComponent {
   final String name = 'Container';
 
   final AstComponent child;
@@ -269,4 +269,82 @@ class AstContainer with AstComponentExt implements AstChild  {
       child: child.toComponent(),
     );
   }
+}
+
+class AstLayout with AstComponentExt {
+  final List<AstComponent> items;
+  final Axis axis;
+  final MainAxisAlignment mainAxisAlignment;
+  final CrossAxisAlignment crossAxisAlignment;
+
+  AstLayout({
+    @required this.items,
+    @required this.axis,
+    @required this.mainAxisAlignment,
+    @required this.crossAxisAlignment,
+  });
+
+  factory AstLayout.fromJson(Map<String, dynamic> json) {
+    if (json == null || json['children'] == null) return null;
+    Axis axis;
+
+    switch(json['layoutMode']) {
+      case 'VERTICAL':
+        axis = Axis.vertical;
+        break;
+      case 'HORIZONTAL':
+        axis = Axis.horizontal;
+        break;
+    }
+
+    return AstLayout(
+      items: [],
+      axis: axis,
+      crossAxisAlignment: getCrossAxisAlignment(json),
+      mainAxisAlignment: getMainAxisAlignment(json),
+    );
+  }
+
+  @override
+  String print() {
+    // TODO: implement print
+    throw UnimplementedError();
+  }
+
+  @override
+  toComponent() {
+    // TODO: implement toComponent
+    throw UnimplementedError();
+  }
+}
+
+getCrossAxisAlignment(Map<String, dynamic> json) {
+  print('getCrossAxisAlignment');
+  if (json['constraints'] != null) {
+    switch (json['constraints']['vertical']) {
+      case 'CENTER':
+        return CrossAxisAlignment.center;
+    }
+  }
+  switch (json['counterAxisAlignItems']) {
+    case 'CENTER':
+      return CrossAxisAlignment.center;
+  }
+  return CrossAxisAlignment.start;
+}
+
+getMainAxisAlignment(Map<String, dynamic> json) {
+  print('getCrossAxisAlignment');
+  if (json['constraints'] != null) {
+    switch (json['constraints']['horizontal']) {
+      case 'CENTER':
+        return MainAxisAlignment.center;
+    }
+  }
+  switch (json['primaryAxisAlignItems']) {
+    case 'CENTER':
+      return MainAxisAlignment.center;
+  }
+
+  return MainAxisAlignment.start;
 }
