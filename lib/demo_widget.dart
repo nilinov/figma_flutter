@@ -26,7 +26,7 @@ class _DemoWidgetState extends State<DemoWidget> {
   Widget build(BuildContext context) {
     if (json != null) {
       final res = getWidgetByMap(json);
-      print(res.toCode());
+      print(res.toWidget());
       return Row(
         children: [
           Expanded(child: Padding(child: FittedBox(child: Container(child: res), fit: BoxFit.contain,), padding: EdgeInsets.all(20),)),
@@ -34,7 +34,7 @@ class _DemoWidgetState extends State<DemoWidget> {
               child: GestureDetector(
                 onTap: () {
                   js.context
-                      .callMethod('fallbackCopyTextToClipboard', [res.toCode()]);
+                      .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
                 },
                 child: Container(
                     child: Column(

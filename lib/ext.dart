@@ -77,6 +77,17 @@ extension WidgetExt on Widget {
     }
     return this.toStringDeep();
   }
+
+  String toWidget() {
+    return '''
+      class Widget1 extends StatelessWidget {
+        @override
+        Widget build(BuildContext context) {
+          return ${toCode()};
+        }
+      }
+    ''';
+  }
 }
 
 extension EdgeInsetsExt on EdgeInsets {
