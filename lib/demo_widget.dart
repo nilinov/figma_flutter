@@ -3,6 +3,7 @@ import 'dart:js' as js;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_visible/demo_widget1.dart';
 import 'package:flutter_visible/get_data.dart';
 
 import 'ext.dart';
@@ -20,11 +21,12 @@ class _DemoWidgetState extends State<DemoWidget> {
     json = jsonDecode(await getData());
     setState(() {});
     super.didChangeDependencies();
+    // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
   }
 
   @override
   Widget build(BuildContext context) {
-    // return DemoWidget1();
+    // return Widget1();
 
     if (json != null) {
       final res = getWidgetByMap(json);
@@ -40,29 +42,50 @@ class _DemoWidgetState extends State<DemoWidget> {
             padding: EdgeInsets.all(20),
           )),
           Expanded(
-              child: GestureDetector(
-            onTap: () {
-              js.context
-                  .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
-            },
-            child: Container(
-                child: Column(
-              children: [
-                Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.all(10),
-                  child: Text('Click to clipboard text'),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Text(
-                      res.toCode(),
+              child: Container(
+                  child: Column(
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          js.context
+                              .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.all(10),
+                          child: Text('Click to clipboard text'),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          js.context
+                              .callMethod('fallbackDownloadWidget', [res.toWidget(), 'demo_widget_1.dart']);
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          padding: EdgeInsets.all(10),
+                          child: Text('Click to download widget'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: GestureDetector(
+                        onTap: () {
+                          js.context
+                              .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
+                        },
+                        child: Text(
+                          res.toCode(),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )),
-          )),
+                ],
+              ))),
         ],
       );
     }

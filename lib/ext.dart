@@ -1,86 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-extension ContainerExt on Container {
-  String toCode() {
-    return '''
-    Container(
-      child: $child,
-      decoration: $decoration,
-      padding: $padding,
-    ),
-    ''';
-  }
-}
-
 extension WidgetExt on Widget {
   String toCode() {
     if (this == null) return null;
 
     if (this is Container) {
+      final Container item = this;
+      final padding = (item.padding as EdgeInsets).toCode();
       return '''
       Container(
-        decoration: ${((this as Container).decoration as BoxDecoration).toCode()},
-        padding: ${((this as Container).padding as EdgeInsets).toCode()},
-        child: ${(this as Container).child.toCode()},
+        ${getKey(item)}
+        decoration: ${(item.decoration as BoxDecoration).toCode()},
+        ${padding != null ? "padding: ${(item.padding as EdgeInsets).toCode()}," : ""}
+        child: ${item.child.toCode()},
       )
       ''';
     } else if (this is Row) {
+      final Row item = this;
       return '''
       Row(
-        children: [${(this as Row).children.map((e) => e.toCode()).toList().join(', ')}],
-        crossAxisAlignment: ${(this as Row).crossAxisAlignment},
-        mainAxisAlignment: ${(this as Row).mainAxisAlignment},
+        ${getKey(item)}
+        children: [${item.children.where((element) => element != null).map((e) => e.toCode()).join(', ')}],
+        crossAxisAlignment: ${item.crossAxisAlignment},
+        mainAxisAlignment: ${item.mainAxisAlignment},
       )
       ''';
     } else if (this is Column) {
+      final Column item = this;
       return '''
       Column(
-        children: [${(this as Column).children.map((e) => e.toCode()).join(', ')}],
-        crossAxisAlignment: ${(this as Column).crossAxisAlignment},
-        mainAxisAlignment: ${(this as Column).mainAxisAlignment},
+        ${getKey(item)}
+        children: [${item.children.where((element) => element != null).map((e) => e.toCode()).join(', ')}],
+        crossAxisAlignment: ${item.crossAxisAlignment},
+        mainAxisAlignment: ${item.mainAxisAlignment},
       )
       ''';
     } else if (this is Stack) {
+      final Stack item = this;
       return '''
       Stack(
-        children: [${(this as Stack).children.map((e) => e.toCode()).join(', ')}],
+        ${getKey(item)}
+        children: [${item.children.map((e) => e.toCode()).join(', ')}],
       )
       ''';
     } else if (this is Positioned) {
+      final Positioned item = this;
       return '''
       Positioned(
-        child: ${(this as Positioned).child.toCode()},
-        left: ${(this as Positioned).left},
-        top: ${(this as Positioned).top},
-        width: ${(this as Positioned).width},
-        height: ${(this as Positioned).height},
+        ${getKey(item)}
+        child: ${item.child.toCode()},
+        left: ${item.left},
+        top: ${item.top},
+        width: ${item.width},
+        height: ${item.height},
       )
       ''';
     } else if (this is Expanded) {
+      final Expanded item = this;
       return '''
       Expanded(
+        ${getKey(item)}
         child: ${(this as Expanded).child.toCode()},
       )
       ''';
     } else if (this is SizedBox) {
+      final SizedBox item = this;
+      if (item.child == null && item.width == null && item.height == null) return null;
+
       return '''
       SizedBox(
-        child: ${(this as SizedBox).child.toCode()},
-        width: ${(this as SizedBox).width},
-        height: ${(this as SizedBox).height},
+        ${getKey(item)}
+        child: ${item.child.toCode()},
+        width: ${item.width},
+        height: ${item.height},
       )
       ''';
     } else if (this is Text) {
+      final Text item = this;
       return '''
-        Text("${(this as Text).data}", textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style.toCode()})
+        Text("${(this as Text).data}", ${getKey(item)} textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style.toCode()})
       ''';
     } else if (this is SvgPicture) {
+      final SvgPicture item = this;
       return '''
-        SvgPicture.string("
-        ${(this as SvgPicture).key.toString().split('SVG:')[1]}", 
+        SvgPicture.string(\'''${(this as SvgPicture).key.toString().split('SVG:')[1]}\''',${getKey(item)}
         width: ${(this as SvgPicture).width},
         height: ${(this as SvgPicture).height},
+        )
+      ''';
+    } else if (this is Image) {
+      final Image item = this;
+      return '''
+        SvgPicture.string(\'''${item.key.toString().split('PNG:')[1]}\''', ${getKey(item)}
+        width: ${item.width},
+        height: ${item.height},
         )
       ''';
     }
@@ -89,6 +103,9 @@ extension WidgetExt on Widget {
 
   String toWidget({String name}) {
     return '''
+      import 'package:flutter/cupertino.dart';
+      import 'package:flutter_svg/flutter_svg.dart';
+
       class ${name ?? 'Widget1'} extends StatelessWidget {
         @override
         Widget build(BuildContext context) {
@@ -102,6 +119,8 @@ extension WidgetExt on Widget {
 extension EdgeInsetsExt on EdgeInsets {
   toCode() {
     if (this == null) return null;
+    if (top == 0 && left == 0 && right == 0 && bottom == 0) return null;
+    if (top == left && left == right && right ==  bottom) return 'EdgeInsets.all($left)';
 
     return '''
     EdgeInsets.only(
@@ -116,10 +135,11 @@ extension EdgeInsetsExt on EdgeInsets {
 
 extension BoxDecorationExt on BoxDecoration {
   toCode() {
+    final _border = border != null ? (border as Border).toCode() : null;
     return '''
         BoxDecoration(
           color: $color,
-          ${(border as Border) != null ? "border: ${(border as Border).toCode()}," : ""}
+          ${_border != null ? "border: ${(border as Border).toCode()}," : ""}
           borderRadius: $borderRadius,
         )
         ''';
@@ -150,3 +170,10 @@ extension TextStyleExt on TextStyle {
   }
 }
 
+int numKey = 1;
+
+getKey(Widget item) {
+  final String key = '${numKey.toString()}_' + item.key.toString();
+  numKey++;
+  return (key != null && key != 'null') ? "\nkey: Key('''$key''')," : '';
+}
