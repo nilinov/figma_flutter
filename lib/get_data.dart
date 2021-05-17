@@ -1,15 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:js' as js;
-import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_visible/env.dart';
-
-import 'ext.dart';
 
 Future<String> getData() async {
   if (!AppEnv.isProd) {
@@ -186,7 +182,8 @@ Widget getText(Map<String, dynamic> json) {
   if (json['fills'] != null)
     textStyle = textStyle.copyWith(color: getColorFromFills(json));
 
-  Widget res = Text((json['characters'] as String).split('\\n').join('\n'), textAlign: textAlign, style: textStyle);
+  Widget res = Text((json['characters'] as String).split('\\n').join('\n'),
+      textAlign: textAlign, style: textStyle);
   if (json['layoutAlign'] == 'STRETCH') res = Expanded(child: res);
 
   //TODO vertical align
@@ -227,16 +224,13 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json) {
   if (json['layoutMode'] == 'VERTICAL') {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children:
-          (json['children'] as List).map((e) => getWidgetByMap(e)).toList(),
+      children: getLayoutChildren(json, space: json['itemSpacing'], axis: Axis.vertical),
     );
   } else if (json['layoutMode'] == 'HORIZONTAL') {
     return Row(
       crossAxisAlignment: getCrossAxisAlignment(json),
       mainAxisAlignment: getMainAxisAlignment(json),
-      children: (json['children'] as List).map((e) {
-        return getWidgetByMap(e);
-      }).toList(),
+      children: getLayoutChildren(json, space: json['itemSpacing'], axis: Axis.horizontal),
     );
   } else {
     final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
@@ -256,6 +250,24 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json) {
 
     return Stack(children: children);
   }
+}
+
+List<Widget> getLayoutChildren(Map<String, dynamic> json, {double space, Axis axis = Axis.horizontal}) {
+  final res = <Widget>[];
+
+  for (var i = 0; i < (json['children'] as List).length; i++) {
+    if (i != 0 && space != null && space != 0) {
+      if (axis == Axis.horizontal) {
+        res.add(SizedBox(width: space));
+      } else {
+        res.add(SizedBox(height: space));
+      }
+    }
+
+    res.add(getWidgetByMap(json['children'][i]));
+  }
+
+  return res.toList();
 }
 
 getCrossAxisAlignment(Map<String, dynamic> json) {
