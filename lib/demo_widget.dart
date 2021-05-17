@@ -24,21 +24,30 @@ class _DemoWidgetState extends State<DemoWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // return DemoWidget1();
+
     if (json != null) {
       final res = getWidgetByMap(json);
       print(res.toWidget());
       return Row(
         children: [
-          Expanded(child: Padding(child: FittedBox(child: Container(child: res), fit: BoxFit.contain,), padding: EdgeInsets.all(20),)),
+          Expanded(
+              child: Padding(
+            child: FittedBox(
+              child: Container(child: res),
+              fit: BoxFit.contain,
+            ),
+            padding: EdgeInsets.all(20),
+          )),
           Expanded(
               child: GestureDetector(
-                onTap: () {
-                  js.context
-                      .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
-                },
-                child: Container(
-                    child: Column(
-            children: [
+            onTap: () {
+              js.context
+                  .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
+            },
+            child: Container(
+                child: Column(
+              children: [
                 Container(
                   color: Colors.white,
                   padding: EdgeInsets.all(10),
@@ -51,9 +60,9 @@ class _DemoWidgetState extends State<DemoWidget> {
                     ),
                   ),
                 ),
-            ],
+              ],
+            )),
           )),
-              )),
         ],
       );
     }

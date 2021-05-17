@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 extension ContainerExt on Container {
   String toCode() {
@@ -74,13 +75,21 @@ extension WidgetExt on Widget {
       return '''
         Text("${(this as Text).data}", textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style.toCode()})
       ''';
+    } else if (this is SvgPicture) {
+      return '''
+        SvgPicture.string("
+        ${(this as SvgPicture).key.toString().split('SVG:')[1]}", 
+        width: ${(this as SvgPicture).width},
+        height: ${(this as SvgPicture).height},
+        )
+      ''';
     }
     return this.toStringDeep();
   }
 
-  String toWidget() {
+  String toWidget({String name}) {
     return '''
-      class Widget1 extends StatelessWidget {
+      class ${name ?? 'Widget1'} extends StatelessWidget {
         @override
         Widget build(BuildContext context) {
           return ${toCode()};
@@ -140,3 +149,4 @@ extension TextStyleExt on TextStyle {
     ''';
   }
 }
+

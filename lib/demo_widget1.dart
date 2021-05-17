@@ -1,88 +1,119 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_visible/get_data.dart';
 
-class DemoWidget extends StatefulWidget {
+class DemoWidget1 extends StatefulWidget {
   @override
-  _DemoWidgetState createState() => _DemoWidgetState();
+  _DemoWidget1State createState() => _DemoWidget1State();
 }
 
-class _DemoWidgetState extends State<DemoWidget> {
-  Map<String, dynamic> json;
-
-  @override
-  Future<void> didChangeDependencies() async {
-    json = jsonDecode(await getData());
-    setState(() {});
-    super.didChangeDependencies();
-  }
-
+class _DemoWidget1State extends State<DemoWidget1> {
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0x00000000),
+        color: Color(0xffffffff),
         border: null,
-        borderRadius: BorderRadius.zero,
+        borderRadius: BorderRadius.circular(12.0),
       ),
       padding: EdgeInsets.only(
-        top: 0,
+        top: 16,
         left: 16,
         right: 16,
-        bottom: 0,
+        bottom: 16,
       ),
       child: Column(
         children: [
-          Expanded(
-            child: Text("Поделиться купоном",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Color(0xff141e2e),
-                )),
-          ),
-          Expanded(
-            child: Text(
-                "Введите номер телефона друга, с которым вы хотите поделиться этим купоном",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Color(0xff141e2e),
-                )),
-          ),
-          SizedBox(
-            child: null,
-            width: null,
-            height: null,
-          ),
           Container(
             decoration: BoxDecoration(
-              color: Color(0xffae0148),
+              color: Color(0x00000000),
               border: null,
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.zero,
             ),
             padding: EdgeInsets.only(
-              top: 13,
-              left: 10,
-              right: 10,
-              bottom: 13,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
             ),
             child: Row(
               children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    border: null,
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        child: null,
+                        left: 5.5,
+                        top: 13,
+                        width: 10,
+                        height: 5,
+                      )
+                    ],
+                  ),
+                ),
                 Expanded(
-                  child: Text("Поделиться",
+                  child: Text("Технические работы",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 17,
-                        color: Color(0xffffffff),
+                        fontSize: 15,
+                        color: Color(0xffae0148),
                       )),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    border: null,
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        child: null,
+                        left: 5.5,
+                        top: 13,
+                        width: 10,
+                        height: 5,
+                      )
+                    ],
+                  ),
                 )
               ],
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
             ),
+          ),
+          Expanded(
+            child: Text(
+                "Уважаемые клиенты! 22 ноября 2020 года мы будем проводить технические работы в ароол...",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Color(0xff2e3137),
+                )),
+          ),
+          Expanded(
+            child: Text("22 ноября 2020 | 13:05",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Color(0xff5a6771),
+                )),
           )
         ],
         crossAxisAlignment: CrossAxisAlignment.stretch,
