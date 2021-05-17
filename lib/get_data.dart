@@ -35,7 +35,6 @@ Widget getWidgetByMap(Map<String, dynamic> json) {
   }
 
   if (json['svg'] != null) {
-    print(json);
     return SvgPicture.string(
       json['svg'],
       key: Key("SVG:${(json['svg'] as String).split('\"').join('"')}"),
@@ -76,6 +75,13 @@ Widget getWidgetByMap(Map<String, dynamic> json) {
           borderRadius: getBorderRadius(json),
         ),
         child: getChildrenByLayoutMode(json),
+      );
+    case 'VECTOR':
+      return SvgPicture.string(
+        json['svg'],
+        key: Key("SVG:${(json['svg'] as String).split('\"').join('"')}"),
+        height: json['height'],
+        width: json['width'],
       );
     case 'TEXT':
       return getText(json);
