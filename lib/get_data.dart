@@ -1,9 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:js' as js;
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_visible/env.dart';
+
 import 'ext.dart';
 
 Future<String> getData() async {
@@ -37,7 +42,15 @@ Widget getWidgetByMap(Map<String, dynamic> json) {
     print(json);
     return SvgPicture.string(
       json['svg'],
-      key: Key("SVG:${json['svg']}"),
+      key: Key("SVG:${(json['svg'] as String).split('\"').join('"')}"),
+      height: json['height'],
+      width: json['width'],
+    );
+  } else if (json['png'] != null) {
+    print(json);
+    return Image.memory(
+      base64Decode(json['png']),
+      key: Key("PNG:${(json['png'] as String).split('\"').join('"')}"),
       height: json['height'],
       width: json['width'],
     );
@@ -173,7 +186,7 @@ Widget getText(Map<String, dynamic> json) {
   if (json['fills'] != null)
     textStyle = textStyle.copyWith(color: getColorFromFills(json));
 
-  Widget res = Text(json['characters'], textAlign: textAlign, style: textStyle);
+  Widget res = Text((json['characters'] as String).split('\\n').join('\n'), textAlign: textAlign, style: textStyle);
   if (json['layoutAlign'] == 'STRETCH') res = Expanded(child: res);
 
   //TODO vertical align
