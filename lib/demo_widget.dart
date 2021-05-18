@@ -94,6 +94,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                       Text('Разделить компоненты'),
                     ],
                   ),
+/*
                   ExportSettingImage(
                     title: 'Иконки',
                     iconsExport: iconsExport,
@@ -104,6 +105,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                     iconsExport: imagesExport,
                     onChange: (props) => setState(() => imagesExport = props),
                   ),
+*/
                   Divider(),
                 ],
               ),
