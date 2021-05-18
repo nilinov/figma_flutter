@@ -50,10 +50,10 @@ extension WidgetExt on Widget {
       Positioned(
         ${getKey(item)}
         child: ${item.child.toCode()},
-        left: ${item.left},
-        top: ${item.top},
-        width: ${item.width},
-        height: ${item.height},
+        ${wrapProp('top', item.top)}
+        ${wrapProp('left', item.left)}
+        ${wrapProp('right', item.right)}
+        ${wrapProp('bottom', item.bottom)}
       )
       ''';
     } else if (this is Expanded) {
@@ -72,8 +72,8 @@ extension WidgetExt on Widget {
       SizedBox(
         ${getKey(item)}
         child: ${item.child.toCode()},
-        width: ${item.width},
-        height: ${item.height},
+        ${wrapProp('width', item.width)}
+        ${wrapProp('height', item.height)}
       )
       ''';
     } else if (this is Text) {
@@ -85,16 +85,16 @@ extension WidgetExt on Widget {
       final SvgPicture item = this;
       return '''
         SvgPicture.string(\'''${(this as SvgPicture).key.toString().split('SVG:')[1]}\''',${getKey(item)}
-        width: ${(this as SvgPicture).width},
-        height: ${(this as SvgPicture).height},
+        ${wrapProp('width', item.width)}
+        ${wrapProp('height', item.height)}
         )
       ''';
     } else if (this is Image) {
       final Image item = this;
       return '''
         SvgPicture.string(\'''${item.key.toString().split('PNG:')[1]}\''', ${getKey(item)}
-        width: ${item.width},
-        height: ${item.height},
+        ${wrapProp('width', item.width)}
+        ${wrapProp('height', item.height)}
         )
       ''';
     }
@@ -124,10 +124,10 @@ extension EdgeInsetsExt on EdgeInsets {
 
     return '''
     EdgeInsets.only(
-      top: $top,
-      left: $left,
-      right: $right,
-      bottom: $bottom,
+      ${wrapProp('top', top)}
+      ${wrapProp('left', left)}
+      ${wrapProp('right', right)}
+      ${wrapProp('bottom', bottom)}
     )
     ''';
   }
@@ -139,8 +139,8 @@ extension BoxDecorationExt on BoxDecoration {
     return '''
         BoxDecoration(
           color: $color,
-          ${_border != null ? "border: ${(border as Border).toCode()}," : ""}
-          borderRadius: $borderRadius,
+          ${wrapProp('border', _border)}
+          ${wrapProp('borderRadius', borderRadius)}
         )
         ''';
   }
@@ -152,8 +152,8 @@ extension BorderExt on Border {
 
     return '''
       Border.all(
-        color: ${bottom.color},
-        width: ${bottom.width},
+        ${wrapProp('color', bottom.color)}
+        ${wrapProp('width', bottom.width)}
       )
     ''';
   }
@@ -176,4 +176,12 @@ getKey(Widget item) {
   final String key = '${numKey.toString()}_' + item.key.toString();
   numKey++;
   return (key != null && key != 'null') ? "\nkey: Key('''$key''')," : '';
+}
+
+wrapProp(String name, dynamic value) {
+  if (value != null) {
+    return "$name: $value,";
+  }
+
+  return '';
 }
