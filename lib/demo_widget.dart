@@ -26,7 +26,7 @@ class _DemoWidgetState extends State<DemoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
+    // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
       final res = getWidgetByMap(json, 0);

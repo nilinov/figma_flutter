@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_visible/env.dart';
 import 'package:flutter_visible/json_text.dart';
+import 'package:flutter_visible/utils/get_children_by_layout_mode.dart';
 
 const viewDebugProps = false;
 
@@ -253,85 +254,6 @@ Color getColor(Map<String, dynamic> color, {num opacity = 1}) {
   );
 }
 
-Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
-  if (viewDebugProps) print('getChildrenByLayoutMode');
-
-  if (json == null || json['children'] == null) return SizedBox();
-  if (json['layoutMode'] == 'VERTICAL') {
-    debugPrintWidget("Column", level: level);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: getLayoutChildren(json, space: json['itemSpacing'], axis: Axis.vertical, level: level),
-    );
-  } else if (json['layoutMode'] == 'HORIZONTAL') {
-    debugPrintWidget("Row", level: level);
-    return Row(
-      crossAxisAlignment: getCrossAxisAlignment(json),
-      mainAxisAlignment: getMainAxisAlignment(json),
-      children: getLayoutChildren(json,
-          space: json['itemSpacing'], axis: Axis.horizontal, level: level),
-    );
-  } else {
-    final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
-    final baseY = (json['type'] == 'GROUP') ? json['y'] : 0;
-
-    final children = (json['children'] as List)
-        .map((e) {
-          final widget = getWidgetByMap(e, level + 1);
-
-          if (widget == null) return null;
-
-          if (viewDebugProps) if (viewDebugProps) {
-            print('getChildrenByLayoutMode: Stack: widget');
-            print(widget);
-          }
-
-          debugPrintWidget("Positioned", level: level + 1);
-          return Positioned(
-            child: widget,
-            left: e['x'] - baseX,
-            top: e['y'] - baseY,
-            width: e['width'],
-            height: e['height'],
-          );
-        })
-        .where((element) => element != null)
-        .toList();
-
-    if (viewDebugProps) {
-      print({children});
-    }
-
-    if (children.length == 0) return null;
-
-    debugPrintWidget("Stack", level: level);
-    return Stack(children: children);
-  }
-}
-
-List<Widget> getLayoutChildren(Map<String, dynamic> json, {double space, Axis axis = Axis.horizontal, @required int level}) {
-  final res = <Widget>[];
-
-  for (var i = 0; i < (json['children'] as List).length; i++) {
-    if (i != 0 && space != null && space != 0) {
-      if (axis == Axis.horizontal) {
-        res.add(SizedBox(width: space));
-      } else {
-        res.add(SizedBox(height: space));
-      }
-    }
-
-    Widget widget = getWidgetByMap(json['children'][i], level + 1);
-
-    if (widget is Text) {
-      widget = Expanded(child: widget);
-    }
-
-    res.add(widget);
-  }
-
-  return res.where((element) => element != null).toList();
-}
 
 getCrossAxisAlignment(Map<String, dynamic> json) {
   if (viewDebugProps) print('getCrossAxisAlignment');
@@ -341,13 +263,17 @@ getCrossAxisAlignment(Map<String, dynamic> json) {
         return CrossAxisAlignment.center;
     }
   }
+
   switch (json['counterAxisAlignItems']) {
+    case 'MIN':
+      return CrossAxisAlignment.start;
+    case 'MAX':
+      return CrossAxisAlignment.end;
     case 'CENTER':
       return CrossAxisAlignment.center;
   }
   return CrossAxisAlignment.start;
 }
-
 getMainAxisAlignment(Map<String, dynamic> json) {
   if (viewDebugProps) print('getCrossAxisAlignment');
   if (json['constraints'] != null) {
@@ -359,6 +285,10 @@ getMainAxisAlignment(Map<String, dynamic> json) {
     }
   }
   switch (json['primaryAxisAlignItems']) {
+    case 'MIN':
+      return MainAxisAlignment.start;
+    case 'MAX':
+      return MainAxisAlignment.end;
     case 'CENTER':
       return MainAxisAlignment.center;
     case 'SPACE_BETWEEN':

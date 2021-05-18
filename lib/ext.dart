@@ -136,11 +136,12 @@ extension EdgeInsetsExt on EdgeInsets {
 extension BoxDecorationExt on BoxDecoration {
   toCode() {
     final _border = border != null ? (border as Border).toCode() : null;
+    final _borderRadius = (borderRadius != null && borderRadius != BorderRadius.zero) ? borderRadius : null;
     return '''
         BoxDecoration(
-          color: $color,
+          ${wrapProp('color', color)}
           ${wrapProp('border', _border)}
-          ${wrapProp('borderRadius', borderRadius)}
+          ${wrapProp('borderRadius', _borderRadius)}
         )
         ''';
   }
