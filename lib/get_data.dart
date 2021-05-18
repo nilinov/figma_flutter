@@ -236,7 +236,7 @@ Widget getText(Map<String, dynamic> json, int level) {
     res = SizedBox(child: res, width: json['width']);
   }
 
-  if (json['textAutoResize'] == 1) {
+  if (json['layoutGrow'] == 1) {
     debugPrintWidget("Expanded", level: level + 1);
     res = Expanded(child: res);
   }
