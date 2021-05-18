@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_visible/env.dart';
-import 'package:flutter_visible/json_text.dart';
 import 'package:flutter_visible/utils/get_children_by_layout_mode.dart';
 
 const viewDebugProps = false;
@@ -151,6 +150,19 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
         padding: getPadding(json),
         child: item,
       );
+    case 'LINE':
+      debugPrintWidget("Container", level: level);
+
+      if (json['rotation'] == 0 || json['rotation'] == 180) {
+        return Divider(color: getColorFromFills(json));
+      }
+
+      if (json['rotation'] == 90 || json['rotation'] == 270) {
+        return VerticalDivider(color: getColorFromFills(json));
+      }
+
+      return null;
+
     default:
       return null;
   }
@@ -261,7 +273,6 @@ Color getColor(Map<String, dynamic> color, {num opacity = 1}) {
   );
 }
 
-
 getCrossAxisAlignment(Map<String, dynamic> json) {
   if (viewDebugProps) print('getCrossAxisAlignment');
   if (json['constraints'] != null) {
@@ -281,6 +292,7 @@ getCrossAxisAlignment(Map<String, dynamic> json) {
   }
   return CrossAxisAlignment.start;
 }
+
 getMainAxisAlignment(Map<String, dynamic> json) {
   if (viewDebugProps) print('getCrossAxisAlignment');
   if (json['constraints'] != null) {
