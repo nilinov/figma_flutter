@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:js' as js;
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_visible/demo_widget1.dart';
 import 'package:flutter_visible/get_data.dart';
 
 import 'ext.dart';
@@ -12,6 +12,8 @@ class DemoWidget extends StatefulWidget {
   @override
   _DemoWidgetState createState() => _DemoWidgetState();
 }
+
+enum ImageExportEnum { inline, consts, file }
 
 class _DemoWidgetState extends State<DemoWidget> {
   Map<String, dynamic> json;
@@ -23,6 +25,12 @@ class _DemoWidgetState extends State<DemoWidget> {
     super.didChangeDependencies();
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
   }
+
+  bool multiComponent = false;
+  bool inlineIcons = true;
+  bool inlineImages = true;
+  ImageExportEnum iconsExport = ImageExportEnum.inline;
+  ImageExportEnum imagesExport = ImageExportEnum.inline;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +52,17 @@ class _DemoWidgetState extends State<DemoWidget> {
           Expanded(
               child: Container(
                   child: Column(
+            children: [
+              Column(
                 children: [
                   Row(
                     children: [
                       GestureDetector(
                         onTap: () {
-                          js.context
-                              .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
+                          js.context.callMethod(
+                              'fallbackCopyTextToClipboard', [res.toWidget()]);
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text("Copy")));
                         },
                         child: Container(
                           color: Colors.white,
@@ -60,8 +72,8 @@ class _DemoWidgetState extends State<DemoWidget> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          js.context
-                              .callMethod('fallbackDownloadWidget', [res.toWidget(), 'demo_widget_1.dart']);
+                          js.context.callMethod('fallbackDownloadWidget',
+                              [res.toWidget(), 'demo_widget_1.dart']);
                         },
                         child: Container(
                           color: Colors.white,
@@ -71,25 +83,105 @@ class _DemoWidgetState extends State<DemoWidget> {
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: GestureDetector(
-                        onTap: () {
-                          js.context
-                              .callMethod('fallbackCopyTextToClipboard', [res.toWidget()]);
-                        },
-                        child: Text(
-                          res.toCode(),
-                        ),
+                  Divider(),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: multiComponent,
+                        onChanged: (bool newValue) =>
+                            setState(() => multiComponent = newValue),
                       ),
+                      Text('Разделить компоненты'),
+                    ],
+                  ),
+                  ExportSettingImage(
+                    title: 'Иконки',
+                    iconsExport: iconsExport,
+                    onChange: (props) => setState(() => iconsExport = props),
+                  ),
+                  ExportSettingImage(
+                    title: 'Встроенные картинки',
+                    iconsExport: imagesExport,
+                    onChange: (props) => setState(() => imagesExport = props),
+                  ),
+                  Divider(),
+                ],
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: GestureDetector(
+                    onTap: () {
+                      js.context.callMethod(
+                          'fallbackCopyTextToClipboard', [res.toWidget()]);
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text("Copy")));
+                    },
+                    child: Text(
+                      res.toCode(),
                     ),
                   ),
-                ],
-              ))),
+                ),
+              ),
+            ],
+          ))),
         ],
       );
     }
 
     return Center(child: CircularProgressIndicator());
   }
+}
+
+class ExportSettingImage extends StatelessWidget {
+  final String title;
+  final ImageExportEnum iconsExport;
+  final Function(ImageExportEnum value) onChange;
+
+  final bool expand;
+
+  const ExportSettingImage(
+      {Key key, this.iconsExport, this.onChange, this.title, this.expand})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 12),
+        Text(title, style: TextStyle(fontSize: 18)),
+        RadioListTile<ImageExportEnum>(
+          title: Text(getTitleExportImage(ImageExportEnum.inline)),
+          value: ImageExportEnum.inline,
+          groupValue: iconsExport,
+          onChanged: onChange,
+        ),
+        RadioListTile<ImageExportEnum>(
+          title: Text(getTitleExportImage(ImageExportEnum.consts)),
+          value: ImageExportEnum.consts,
+          groupValue: iconsExport,
+          onChanged: onChange,
+        ),
+        RadioListTile<ImageExportEnum>(
+          title: Text(getTitleExportImage(ImageExportEnum.file)),
+          value: ImageExportEnum.file,
+          groupValue: iconsExport,
+          onChanged: onChange,
+        ),
+      ],
+    );
+  }
+}
+
+String getTitleExportImage(ImageExportEnum iconsExport) {
+  switch (iconsExport) {
+    case ImageExportEnum.inline:
+      return 'Встроенные';
+    case ImageExportEnum.consts:
+      return 'Константы';
+    case ImageExportEnum.file:
+      return 'Файл';
+  }
+
+  return '';
 }
