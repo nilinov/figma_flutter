@@ -217,10 +217,17 @@ Widget getText(Map<String, dynamic> json, int level) {
   Widget res = Text((json['characters'] as String).split('\\n').join('\n'),
       textAlign: textAlign, style: textStyle);
 
-  // if (json['layoutAlign'] == 'STRETCH') {
-  //   debugPrintWidget("Expanded", level: level);
-  //   res = Expanded(child: res);
-  // }
+  if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
+    debugPrintWidget("SizedBox", level: level + 1);
+    res = SizedBox(child: res, height: json['height'], width: json['width']);
+  } else if (json['textAutoResize'] == 'HEIGHT') {
+    res = SizedBox(child: res, width: json['width']);
+  }
+
+  if (json['textAutoResize'] == 1) {
+    debugPrintWidget("Expanded", level: level + 1);
+    res = Expanded(child: res);
+  }
 
   //TODO vertical align
 
