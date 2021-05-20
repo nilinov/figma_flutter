@@ -26,7 +26,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
   }
 
-  bool multiComponent = false;
+  bool splitComponent = false;
   bool inlineIcons = true;
   bool inlineImages = true;
   ImageExportEnum iconsExport = ImageExportEnum.inline;
@@ -87,9 +87,9 @@ class _DemoWidgetState extends State<DemoWidget> {
                   Row(
                     children: [
                       Checkbox(
-                        value: multiComponent,
+                        value: splitComponent,
                         onChanged: (bool newValue) =>
-                            setState(() => multiComponent = newValue),
+                            setState(() => splitComponent = newValue),
                       ),
                       Text('Разделить компоненты'),
                     ],

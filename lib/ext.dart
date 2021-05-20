@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 extension WidgetExt on Widget {
-  String toCode() {
+  String toCode([bool extractComponents]) {
     if (this == null) return null;
+
+    if (extractComponents == true) {
+      final name = this.key.toString().split(':');
+      if (name[0] == 'COMPONENT') {
+        return '''
+          ${name[1]}()
+        ''';
+      }
+    }
 
     if (this is Container) {
       final Container item = this;
@@ -81,6 +90,24 @@ extension WidgetExt on Widget {
       return '''
         Text("${(this as Text).data}", ${getKey(item)} textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style.toCode()})
       ''';
+    } else if (this is Align) {
+      final Align item = this;
+      return '''
+        Align(
+          child: ${item.child.toCode()},
+          ${wrapProp('alignment', item.alignment)}
+        )
+      ''';
+    } else if (this is Divider) {
+      final Divider item = this;
+      return '''
+        Divider(color: ${item.color})
+      ''';
+    } else if (this is VerticalDivider) {
+      final VerticalDivider item = this;
+      return '''
+        VerticalDivider(color: ${item.color})
+      ''';
     } else if (this is SvgPicture) {
       final SvgPicture item = this;
       return '''
@@ -113,6 +140,22 @@ extension WidgetExt on Widget {
         }
       }
     ''';
+  }
+
+  List<String> toWidgetsExport() {
+
+  }
+
+  List<String> toWidgets({String name}) {
+    return [
+      '''
+      class ${name ?? 'Widget1'} extends StatelessWidget {
+        @override
+        Widget build(BuildContext context) {
+          return ${toCode(true)};
+        }
+      }
+    '''];
   }
 }
 
