@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -6,8 +8,9 @@ extension WidgetExt on Widget {
     if (this == null) return null;
 
     if (extractComponents == true) {
-      final name = this.key.toString().split(':');
-      if (name[0] == 'COMPONENT') {
+      final name = (this.key as ValueKey).value.toString().split(':');
+      print("name $name");
+      if (name[0] == 'COMPONENT' || name[0] == 'INSTANCE') {
         return '''
           ${name[1]}()
         ''';
@@ -111,7 +114,7 @@ extension WidgetExt on Widget {
     } else if (this is SvgPicture) {
       final SvgPicture item = this;
       return '''
-        SvgPicture.string(\'''${(this as SvgPicture).key.toString().split('SVG:')[1]}\''',${getKey(item)}
+        SvgPicture.string(\'''${getKeyValue(item)}\''',${getKey(item)}
         ${wrapProp('width', item.width)}
         ${wrapProp('height', item.height)}
         )
@@ -119,7 +122,7 @@ extension WidgetExt on Widget {
     } else if (this is Image) {
       final Image item = this;
       return '''
-        SvgPicture.string(\'''${item.key.toString().split('PNG:')[1]}\''', ${getKey(item)}
+        SvgPicture.string(\'''${getKeyValue(item)}\''', ${getKey(item)}
         ${wrapProp('width', item.width)}
         ${wrapProp('height', item.height)}
         )
@@ -217,9 +220,31 @@ extension TextStyleExt on TextStyle {
 int numKey = 1;
 
 getKey(Widget item) {
-  final String key = '${numKey.toString()}_' + item.key.toString();
+  if (item.key == null) return '';
+  dynamic value = (item.key as ValueKey)?.value ?? item.key;
+  if (value is Map<String, String>) {
+    if (value['type'] == 'SVG' || value['type'] == 'PNG') {
+      value = '${value['type']}:${value['name']}';
+    }
+  }
+
+  value = value.toString();
+
+  final String key = '$value:${numKey.toString()}';
   numKey++;
   return (key != null && key != 'null') ? "\nkey: Key('''$key''')," : '';
+}
+
+getKeyValue(Widget item) {
+  if (item.key == null) return '';
+  dynamic value = (item.key as ValueKey)?.value;
+  if (value is Map<String, String>) {
+    if (value['type'] == 'SVG' || value['type'] == 'PNG') {
+      return value['value'];
+    }
+  }
+
+  return value.split(':')[1] ?? value;
 }
 
 wrapProp(String name, dynamic value) {

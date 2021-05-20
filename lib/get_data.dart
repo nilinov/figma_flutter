@@ -35,6 +35,20 @@ debugPrintWidget(String name, {int level = 0}) {
   print(List.generate(level, (index) => "\t").join('') + " $name");
 }
 
+ValueKey getValueKeyImage(String data, {String type, @required String name}) {
+  final String value = data.split('\"').join('"');
+
+  // return ValueKey("$type:$value:$name");
+
+  final Map<String, String> res = {
+  'type': type ?? 'PNG',
+  'value': value,
+  'name': '$name',
+  };
+
+  return ValueKey(res);
+}
+
 Widget getWidgetByMap(Map<String, dynamic> json, int level) {
   if (json['visible'] == false) {
     return null;
@@ -44,7 +58,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
     debugPrintWidget("SvgPicture", level: level);
     return SvgPicture.string(
       json['svg'],
-      key: Key('''SVG:${(json['svg'] as String).split('\"').join('"')}'''),
+      key: getValueKeyImage(json['svg'], type: 'SVG', name: json['name']),
       height: json['height'],
       width: json['width'],
     );
@@ -52,7 +66,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
     debugPrintWidget("Image", level: level);
     return Image.memory(
       base64Decode(json['png']),
-      key: Key('''PNG:${(json['png'] as String).split('\"').join('"')}'''),
+      key: getValueKeyImage(json['png'], type: 'PNG', name: json['name']),
       height: json['height'],
       width: json['width'],
     );
@@ -65,7 +79,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       debugPrintWidget("Container", level: level);
 
       return Container(
-        key: Key("COMPONENT:${json['name']}"),
+        key: ValueKey("COMPONENT:${json['name']}"),
         decoration: BoxDecoration(
           // color: getColorFromFills(json),
           color: Colors.white,
@@ -80,7 +94,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       debugPrintWidget("Container", level: level);
       return Container(
-        key: Key("RECTANGLE:${json['name']}"),
+        key: ValueKey("RECTANGLE:${json['name']}"),
         width: json['width'],
         height: json['height'],
         decoration: BoxDecoration(
@@ -94,7 +108,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       debugPrintWidget("SvgPicture", level: level);
       return SvgPicture.string(
         json['svg'],
-        key: Key("SVG:${(json['svg'] as String).split('\"').join('"')}"),
+        key: getValueKeyImage(json['svg'], type: 'SVG', name: json['name']),
         height: json['height'],
         width: json['width'],
       );
@@ -107,7 +121,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       debugPrintWidget("Container", level: level);
       return Container(
-        // key: Key("FRAME:${json['name']}"),
+        // key: ValueKey("FRAME:${json['name']}"),
         width: json['width'],
         height: json['height'],
         decoration: BoxDecoration(
@@ -124,7 +138,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       debugPrintWidget("Container", level: level);
       return Container(
-        key: Key("INSTANCE:${json['name']}"),
+        key: ValueKey("INSTANCE:${json['name']}"),
         decoration: BoxDecoration(
           color: getColorFromFills(json),
           border: getBorder(json),
@@ -141,7 +155,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       debugPrintWidget("Container", level: level);
       return Container(
-        key: Key("GROUP:${json['name']}"),
+        key: ValueKey("GROUP:${json['name']}"),
         decoration: BoxDecoration(
           color: getColorFromFills(json),
           border: getBorder(json),
