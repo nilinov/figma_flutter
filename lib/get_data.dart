@@ -32,6 +32,7 @@ Future<String> getData() async {
 }
 
 debugPrintWidget(String name, {int level = 0}) {
+  return;
   print(List.generate(level, (index) => "\t").join('') + " $name");
 }
 
@@ -44,6 +45,21 @@ ValueKey getValueKeyImage(String data, {String type, @required String name}) {
   'type': type ?? 'PNG',
   'value': value,
   'name': '$name',
+  };
+
+  return ValueKey(res);
+}
+
+ValueKey getValueKeyComponent(Widget value, {@required String name}) {
+
+  if (value == null) {
+    return ValueKey('WIDGET:$name');
+  }
+
+  final Map<String, dynamic> res = {
+    'type': 'WIDGET',
+    'value': value,
+    'name': '$name',
   };
 
   return ValueKey(res);
@@ -79,7 +95,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       debugPrintWidget("Container", level: level);
 
       return Container(
-        key: ValueKey("COMPONENT:${json['name']}"),
+        key: getValueKeyComponent(widget, name: json['name']),
         decoration: BoxDecoration(
           // color: getColorFromFills(json),
           color: Colors.white,
@@ -137,8 +153,20 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       if (widget == null) return null;
 
       debugPrintWidget("Container", level: level);
+
+      Widget widgetINSTANCE = Container(
+        key: getValueKeyComponent(null, name: json['name']),
+        decoration: BoxDecoration(
+          color: getColorFromFills(json),
+          border: getBorder(json),
+          borderRadius: getBorderRadius(json),
+        ),
+        padding: getPadding(json),
+        child: widget,
+      );
+
       return Container(
-        key: ValueKey("INSTANCE:${json['name']}"),
+        key: getValueKeyComponent(widgetINSTANCE, name: json['name']),
         decoration: BoxDecoration(
           color: getColorFromFills(json),
           border: getBorder(json),

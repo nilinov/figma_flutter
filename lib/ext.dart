@@ -1,19 +1,18 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 extension WidgetExt on Widget {
-  String toCode([bool extractComponents]) {
+  String toCode({@required bool extractComponents}) {
     if (this == null) return null;
 
-    if (extractComponents == true) {
-      final name = (this.key as ValueKey).value.toString().split(':');
-      print("name $name");
-      if (name[0] == 'COMPONENT' || name[0] == 'INSTANCE') {
-        return '''
-          ${name[1]}()
+    if (extractComponents == true && this.key != null) {
+      final value = (this.key as ValueKey).value;
+      if (value is Map) {
+        if (value['type'] == 'WIDGET') {
+          return '''
+          ${value['name']}()
         ''';
+        }
       }
     }
 
@@ -25,7 +24,7 @@ extension WidgetExt on Widget {
         ${getKey(item)}
         decoration: ${(item.decoration as BoxDecoration).toCode()},
         ${padding != null ? "padding: ${(item.padding as EdgeInsets).toCode()}," : ""}
-        child: ${item.child.toCode()},
+        child: ${item.child.toCode(extractComponents: extractComponents)},
       )
       ''';
     } else if (this is Row) {
@@ -33,7 +32,7 @@ extension WidgetExt on Widget {
       return '''
       Row(
         ${getKey(item)}
-        children: [${item.children.where((element) => element != null).map((e) => e.toCode()).join(', ')}],
+        children: [${item.children.where((element) => element != null).map((e) => e.toCode(extractComponents: extractComponents)).join(', ')}],
         crossAxisAlignment: ${item.crossAxisAlignment},
         mainAxisAlignment: ${item.mainAxisAlignment},
       )
@@ -43,7 +42,7 @@ extension WidgetExt on Widget {
       return '''
       Column(
         ${getKey(item)}
-        children: [${item.children.where((element) => element != null).map((e) => e.toCode()).join(', ')}],
+        children: [${item.children.where((element) => element != null).map((e) => e.toCode(extractComponents: extractComponents)).join(', ')}],
         crossAxisAlignment: ${item.crossAxisAlignment},
         mainAxisAlignment: ${item.mainAxisAlignment},
       )
@@ -53,7 +52,7 @@ extension WidgetExt on Widget {
       return '''
       Stack(
         ${getKey(item)}
-        children: [${item.children.map((e) => e.toCode()).join(', ')}],
+        children: [${item.children.map((e) => e.toCode(extractComponents: extractComponents)).join(', ')}],
       )
       ''';
     } else if (this is Positioned) {
@@ -61,7 +60,7 @@ extension WidgetExt on Widget {
       return '''
       Positioned(
         ${getKey(item)}
-        child: ${item.child.toCode()},
+        child: ${item.child.toCode(extractComponents: extractComponents)},
         ${wrapProp('top', item.top)}
         ${wrapProp('left', item.left)}
         ${wrapProp('right', item.right)}
@@ -73,17 +72,18 @@ extension WidgetExt on Widget {
       return '''
       Expanded(
         ${getKey(item)}
-        child: ${(this as Expanded).child.toCode()},
+        child: ${(this as Expanded).child.toCode(extractComponents: extractComponents)},
       )
       ''';
     } else if (this is SizedBox) {
       final SizedBox item = this;
-      if (item.child == null && item.width == null && item.height == null) return null;
+      if (item.child == null && item.width == null && item.height == null)
+        return null;
 
       return '''
       SizedBox(
         ${getKey(item)}
-        child: ${item.child.toCode()},
+        child: ${item.child.toCode(extractComponents: extractComponents)},
         ${wrapProp('width', item.width)}
         ${wrapProp('height', item.height)}
       )
@@ -97,7 +97,7 @@ extension WidgetExt on Widget {
       final Align item = this;
       return '''
         Align(
-          child: ${item.child.toCode()},
+          child: ${item.child.toCode(extractComponents: extractComponents)},
           ${wrapProp('alignment', item.alignment)}
         )
       ''';
@@ -133,32 +133,33 @@ extension WidgetExt on Widget {
 
   String toWidget({String name}) {
     return '''
-      import 'package:flutter/cupertino.dart';
-      import 'package:flutter_svg/flutter_svg.dart';
-
       class ${name ?? 'Widget1'} extends StatelessWidget {
         @override
         Widget build(BuildContext context) {
-          return ${toCode()};
+          return ${toCode(extractComponents: false)};
         }
       }
     ''';
   }
 
-  List<String> toWidgetsExport() {
-
-  }
+  List<String> toWidgetsExport() {}
 
   List<String> toWidgets({String name}) {
+    final items = getChildren([this]);
+
     return [
+      ...items.map((e) {
+        return e.toWidget();
+      }),
       '''
       class ${name ?? 'Widget1'} extends StatelessWidget {
         @override
         Widget build(BuildContext context) {
-          return ${toCode(true)};
+          return ${toCode(extractComponents: true)};
         }
       }
-    '''];
+    '''
+    ];
   }
 }
 
@@ -166,7 +167,8 @@ extension EdgeInsetsExt on EdgeInsets {
   toCode() {
     if (this == null) return null;
     if (top == 0 && left == 0 && right == 0 && bottom == 0) return null;
-    if (top == left && left == right && right ==  bottom) return 'EdgeInsets.all($left)';
+    if (top == left && left == right && right == bottom)
+      return 'EdgeInsets.all($left)';
 
     return '''
     EdgeInsets.only(
@@ -182,7 +184,10 @@ extension EdgeInsetsExt on EdgeInsets {
 extension BoxDecorationExt on BoxDecoration {
   toCode() {
     final _border = border != null ? (border as Border).toCode() : null;
-    final _borderRadius = (borderRadius != null && borderRadius != BorderRadius.zero) ? borderRadius : null;
+    final _borderRadius =
+        (borderRadius != null && borderRadius != BorderRadius.zero)
+            ? borderRadius
+            : null;
     return '''
         BoxDecoration(
           ${wrapProp('color', color)}
@@ -222,8 +227,10 @@ int numKey = 1;
 getKey(Widget item) {
   if (item.key == null) return '';
   dynamic value = (item.key as ValueKey)?.value ?? item.key;
-  if (value is Map<String, String>) {
+  if (value is Map) {
     if (value['type'] == 'SVG' || value['type'] == 'PNG') {
+      value = '${value['type']}:${value['name']}';
+    } else if (value['type'] == 'WIDGET') {
       value = '${value['type']}:${value['name']}';
     }
   }
@@ -235,11 +242,28 @@ getKey(Widget item) {
   return (key != null && key != 'null') ? "\nkey: Key('''$key''')," : '';
 }
 
+getKeyName(Widget item) {
+  print(item);
+  if (item.key == null) return '';
+  dynamic value = (item.key as ValueKey)?.value ?? item.key;
+  if (value is Map) {
+    if (value['type'] == 'SVG' || value['type'] == 'PNG') {
+      return value['name'];
+    } else if (value['type'] == 'WIDGET') {
+      return value['name'];
+    }
+  }
+
+  return value.toString();
+}
+
 getKeyValue(Widget item) {
   if (item.key == null) return '';
   dynamic value = (item.key as ValueKey)?.value;
-  if (value is Map<String, String>) {
+  if (value is Map) {
     if (value['type'] == 'SVG' || value['type'] == 'PNG') {
+      return value['value'];
+    } else if (value['type'] == 'WIDGET') {
       return value['value'];
     }
   }
@@ -253,4 +277,26 @@ wrapProp(String name, dynamic value) {
   }
 
   return '';
+}
+
+List<Widget> getChildren(List<Widget> items) {
+  for (var i = 0; i < items.length; i++) {
+    final item = items[i];
+
+    if (item is Row || item is Column || item is Stack) {
+      return [...items, ...getChildren((item as dynamic).children)];
+    }
+
+    if (item is Container ||
+        item is Positioned ||
+        item is Expanded ||
+        item is SizedBox ||
+        item is Align) {
+      return [
+        ...items,
+        ...getChildren([(item as dynamic).child])
+      ];
+    }
+  }
+  return items;
 }

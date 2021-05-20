@@ -26,7 +26,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
   }
 
-  bool splitComponent = false;
+  bool splitComponent = true;
   bool inlineIcons = true;
   bool inlineImages = true;
   ImageExportEnum iconsExport = ImageExportEnum.inline;
@@ -38,7 +38,7 @@ class _DemoWidgetState extends State<DemoWidget> {
 
     if (json != null) {
       final res = getWidgetByMap(json, 0);
-      print(res.toWidget());
+      // print(res.toWidget());
       return Row(
         children: [
           Expanded(
@@ -118,9 +118,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text("Copy")));
                     },
-                    child: Text(
-                      res.toCode(),
-                    ),
+                    child: Text( splitComponent ? res.toWidgets().join('\n\n \\\\-----------------------------\n\n') : res.toCode(extractComponents: false) ),
                   ),
                 ),
               ),
