@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_visible/get_data.dart';
-import 'package:flutter_visible/utils/get_layout_children.dart';
+import 'package:flutter_visible/imports.dart';
 
 Alignment getAlign(Map<String, dynamic> json) {
   Alignment alignment = Alignment.center;

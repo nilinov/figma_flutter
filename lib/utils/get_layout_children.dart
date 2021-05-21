@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_visible/get_data.dart';
+import 'package:flutter_visible/imports.dart';
 
-List<Widget> getLayoutChildren(Map<String, dynamic> json, {double space, Axis axis = Axis.horizontal, @required int level}) {
+List<Widget> getLayoutChildren(Map<String, dynamic> json,
+    {double space, Axis axis = Axis.horizontal, @required int level}) {
   final res = <Widget>[];
 
   for (var i = 0; i < (json['children'] as List).length; i++) {

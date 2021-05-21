@@ -239,7 +239,7 @@ getKey(Widget item) {
 
   final String key = '$value:${numKey.toString()}';
   numKey++;
-  return (key != null && key != 'null') ? "\nkey: Key('''$key''')," : '';
+  return (key != null && key != 'null') ? "\nkey: Key('$key')," : '';
 }
 
 getKeyName(Widget item) {
