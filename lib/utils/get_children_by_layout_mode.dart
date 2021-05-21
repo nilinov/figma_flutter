@@ -61,7 +61,7 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
           .where((element) => element['visible'] == true)
           .length ==
       1) {
-    debugPrintWidget("Align", level: level);
+    debugPrintWidget("Align", level: level, name: json['name']);
 
     return Align(
       child: getWidgetByMap(
@@ -73,14 +73,14 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
   }
 
   if (json['layoutMode'] == 'VERTICAL') {
-    debugPrintWidget("Column", level: level);
+    debugPrintWidget("Column", level: level, name: json['name']);
     return Column(
       crossAxisAlignment: getCrossAxisAlignment(json),
       mainAxisAlignment: getMainAxisAlignment(json),
       children: getLayoutChildren(json, space: json['itemSpacing'], axis: Axis.vertical, level: level),
     );
   } else if (json['layoutMode'] == 'HORIZONTAL') {
-    debugPrintWidget("Row", level: level);
+    debugPrintWidget("Row", level: level, name: json['name']);
     return Row(
       crossAxisAlignment: getCrossAxisAlignment(json),
       mainAxisAlignment: getMainAxisAlignment(json),
@@ -102,7 +102,7 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
             print(widget);
           }
 
-          debugPrintWidget("Positioned", level: level + 1);
+          debugPrintWidget("Positioned", level: level + 1, name: json['name']);
           return Positioned(
             child: widget,
             left: e['x'] - baseX,
@@ -120,7 +120,7 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
 
     if (children.length == 0) return null;
 
-    debugPrintWidget("Stack", level: level);
+    debugPrintWidget("Stack", level: level, name: json['name']);
     return Stack(children: children);
   }
 }

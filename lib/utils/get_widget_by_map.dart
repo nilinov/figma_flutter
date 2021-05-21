@@ -6,7 +6,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
   }
 
   if (json['svg'] != null) {
-    debugPrintWidget("SvgPicture", level: level);
+    debugPrintWidget("SvgPicture", level: level, name: json['name']);
     return SvgPicture.string(
       json['svg'],
       key: getValueKeyImage(json['svg'], type: 'SVG', name: json['name']),
@@ -14,7 +14,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       width: json['width'],
     );
   } else if (json['png'] != null) {
-    debugPrintWidget("Image", level: level);
+    debugPrintWidget("Image", level: level, name: json['name']);
     return Image.memory(
       base64Decode(json['png']),
       key: getValueKeyImage(json['png'], type: 'PNG', name: json['name']),
@@ -27,7 +27,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
     case 'COMPONENT':
       var widget = (getChildrenByLayoutMode(json, level + 1));
       if (widget == null) return null;
-      debugPrintWidget("Container", level: level);
+      debugPrintWidget("Container", level: level, name: json['name']);
 
       return Container(
         key: getValueKeyComponent(widget, name: json['name']),
@@ -43,7 +43,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       var widget = (getChildrenByLayoutMode(json, level + 1));
       if (widget == null) return null;
 
-      debugPrintWidget("Container", level: level);
+      debugPrintWidget("Container", level: level, name: json['name']);
       return Container(
         key: ValueKey("RECTANGLE:${json['name']}"),
         width: json['width'],
@@ -56,7 +56,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
         child: widget,
       );
     case 'VECTOR':
-      debugPrintWidget("SvgPicture", level: level);
+      debugPrintWidget("SvgPicture", level: level, name: json['name']);
       return SvgPicture.string(
         json['svg'],
         key: getValueKeyImage(json['svg'], type: 'SVG', name: json['name']),
@@ -70,7 +70,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       if (widget == null) return null;
 
-      debugPrintWidget("Container", level: level);
+      debugPrintWidget("Container", level: level, name: json['name']);
       return Container(
         // key: ValueKey("FRAME:${json['name']}"),
         width: json['width'],
@@ -87,7 +87,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       var widget = (getChildrenByLayoutMode(json, level + 1));
       if (widget == null) return null;
 
-      debugPrintWidget("Container", level: level);
+      debugPrintWidget("Container", level: level, name: json['name']);
 
       Widget widgetINSTANCE = Container(
         key: getValueKeyComponent(null, name: json['name']),
@@ -116,7 +116,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       if (item == null) return null;
 
-      debugPrintWidget("Container", level: level);
+      debugPrintWidget("Container", level: level, name: json['name']);
       return Container(
         key: ValueKey("GROUP:${json['name']}"),
         decoration: BoxDecoration(
@@ -128,7 +128,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
         child: item,
       );
     case 'LINE':
-      debugPrintWidget("Container", level: level);
+      debugPrintWidget("Container", level: level, name: json['name']);
 
       if (json['rotation'] == 0 || json['rotation'] == 180) {
         return Divider(color: getColorFromFills(json));
