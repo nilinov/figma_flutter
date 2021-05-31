@@ -113,7 +113,14 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
         child: widget,
       );
     case 'INSTANCE':
-      var widget = (getChildrenByLayoutMode(json, level + 1));
+      var widget;
+
+      if (json['name'] == 'INPUT' || json['name'] == 'input') {
+        widget = getInput(json, level);
+      } else {
+        widget = getChildrenByLayoutMode(json, level);
+      }
+
       if (widget == null) return null;
 
       debugPrintWidget("Container", level: level, name: json['name']);
