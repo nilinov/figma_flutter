@@ -4,7 +4,7 @@ import 'dart:js' as js;
 
 
 Future<String> getData() async {
-  if (!AppEnv.isProd) {
+  if (AppEnv.fromAssets) {
     // return json_text;
 
     return await rootBundle.loadString('assets/data.json');
