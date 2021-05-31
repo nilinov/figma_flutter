@@ -72,10 +72,38 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       debugPrintWidget("Container", level: level, name: json['name']);
 
+      double height;
+      double width;
+
+      if (level == 0) {
+        height = json['height'];
+        width = json['width'];
+      } else if (json['layoutMode'] == 'HORIZONTAL') {
+        if (json['primaryAxisSizingMode'] == 'FIXED' && json['layoutGrow'] == 0) {
+          // fixed h
+          height = json['height'];
+        } else if (json['primaryAxisSizingMode'] == 'FIXED' && json['layoutGrow'] == 1) {
+          // fill h
+          height = double.infinity;
+        } else if (json['primaryAxisSizingMode'] == 'AUTO') {
+          // hug h
+        }
+
+        if (json['layoutAlign'] == 'INHERIT' && json['counterAxisSizingMode'] == 'FIXED') {
+          //fixed w
+          width = json['width'];
+        } else if (json['layoutAlign'] == 'STRETCH' && json['counterAxisSizingMode'] == 'FIXED') {
+          //fill w
+          width = double.infinity;
+        } else if (json['layoutAlign'] == 'INHERIT' && json['counterAxisSizingMode'] == 'AUTO') {
+          //hug w
+        }
+      }
+
       return Container(
         // key: ValueKey("FRAME:${json['name']}"),
-        width: json['width'],
-        height: json['height'],
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           color: getColorFromFills(json),
           border: getBorder(json),
