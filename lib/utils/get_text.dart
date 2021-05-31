@@ -1,5 +1,15 @@
 import 'package:flutter_visible/imports.dart';
 
+TextStyle getTextStyle(Map<String, dynamic> json) {
+  TextStyle textStyle = TextStyle();
+  if (json['fontSize'] != null)
+    textStyle = textStyle.copyWith(fontSize: json['fontSize']);
+  if (json['fills'] != null)
+    textStyle = textStyle.copyWith(color: getColorFromFills(json));
+
+  return textStyle;
+}
+
 Widget getText(Map<String, dynamic> json, int level) {
   TextAlign textAlign = TextAlign.left;
   switch (json['textAlignHorizontal']) {
@@ -14,15 +24,9 @@ Widget getText(Map<String, dynamic> json, int level) {
       break;
   }
 
-  TextStyle textStyle = TextStyle();
-  if (json['fontSize'] != null)
-    textStyle = textStyle.copyWith(fontSize: json['fontSize']);
-  if (json['fills'] != null)
-    textStyle = textStyle.copyWith(color: getColorFromFills(json));
-
   debugPrintWidget("Text", level: level + 1, name: json['name']);
   Widget res = Text((json['characters'] as String).split('\\n').join('\n'),
-      textAlign: textAlign, style: textStyle);
+      textAlign: textAlign, style: getTextStyle(json));
 
   if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
     debugPrintWidget("SizedBox", level: level + 1, name: json['name']);

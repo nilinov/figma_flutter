@@ -12,3 +12,4 @@ export 'get_main_axis_alignment.dart';
 export 'get_value_key.dart';
 export 'get_text.dart';
 export 'get_input.dart';
+export 'get_flat_json.dart';
