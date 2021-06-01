@@ -29,9 +29,6 @@ getInput(Map<String, dynamic> json, int level) {
     isAnimatedLabel = true;
   }
 
-
-  print(childPlaceholder);
-
   final input = TextField(
     decoration: InputDecoration(
       labelText: !isAnimatedLabel ? (placeholder ?? '') : label,

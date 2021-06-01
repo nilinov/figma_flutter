@@ -125,6 +125,14 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
 
       debugPrintWidget("Container", level: level, name: json['name']);
 
+      double height;
+
+      if (json['counterAxisSizingMode'] == 'FIXED') {
+        height = json['height'];
+      }
+
+      print("height $height");
+
       Widget widgetINSTANCE = Container(
         key: getValueKeyComponent(null, name: json['name']),
         decoration: BoxDecoration(
@@ -145,6 +153,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
         ),
         padding: getPadding(json),
         child: widget,
+        height: height,
       );
     case 'GROUP':
       Widget item = (getChildrenByLayoutMode(json, level + 1));
