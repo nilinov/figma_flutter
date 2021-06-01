@@ -75,7 +75,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       double height;
       double width;
 
-      if (level == 0) {
+      if (level == 0 || json['layoutMode'] == 'NONE') {
         height = json['height'];
         width = json['width'];
       } else if (json['layoutMode'] == 'HORIZONTAL') {
@@ -101,7 +101,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       }
 
       return Container(
-        // key: ValueKey("FRAME:${json['name']}"),
+        key: ValueKey("FRAME:${json['name']} ($level)"),
         width: width,
         height: height,
         decoration: BoxDecoration(
@@ -130,8 +130,6 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       if (json['counterAxisSizingMode'] == 'FIXED') {
         height = json['height'];
       }
-
-      print("height $height");
 
       Widget widgetINSTANCE = Container(
         key: getValueKeyComponent(null, name: json['name']),
