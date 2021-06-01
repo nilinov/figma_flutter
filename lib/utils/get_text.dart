@@ -28,7 +28,9 @@ Widget getText(Map<String, dynamic> json, int level) {
   Widget res = Text((json['characters'] as String).split('\\n').join('\n'),
       textAlign: textAlign, style: getTextStyle(json));
 
-  if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
+  if (json['textAlignHorizontal'] == 'CENTER' && json['textAlignVertical'] == 'CENTER') {
+    // center
+  } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
     debugPrintWidget("SizedBox", level: level + 1, name: json['name']);
     res = SizedBox(child: res, height: json['height'], width: json['width']);
   } else if (json['textAutoResize'] == 'HEIGHT') {
