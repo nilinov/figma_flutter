@@ -47,7 +47,8 @@ Alignment getAlign(Map<String, dynamic> json) {
   return alignment;
 }
 
-Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
+Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
+    {List<Variable> variables}) {
   if (viewDebugProps) print('getChildrenByLayoutMode');
 
   if (json == null ||
@@ -65,9 +66,11 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
 
     return Align(
       child: getWidgetByMap(
-          (json['children'] as List)
-              .firstWhere((element) => element['visible'] == true),
-          level),
+        (json['children'] as List)
+            .firstWhere((element) => element['visible'] == true),
+        level,
+        variables: variables,
+      ),
       alignment: getAlign(json),
     );
   }
@@ -77,15 +80,26 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
     return Column(
       crossAxisAlignment: getCrossAxisAlignment(json),
       mainAxisAlignment: getMainAxisAlignment(json),
-      children: getLayoutChildren(json, space: json['itemSpacing'], axis: Axis.vertical, level: level),
+      children: getLayoutChildren(
+        json,
+        space: json['itemSpacing'],
+        axis: Axis.vertical,
+        level: level,
+        variables: variables,
+      ),
     );
   } else if (json['layoutMode'] == 'HORIZONTAL') {
     debugPrintWidget("Row", level: level, name: json['name']);
     return Row(
       crossAxisAlignment: getCrossAxisAlignment(json),
       mainAxisAlignment: getMainAxisAlignment(json),
-      children: getLayoutChildren(json,
-          space: json['itemSpacing'], axis: Axis.horizontal, level: level),
+      children: getLayoutChildren(
+        json,
+        space: json['itemSpacing'],
+        axis: Axis.horizontal,
+        level: level,
+        variables: variables,
+      ),
     );
   } else {
     final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
@@ -93,7 +107,7 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level) {
 
     final children = (json['children'] as List)
         .map((e) {
-          final widget = getWidgetByMap(e, level + 1);
+          final widget = getWidgetByMap(e, level + 1, variables: variables);
 
           if (widget == null) return null;
 

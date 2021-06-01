@@ -14,3 +14,4 @@ export 'get_text.dart';
 export 'get_flat_json.dart';
 export 'wrap_instance.dart';
 export 'get_instance_by_name.dart';
+export 'get_variable.dart';

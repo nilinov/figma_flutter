@@ -10,7 +10,7 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
   return textStyle;
 }
 
-Widget getText(Map<String, dynamic> json, int level) {
+Widget getText(Map<String, dynamic> json, int level, { List<Variable> variables }) {
   TextAlign textAlign = TextAlign.left;
   switch (json['textAlignHorizontal']) {
     case 'LEFT':
@@ -25,8 +25,22 @@ Widget getText(Map<String, dynamic> json, int level) {
   }
 
   debugPrintWidget("Text", level: level + 1, name: json['name']);
-  Widget res = Text((json['characters'] as String).split('\\n').join('\n'),
-      textAlign: textAlign, style: getTextStyle(json));
+
+  String text = json['characters'] ?? '';
+
+  if (variables != null) {
+    final _name = json['name'].split('$String:')[1];
+
+    final variable = variables.firstWhere((element) => element.name == _name);
+
+    if (variable != null) {
+      text = variable.value ?? variable.defaultValue;
+    }
+  }
+
+  print(variables);
+
+  Widget res = Text((text).split('\\n').join('\n'), textAlign: textAlign, style: getTextStyle(json));
 
   if (json['textAlignHorizontal'] == 'CENTER' && json['textAlignVertical'] == 'CENTER') {
     // center

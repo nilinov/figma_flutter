@@ -3,7 +3,9 @@ import 'package:flutter_visible/imports.dart';
 getInstanceByName(Map<String, dynamic> json, int level) {
   var widget;
 
-  switch ((json['name'] as String).toUpperCase()) {
+  final name = (json['name'] as String).toUpperCase();
+
+  switch (name) {
     case 'INPUT':
       widget = getInput(json, level);
       break;
@@ -11,6 +13,9 @@ getInstanceByName(Map<String, dynamic> json, int level) {
       return GetButton(json: json, level: level);
       break;
     default:
+      if (name.contains('CHECKBOX')) {
+        return GetCheckbox(json: json, level: level);
+      }
       widget = getChildrenByLayoutMode(json, level);
   }
 

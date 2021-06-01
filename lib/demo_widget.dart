@@ -39,7 +39,7 @@ class _DemoWidgetState extends State<DemoWidget> {
           Expanded(
               child: Padding(
             child: FittedBox(
-              child: Container(child: res),
+              child: Container(child: res, constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.75, maxWidth: MediaQuery.of(context).size.width / 2)),
               fit: BoxFit.contain,
             ),
             padding: EdgeInsets.all(20),

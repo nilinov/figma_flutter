@@ -1,7 +1,7 @@
 import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
-Widget getWidgetByMap(Map<String, dynamic> json, int level) {
+Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> variables }) {
   if (json['visible'] == false) {
     return null;
   }
@@ -65,7 +65,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
         width: json['width'],
       );
     case 'TEXT':
-      return getText(json, level + 1);
+      return getText(json, level + 1, variables: variables);
     case 'FRAME':
       final widget = getChildrenByLayoutMode(json, level + 1);
 
@@ -102,7 +102,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
       }
 
       return Container(
-        key: ValueKey("FRAME:${json['name']} ($level)"),
+        key: ValueKey("FRAME:${json['name']} ($level) ${json['id']}"),
         width: width,
         height: height,
         decoration: BoxDecoration(
