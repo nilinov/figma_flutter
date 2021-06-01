@@ -9,5 +9,6 @@ export 'package:flutter_visible/get_data.dart';
 export 'package:flutter_visible/utils/get_children_by_layout_mode.dart';
 
 export 'utils/_utils.dart';
+export 'components/_components.dart';
 
 const viewDebugProps = false;

@@ -1,4 +1,5 @@
 import 'package:flutter_visible/imports.dart';
+import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
 Widget getWidgetByMap(Map<String, dynamic> json, int level) {
   if (json['visible'] == false) {
@@ -113,46 +114,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level) {
         child: widget,
       );
     case 'INSTANCE':
-      var widget;
-
-      if (json['name'] == 'INPUT' || json['name'] == 'input') {
-        widget = getInput(json, level);
-      } else {
-        widget = getChildrenByLayoutMode(json, level);
-      }
-
-      if (widget == null) return null;
-
-      debugPrintWidget("Container", level: level, name: json['name']);
-
-      double height;
-
-      if (json['counterAxisSizingMode'] == 'FIXED') {
-        height = json['height'];
-      }
-
-      Widget widgetINSTANCE = Container(
-        key: getValueKeyComponent(null, name: json['name']),
-        decoration: BoxDecoration(
-          color: getColorFromFills(json),
-          border: getBorder(json),
-          borderRadius: getBorderRadius(json),
-        ),
-        padding: getPadding(json),
-        child: widget,
-      );
-
-      return Container(
-        key: getValueKeyComponent(widgetINSTANCE, name: json['name']),
-        decoration: BoxDecoration(
-          color: getColorFromFills(json),
-          border: getBorder(json),
-          borderRadius: getBorderRadius(json),
-        ),
-        padding: getPadding(json),
-        child: widget,
-        height: height,
-      );
+      return getInstanceByName(json, level);
     case 'GROUP':
       Widget item = (getChildrenByLayoutMode(json, level + 1));
       print(item);

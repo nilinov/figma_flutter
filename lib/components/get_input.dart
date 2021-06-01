@@ -47,19 +47,5 @@ getInput(Map<String, dynamic> json, int level) {
     ),
   );
 
-  return Stack(
-    children: [
-      input,
-    ],
-  );
-
-  return Stack(children: [
-    Positioned.fill(child: input),
-    // ...(json['children'] ?? <Widget>[])
-    //     .map((jsonChild) {
-    //       print(jsonChild);
-    //       return Positioned.fill(child: getWidgetByMap(jsonChild, level + 1));
-    //     })
-    //     .toList()
-  ]);
+  return input;
 }
