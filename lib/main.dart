@@ -12,21 +12,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: MyHomePage(),
+      routes: {
+        '/': (context) => PluginPage(isSample: true),
+        '/plugin': (context) => PluginPage(isSample: false),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+class PluginPage extends StatelessWidget {
+  final bool isSample;
 
-class _MyHomePageState extends State<MyHomePage> {
+  const PluginPage({Key key, this.isSample}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(child: DemoWidget()),
+      body: Container(child: DemoWidget(isSample: isSample)),
     );
   }
 }
+

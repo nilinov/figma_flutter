@@ -5,10 +5,8 @@ import 'imports.dart';
 import 'dart:js' as js;
 
 
-Future<String> getData() async {
-  if (AppEnv.fromAssets) {
-    // return json_text;
-
+Future<String> getData(bool isAssets) async {
+  if (isAssets) {
     return await rootBundle.loadString('assets/data.json');
   }
 

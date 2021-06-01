@@ -4,6 +4,10 @@ import 'package:flutter_visible/imports.dart';
 import 'ext.dart';
 
 class DemoWidget extends StatefulWidget {
+  final bool isSample;
+
+  const DemoWidget({Key key, this.isSample}) : super(key: key);
+
   @override
   _DemoWidgetState createState() => _DemoWidgetState();
 }
@@ -15,7 +19,7 @@ class _DemoWidgetState extends State<DemoWidget> {
 
   @override
   Future<void> didChangeDependencies() async {
-    json = jsonDecode(await getData());
+    json = jsonDecode(await getData(widget.isSample));
     setState(() {});
     super.didChangeDependencies();
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
