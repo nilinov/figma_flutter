@@ -10,3 +10,4 @@ deploy_dev_manual: &deploy_dev
     - flutter-build
   only:
     - main
+
