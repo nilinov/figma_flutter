@@ -28,7 +28,12 @@ class PluginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(child: DemoWidget(isSample: isSample)),
+      body: Column(
+        children: [
+          Text('Version: 1'),
+          Container(child: DemoWidget(isSample: isSample)),
+        ],
+      ),
     );
   }
 }
