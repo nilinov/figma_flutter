@@ -16,6 +16,9 @@ getInstanceByName(Map<String, dynamic> json, int level) {
       if (name.contains('CHECKBOX')) {
         return GetCheckbox(json: json, level: level);
       }
+      if (name.contains('SWITCH')) {
+        return GetSwitch(json: json, level: level);
+      }
       widget = getChildrenByLayoutMode(json, level);
   }
 

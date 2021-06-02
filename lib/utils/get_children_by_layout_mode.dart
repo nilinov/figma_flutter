@@ -135,6 +135,6 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
     if (children.length == 0) return null;
 
     debugPrintWidget("Stack", level: level, name: json['name']);
-    return Stack(children: children);
+    return SizedBox(child: Stack(children: children), height: json['height'], width: json['width'],);
   }
 }

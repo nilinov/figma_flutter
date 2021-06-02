@@ -37,13 +37,18 @@ class _DemoWidgetState extends State<DemoWidget> {
 
     if (json != null) {
       final res = getWidgetByMap(json, 0);
-      // print(res.toWidget());
+      print(res.toWidget());
       return Row(
         children: [
           Expanded(
               child: Padding(
             child: FittedBox(
-              child: Container(child: res, constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.75, maxWidth: MediaQuery.of(context).size.width / 2)),
+              child: Container(
+                child: res,
+                constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.75,
+                    maxWidth: MediaQuery.of(context).size.width / 2),
+              ),
               fit: BoxFit.contain,
             ),
             padding: EdgeInsets.all(20),
@@ -117,7 +122,11 @@ class _DemoWidgetState extends State<DemoWidget> {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text("Copy")));
                     },
-                    child: Text( splitComponent ? res.toWidgets().join('\n\n \\\\-----------------------------\n\n') : res.toCode(extractComponents: false) ),
+                    child: Text(splitComponent
+                        ? res
+                            .toWidgets()
+                            .join('\n\n \\\\-----------------------------\n\n')
+                        : res.toCode(extractComponents: false)),
                   ),
                 ),
               ),

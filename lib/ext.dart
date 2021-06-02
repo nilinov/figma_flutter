@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_visible/imports.dart';
 
 extension WidgetExt on Widget {
   String toCode({@required bool extractComponents}) {
@@ -79,7 +78,6 @@ extension WidgetExt on Widget {
       final SizedBox item = this;
       if (item.child == null && item.width == null && item.height == null)
         return null;
-
       return '''
       SizedBox(
         ${getKey(item)}
