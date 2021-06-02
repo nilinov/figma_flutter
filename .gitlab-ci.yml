@@ -1,7 +1,7 @@
 stages:
   - deploy
 
-deploy_dev_manual: &deploy_dev
+deploy:
   stage: deploy
   when: always
   script:
