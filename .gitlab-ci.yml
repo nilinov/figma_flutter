@@ -5,10 +5,9 @@ deploy:
   stage: deploy
   when: always
   script:
-    - export PATH="/home/flutter/flutter/bin:$PATH"
-    - /home/flutter/iframe/update.sh
+    - export PATH="/home/gitlab-runner/flutter/bin:$PATH"
+    - /home/gitlab-runner/iframe/update.sh
   tags:
     - flutter-build
   only:
     - main
-
