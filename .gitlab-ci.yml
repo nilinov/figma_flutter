@@ -1,6 +1,14 @@
-deploy:
-    stage: deploy
-    script:
-        - echo 'deploy'
-        - chmod a+x update.sh
-        - . update.sh
+stages:
+  - deploy
+
+deploy_dev_manual: &deploy_dev
+  stage: deploy
+  when: manual
+  script:
+    - . update.sh
+
+deploy_dev_trigger:
+  <<: *deploy_dev
+  when: always
+  only:
+    - triggers
