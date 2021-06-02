@@ -41,18 +41,18 @@ class _DemoWidgetState extends State<DemoWidget> {
       return Row(
         children: [
           Expanded(
-              child: Padding(
-            child: FittedBox(
+              child: SingleChildScrollView(
+            child: Padding(
               child: Container(
                 child: res,
                 constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.75,
+                    maxHeight: MediaQuery.of(context).size.height * 0.8,
                     maxWidth: MediaQuery.of(context).size.width / 2),
               ),
-              fit: BoxFit.contain,
+              padding: EdgeInsets.all(20),
             ),
-            padding: EdgeInsets.all(20),
           )),
+          if (MediaQuery.of(context).size.width > 800)
           Expanded(
               child: Container(
                   child: Column(
