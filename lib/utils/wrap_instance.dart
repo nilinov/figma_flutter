@@ -26,6 +26,7 @@ wrapInstance( Map<String, dynamic> json, Widget widget, int level, { Color bgCol
       color: bgColor ?? getColorFromFills(json),
       border: getBorder(json),
       borderRadius: getBorderRadius(json),
+      boxShadow: getBoxShadow(json),
     ),
     padding: getPadding(json),
     child: widget,

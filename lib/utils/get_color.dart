@@ -9,6 +9,6 @@ Color getColor(Map<String, dynamic> color, {num opacity = 1}) {
     (color['r'] * 255).round(),
     (color['g'] * 255).round(),
     (color['b'] * 255).round(),
-    opacity,
+    color['a'] ?? opacity,
   );
 }
