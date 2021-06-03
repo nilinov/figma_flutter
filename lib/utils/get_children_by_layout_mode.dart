@@ -62,6 +62,11 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
           .where((element) => element['visible'] == true)
           .length ==
       1) {
+
+    if (json['children'][0]['type'] == 'TEXT') {
+      return Row(children: [getText(json['children'][0], level + 1)]);
+    }
+
     debugPrintWidget("Align", level: level, name: json['name']);
 
     return Align(
@@ -135,6 +140,10 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
     if (children.length == 0) return null;
 
     debugPrintWidget("Stack", level: level, name: json['name']);
-    return SizedBox(child: Stack(children: children), height: json['height'], width: json['width'],);
+    return SizedBox(
+      child: Stack(children: children),
+      height: json['height'],
+      width: json['width'],
+    );
   }
 }

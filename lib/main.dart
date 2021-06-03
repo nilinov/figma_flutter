@@ -31,7 +31,7 @@ class PluginPage extends StatelessWidget {
       body: Column(
         children: [
           Text('Version: 1'),
-          Container(child: DemoWidget(isSample: isSample)),
+          Expanded(child: Container(child: DemoWidget(isSample: isSample))),
         ],
       ),
     );

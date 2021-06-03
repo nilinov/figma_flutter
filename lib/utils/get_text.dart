@@ -47,7 +47,7 @@ Widget getText(Map<String, dynamic> json, int level, { List<Variable> variables 
   } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
     debugPrintWidget("SizedBox", level: level + 1, name: json['name']);
     res = SizedBox(child: res, height: json['height'], width: json['width']);
-  } else if (json['textAutoResize'] == 'HEIGHT') {
+  } else if (json['textAutoResize'] == 'HEIGHT' && json['layoutGrow'] != 1) {
     res = SizedBox(child: res, width: json['width']);
   }
 
