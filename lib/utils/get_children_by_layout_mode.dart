@@ -105,6 +105,8 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
   } else {
     final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
     final baseY = (json['type'] == 'GROUP') ? json['y'] : 0;
+    final baseW = json['width'];
+    final baseH = json['height'];
 
     final children = (json['children'] as List)
         .map((e) {
@@ -118,12 +120,21 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
           }
 
           debugPrintWidget("Positioned", level: level + 1, name: json['name']);
+
+          final left = e['x'] - baseX;
+          final top = e['y'] - baseY;
+
+          final right = baseW - left - e['width'];
+          final bottom = baseH - top - e['height'];
+
           return Positioned(
             child: widget,
-            left: e['x'] - baseX,
-            top: e['y'] - baseY,
-            width: e['width'],
-            height: e['height'],
+            left: left,
+            top: top,
+            right: right,
+            bottom: bottom,
+            // width: e['width'],
+            // height: e['height'],
           );
         })
         .where((element) => element != null)
@@ -138,8 +149,8 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
     debugPrintWidget("Stack", level: level, name: json['name']);
     return SizedBox(
       child: Stack(children: children),
-      height: json['height'],
-      width: json['width'],
+      // height: json['height'],
+      // width: json['width'],
     );
   }
 }

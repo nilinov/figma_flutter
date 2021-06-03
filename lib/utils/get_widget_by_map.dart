@@ -2,7 +2,7 @@ import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
 Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> variables }) {
-  if (json['visible'] == false) {
+  if (json['visible'] == false || json['isMask'] == true || json['visible'] == false) {
     return null;
   }
 
@@ -16,6 +16,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> var
     );
   } else if (json['png'] != null) {
     debugPrintWidget("Image", level: level, name: json['name']);
+
     return Image.memory(
       base64Decode(json['png']),
       key: getValueKeyImage(json['png'], type: 'PNG', name: json['name']),
@@ -104,6 +105,17 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> var
         }
       }
 
+      if (json['primaryAxisSizingMode'] == 'FIXED') {
+        width = json['width'];
+      }
+
+      if (json['counterAxisSizingMode'] == 'FIXED') {
+        height = json['height'];
+      }
+
+      print('---------------------');
+      print("${json['name']} ${json['primaryAxisSizingMode']} ${json['primaryAxisSizingMode']} $width $height");
+
       return Container(
         key: ValueKey("FRAME:${json['name']} ($level) ${json['id']}"),
         width: width,
@@ -121,21 +133,22 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> var
       return getInstanceByName(json, level);
     case 'GROUP':
       Widget item = (getChildrenByLayoutMode(json, level + 1));
-      print(item);
 
       if (item == null) return null;
 
       debugPrintWidget("Container", level: level, name: json['name']);
-      return Container(
-        key: ValueKey("GROUP:${json['name']}"),
-        decoration: BoxDecoration(
-          color: getColorFromFills(json),
-          border: getBorder(json),
-          borderRadius: getBorderRadius(json),
-          boxShadow: getBoxShadow(json),
+      return Expanded(
+        child: Container(
+          key: ValueKey("GROUP:${json['name']}"),
+          decoration: BoxDecoration(
+            color: getColorFromFills(json),
+            border: getBorder(json),
+            borderRadius: getBorderRadius(json),
+            boxShadow: getBoxShadow(json),
+          ),
+          padding: getPadding(json),
+          child: item,
         ),
-        padding: getPadding(json),
-        child: item,
       );
     case 'LINE':
       debugPrintWidget("Container", level: level, name: json['name']);

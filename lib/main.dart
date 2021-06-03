@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_visible/demo_widget.dart';
+import 'package:flutter_visible/env.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
-        '/': (context) => PluginPage(isSample: false),
+        '/': (context) => PluginPage(isSample: AppEnv.fromAssets),
         '/plugin': (context) => PluginPage(isSample: false),
       },
     );

@@ -115,7 +115,7 @@ extension WidgetExt on Widget {
     } else if (this is SvgPicture) {
       final SvgPicture item = this;
       return '''
-        SvgPicture.string(\'''${getKeyValue(item)}\''',${getKey(item)}
+        SvgPicture.string(\'''{getKeyValue(item)}\''',${getKey(item)}
         ${wrapProp('width', item.width)}
         ${wrapProp('height', item.height)}
         )
@@ -123,7 +123,7 @@ extension WidgetExt on Widget {
     } else if (this is Image) {
       final Image item = this;
       return '''
-        SvgPicture.string(\'''${getKeyValue(item)}\''', ${getKey(item)}
+        SvgPicture.string(\'''{getKeyValue(item)}\''', ${getKey(item)}
         ${wrapProp('width', item.width)}
         ${wrapProp('height', item.height)}
         )
