@@ -16,7 +16,11 @@ List<Widget> getLayoutChildren(Map<String, dynamic> json,
     Widget widget = getWidgetByMap(json['children'][i], level + 1, variables: variables);
 
     if (widget is Text) {
-      widget = Expanded(child: widget);
+      if (axis == Axis.horizontal) {
+        widget = Expanded(child: widget);
+      } else {
+        widget = SizedBox(child: widget, width: double.infinity);
+      }
     }
 
     res.add(widget);
