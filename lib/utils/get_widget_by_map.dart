@@ -38,6 +38,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> var
           border: getBorder(json),
           borderRadius: getBorderRadius(json),
         ),
+        padding: getPadding(json),
         child: widget,
       );
     case 'RECTANGLE':
