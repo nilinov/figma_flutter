@@ -5,6 +5,7 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
   FontStyle fontStyle = FontStyle.normal;
   FontWeight fontWeight = FontWeight.normal;
   String fontFamily = 'Roboto';
+  double letterSpacing = 0;
 
   if (json['fontName'] != null) {
     fontFamily = json['fontName']['family'];
@@ -36,7 +37,11 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
       fontWeight = FontWeight.w900;
   }
 
-  TextStyle textStyle = TextStyle(fontWeight: fontWeight, fontFamily: fontFamily, fontStyle: fontStyle);
+  if (json['letterSpacing'] != null && json['letterSpacing']['unit'] == 'PIXELS') {
+    letterSpacing = json['letterSpacing']['value'];
+  }
+
+  TextStyle textStyle = TextStyle(fontWeight: fontWeight, fontFamily: fontFamily, fontStyle: fontStyle, letterSpacing: letterSpacing);
 
   if (json['fontSize'] != null)
     textStyle = textStyle.copyWith(fontSize: json['fontSize']);
