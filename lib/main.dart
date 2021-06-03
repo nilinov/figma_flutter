@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
       routes: {
-        '/': (context) => PluginPage(isSample: true),
+        '/': (context) => PluginPage(isSample: false),
         '/plugin': (context) => PluginPage(isSample: false),
       },
     );

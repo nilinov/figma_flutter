@@ -81,7 +81,7 @@ Widget getText(Map<String, dynamic> json, int level,
             fontWeight = FontWeight.w900;
 
           return TextSpan(
-              text: e['text'],
+              text: (e['text'] as String).replaceAll('\\n', '\n'),
               style: TextStyle(
                 color: getColorFromFills(e),
                 fontSize: e['fontSize'],
