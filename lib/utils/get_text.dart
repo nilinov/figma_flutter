@@ -10,7 +10,8 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
   return textStyle;
 }
 
-Widget getText(Map<String, dynamic> json, int level, { List<Variable> variables }) {
+Widget getText(Map<String, dynamic> json, int level,
+    {List<Variable> variables}) {
   TextAlign textAlign = TextAlign.left;
   switch (json['textAlignHorizontal']) {
     case 'LEFT':
@@ -40,9 +41,61 @@ Widget getText(Map<String, dynamic> json, int level, { List<Variable> variables 
 
   print(variables);
 
-  Widget res = Text((text).split('\\n').join('\n'), textAlign: textAlign, style: getTextStyle(json));
+  Widget res = Text((text).split('\\n').join('\n'),
+      textAlign: textAlign, style: getTextStyle(json));
 
-  if (json['textAlignHorizontal'] == 'CENTER' && json['textAlignVertical'] == 'CENTER') {
+  if ((json['styledText'] as List).length > 1) {
+    res = RichText(
+      textAlign: textAlign,
+      text: TextSpan(
+        children: (json['styledText'] as List).map((e) {
+          FontStyle fontStyle = FontStyle.normal;
+          FontWeight fontWeight = FontWeight.normal;
+          String fontFamily = e['fontStyle']['family'];
+          String _fontStyle = e['fontStyle']['style'];
+
+
+          if ((_fontStyle).contains('Italic')) {
+            fontStyle = FontStyle.italic;
+            if (!_fontStyle.contains('Regular')) {
+              fontFamily = "$fontFamily-${_fontStyle}Italic";
+            }
+          } else {
+            fontFamily = "$fontFamily-$_fontStyle";
+          }
+
+          if ((_fontStyle).contains('Thin')) {
+            fontWeight = FontWeight.w100;
+          }
+
+          if ((_fontStyle).contains('Light'))
+            fontWeight = FontWeight.w300;
+
+          if ((_fontStyle).contains('Medium'))
+            fontWeight = FontWeight.w500;
+
+          if ((_fontStyle).contains('Bold'))
+            fontWeight = FontWeight.bold;
+
+          if ((_fontStyle).contains('Black'))
+            fontWeight = FontWeight.w900;
+
+          return TextSpan(
+              text: e['text'],
+              style: TextStyle(
+                color: getColorFromFills(e),
+                fontSize: e['fontSize'],
+                fontStyle: fontStyle,
+                fontWeight: fontWeight,
+                fontFamily: fontFamily
+              ));
+        }).toList(),
+      ),
+    );
+  }
+
+  if (json['textAlignHorizontal'] == 'CENTER' &&
+      json['textAlignVertical'] == 'CENTER') {
     // center
   } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
     debugPrintWidget("SizedBox", level: level + 1, name: json['name']);

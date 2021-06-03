@@ -61,11 +61,7 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
   if ((json['children'] as List)
           .where((element) => element['visible'] == true)
           .length ==
-      1) {
-
-    if (json['children'][0]['type'] == 'TEXT') {
-      return Row(children: [getText(json['children'][0], level + 1)]);
-    }
+      1 && json['children'][0]['type'] != 'TEXT') {
 
     debugPrintWidget("Align", level: level, name: json['name']);
 

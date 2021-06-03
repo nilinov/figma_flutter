@@ -18,10 +18,13 @@ extension WidgetExt on Widget {
     if (this is Container) {
       final Container item = this;
       final padding = (item.padding as EdgeInsets).toCode();
+
+      final valDecoration = (item.decoration as BoxDecoration).toCode();
+
       return '''
       Container(
         ${getKey(item)}
-        decoration: ${(item.decoration as BoxDecoration).toCode()},
+        ${valDecoration != '' ? "decoration: $valDecoration," : ""}
         ${padding != null ? "padding: ${(item.padding as EdgeInsets).toCode()}," : ""}
         child: ${item.child.toCode(extractComponents: extractComponents)},
       )
@@ -186,11 +189,20 @@ extension BoxDecorationExt on BoxDecoration {
         (borderRadius != null && borderRadius != BorderRadius.zero)
             ? borderRadius
             : null;
+
+    final valColor = wrapProp('color', color, excludeValue: Color(0x00000000));
+    final valBorder = wrapProp('border', _border);
+    final valBorderRadius = wrapProp('borderRadius', _borderRadius);
+
+    final isEmpty = valColor.isEmpty && valBorder.isEmpty && valBorderRadius.isEmpty;
+
+    if (isEmpty) return '';
+
+    final val = [valColor, valBorder, valBorderRadius].where((element) => element.isNotEmpty).join('\n');
+
     return '''
         BoxDecoration(
-          ${wrapProp('color', color)}
-          ${wrapProp('border', _border)}
-          ${wrapProp('borderRadius', _borderRadius)}
+          $val
         )
         ''';
   }
@@ -269,8 +281,8 @@ getKeyValue(Widget item) {
   return value.split(':')[1] ?? value;
 }
 
-wrapProp(String name, dynamic value) {
-  if (value != null) {
+String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
+  if (value != null && value != excludeValue) {
     return "$name: $value,";
   }
 
