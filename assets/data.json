@@ -29471,7 +29471,7 @@
         },
         {
           "type": "FRAME",
-          "name": "Frame 1",
+          "name": "field1",
           "fills": [],
           "backgrounds": [],
           "id": "235:99",
@@ -29994,7 +29994,7 @@
                             }
                           ],
                           "booleanOperation": "SUBTRACT",
-                          "expanded": false,
+                          "expanded": true,
                           "reactions": []
                         }
                       ],
@@ -30026,7 +30026,7 @@
                       "backgroundStyleId": "",
                       "clipsContent": true,
                       "guides": [],
-                      "expanded": false,
+                      "expanded": true,
                       "constraints": {
                         "horizontal": "MIN",
                         "vertical": "MIN"
@@ -31058,7 +31058,7 @@
               "backgroundStyleId": "",
               "clipsContent": false,
               "guides": [],
-              "expanded": false,
+              "expanded": true,
               "constraints": {
                 "horizontal": "MIN",
                 "vertical": "MIN"
@@ -36838,7 +36838,7 @@
         },
         {
           "type": "FRAME",
-          "name": "Frame 11111",
+          "name": "field2",
           "fills": [],
           "backgrounds": [],
           "id": "259:363",
@@ -36934,11 +36934,11 @@
               "rotation": 0,
               "layoutAlign": "STRETCH",
               "constrainProportions": false,
-              "layoutGrow": 1,
+              "layoutGrow": 0,
               "children": [
                 {
                   "type": "GROUP",
-                  "name": "Group 1",
+                  "name": "Stack",
                   "fills": [],
                   "backgrounds": [],
                   "id": "I259:360;266:1",
@@ -37593,7 +37593,7 @@
                 "vertical": "MIN"
               },
               "layoutMode": "HORIZONTAL",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "horizontalPadding": 0,
               "verticalPadding": 0,
               "itemSpacing": 6,
@@ -38305,7 +38305,7 @@
                 "backgroundStyleId": "",
                 "clipsContent": false,
                 "guides": [],
-                "expanded": false,
+                "expanded": true,
                 "constraints": {
                   "horizontal": "MIN",
                   "vertical": "MIN"
@@ -39029,7 +39029,7 @@
                 "backgroundStyleId": "",
                 "clipsContent": false,
                 "guides": [],
-                "expanded": false,
+                "expanded": true,
                 "constraints": {
                   "horizontal": "MIN",
                   "vertical": "MIN"
@@ -39802,7 +39802,7 @@
                     "backgroundStyleId": "",
                     "clipsContent": false,
                     "guides": [],
-                    "expanded": false,
+                    "expanded": true,
                     "constraints": {
                       "horizontal": "MIN",
                       "vertical": "MIN"
@@ -42019,7 +42019,7 @@
                 "backgroundStyleId": "",
                 "clipsContent": true,
                 "guides": [],
-                "expanded": false,
+                "expanded": true,
                 "constraints": {
                   "horizontal": "MIN",
                   "vertical": "MIN"
@@ -42070,18 +42070,18 @@
           "paddingBottom": 0,
           "primaryAxisAlignItems": "MIN",
           "counterAxisAlignItems": "CENTER",
-          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "AUTO",
           "layoutGrids": [],
           "gridStyleId": "",
           "backgroundStyleId": "",
           "clipsContent": false,
           "guides": [],
-          "expanded": false,
+          "expanded": true,
           "constraints": {
             "horizontal": "MIN",
             "vertical": "MIN"
           },
-          "layoutMode": "HORIZONTAL",
+          "layoutMode": "VERTICAL",
           "counterAxisSizingMode": "AUTO",
           "horizontalPadding": 16,
           "verticalPadding": 0,
