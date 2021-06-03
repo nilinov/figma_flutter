@@ -137,18 +137,26 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> var
       if (item == null) return null;
 
       debugPrintWidget("Container", level: level, name: json['name']);
-      return Expanded(
-        child: Container(
-          key: ValueKey("GROUP:${json['name']}"),
-          decoration: BoxDecoration(
-            color: getColorFromFills(json),
-            border: getBorder(json),
-            borderRadius: getBorderRadius(json),
-            boxShadow: getBoxShadow(json),
-          ),
-          padding: getPadding(json),
-          child: item,
+
+      final widget = Container(
+        key: ValueKey("GROUP:${json['name']}"),
+        decoration: BoxDecoration(
+          color: getColorFromFills(json),
+          border: getBorder(json),
+          borderRadius: getBorderRadius(json),
+          boxShadow: getBoxShadow(json),
         ),
+        padding: getPadding(json),
+        child: item,
+      );
+
+      if ((json['primaryAxisSizingMode'] == 'FIXED' && json['counterAxisSizingMode'] == 'FIXED') || (json['primaryAxisSizingMode'] == null && json['counterAxisSizingMode'] == null)) {
+        return SizedBox(child: widget, height: json['height'], width: json['width']);
+      }
+
+
+      return Expanded(
+        child: widget,
       );
     case 'LINE':
       debugPrintWidget("Container", level: level, name: json['name']);
