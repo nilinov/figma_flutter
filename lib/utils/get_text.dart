@@ -1,7 +1,43 @@
 import 'package:flutter_visible/imports.dart';
 
 TextStyle getTextStyle(Map<String, dynamic> json) {
-  TextStyle textStyle = TextStyle();
+
+  FontStyle fontStyle = FontStyle.normal;
+  FontWeight fontWeight = FontWeight.normal;
+  String fontFamily = 'Roboto';
+
+  if (json['fontName'] != null) {
+    fontFamily = json['fontName']['family'];
+    String _fontStyle = json['fontName']['style'];
+
+    if ((_fontStyle).contains('Italic')) {
+      fontStyle = FontStyle.italic;
+      if (!_fontStyle.contains('Regular')) {
+        fontFamily = "$fontFamily-${_fontStyle}Italic";
+      }
+    } else {
+      fontFamily = "$fontFamily-$_fontStyle";
+    }
+
+    if ((_fontStyle).contains('Thin')) {
+      fontWeight = FontWeight.w100;
+    }
+
+    if ((_fontStyle).contains('Light'))
+      fontWeight = FontWeight.w300;
+
+    if ((_fontStyle).contains('Medium'))
+      fontWeight = FontWeight.w500;
+
+    if ((_fontStyle).contains('Bold'))
+      fontWeight = FontWeight.bold;
+
+    if ((_fontStyle).contains('Black'))
+      fontWeight = FontWeight.w900;
+  }
+
+  TextStyle textStyle = TextStyle(fontWeight: fontWeight, fontFamily: fontFamily, fontStyle: fontStyle);
+
   if (json['fontSize'] != null)
     textStyle = textStyle.copyWith(fontSize: json['fontSize']);
   if (json['fills'] != null)
@@ -49,46 +85,9 @@ Widget getText(Map<String, dynamic> json, int level,
       textAlign: textAlign,
       text: TextSpan(
         children: (json['styledText'] as List).map((e) {
-          FontStyle fontStyle = FontStyle.normal;
-          FontWeight fontWeight = FontWeight.normal;
-          String fontFamily = e['fontStyle']['family'];
-          String _fontStyle = e['fontStyle']['style'];
-
-
-          if ((_fontStyle).contains('Italic')) {
-            fontStyle = FontStyle.italic;
-            if (!_fontStyle.contains('Regular')) {
-              fontFamily = "$fontFamily-${_fontStyle}Italic";
-            }
-          } else {
-            fontFamily = "$fontFamily-$_fontStyle";
-          }
-
-          if ((_fontStyle).contains('Thin')) {
-            fontWeight = FontWeight.w100;
-          }
-
-          if ((_fontStyle).contains('Light'))
-            fontWeight = FontWeight.w300;
-
-          if ((_fontStyle).contains('Medium'))
-            fontWeight = FontWeight.w500;
-
-          if ((_fontStyle).contains('Bold'))
-            fontWeight = FontWeight.bold;
-
-          if ((_fontStyle).contains('Black'))
-            fontWeight = FontWeight.w900;
-
           return TextSpan(
               text: (e['text'] as String).replaceAll('\\n', '\n'),
-              style: TextStyle(
-                color: getColorFromFills(e),
-                fontSize: e['fontSize'],
-                fontStyle: fontStyle,
-                fontWeight: fontWeight,
-                fontFamily: fontFamily
-              ));
+              style: getTextStyle(e));
         }).toList(),
       ),
     );
