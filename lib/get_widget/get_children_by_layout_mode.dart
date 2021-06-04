@@ -135,8 +135,8 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     final baseW = json['width'];
     final baseH = json['height'];
 
-    final List<Map<String, dynamic>> _childrenList =
-        (json['children'] as List<Map<String, dynamic>>)
+    final List _childrenList =
+        (json['children'])
             .where((element) => element != null)
             .toList();
 

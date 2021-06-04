@@ -24,10 +24,14 @@ class _GetSwitchState extends State<GetSwitch> {
 
     Map<String, dynamic> _json = widget.json;
 
-    if (checked) {
-      _json = (widget.json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=true'), orElse: () => null);
-    } else {
-      _json = (widget.json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=false'), orElse: () => null);
+    if (widget.json['variants'] != null) {
+      if (checked) {
+        _json =
+            (widget.json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=true'), orElse: () => null);
+      } else {
+        _json =
+            (widget.json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=false'), orElse: () => null);
+      }
     }
 
     var variable = getVariable(widget.json, 'title');
