@@ -124,6 +124,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
       if (widget == null) return null;
 
+      bool expanded = false;
+
       debugPrintWidget("Container", level: level, name: json['name']);
 
       double? height;
@@ -160,18 +162,21 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       }
 
       if (json['primaryAxisSizingMode'] == 'FIXED') {
+        // fixed w
         width = json['width'];
+
+        if (json['layoutAlign'] == 'STRETCH') {
+          // fill w
+          expanded = true;
+          width = null;
+        }
       }
 
       if (json['counterAxisSizingMode'] == 'FIXED') {
         height = json['height'];
       }
 
-      print('---------------------');
-      print(
-          "${json['name']} ${json['primaryAxisSizingMode']} ${json['primaryAxisSizingMode']} $width $height");
-
-      return GWidget(
+      GWidget container = GWidget(
           Container(
             key: getValueKeyComponent(widget.widget, name: "FRAME:${json['name']} ($level) ${json['id']}"),
             width: width,
@@ -200,6 +205,12 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         child: ${widget.code},
       )
       ''');
+
+      if (expanded) {
+        return GWidget(Expanded(child: container.widget), '''Expanded(child: ${container.code})''');
+      }
+
+      return container;
     case 'INSTANCE':
       return getInstanceByName(json, level);
     case 'GROUP':

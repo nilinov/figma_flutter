@@ -15,7 +15,7 @@ class DemoWidget extends StatefulWidget {
 enum ImageExportEnum { inline, consts, file }
 
 class _DemoWidgetState extends State<DemoWidget> {
-  late Map<String, dynamic> json;
+  Map<String, dynamic>? json;
 
   @override
   Future<void> didChangeDependencies() async {
@@ -36,7 +36,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
-      final res = getWidgetByMap(json, 0);
+      final res = getWidgetByMap(json ?? {}, 0);
       // print(res.toWidget());
       return Row(
         children: [
