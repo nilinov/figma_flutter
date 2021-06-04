@@ -11,7 +11,7 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
       break;
     case 'BUTTON':
       final item = GetButton(json: json, level: level);
-      return GWidget(item, GetButtonToCode(extractComponents: true));
+      return GWidget(item, GetButtonToCode(title: 'title', onTap: 'onTap'));
     default:
       if (name.contains('CHECKBOX')) {
         return GWidget(GetCheckbox(json: json, level: level), 'SizedBox()');

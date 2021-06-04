@@ -1,6 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
-GWidget wrapInstance( Map<String, dynamic> json, Widget? widget, int level, { Color? bgColor } ) {
+GWidget wrapInstance( Map<String, dynamic> json, GWidget? widget, int level, { Color? bgColor } ) {
   double? height;
 
   if (json['counterAxisSizingMode'] == 'FIXED') {
@@ -13,28 +13,28 @@ GWidget wrapInstance( Map<String, dynamic> json, Widget? widget, int level, { Co
     key: getValueKeyComponent(null, name: json['name']),
     decoration: BoxDecoration(
       color: bgColor ?? getColorFromFills(json),
-      border: getBorder(json),
+      border: getBorder(json).border,
       borderRadius: getBorderRadius(json),
     ),
     padding: getPadding(json),
-    child: widget,
+    child: widget?.widget,
   );
 
   return GWidget(Container(
     key: getValueKeyComponent(widgetINSTANCE, name: json['name']),
     decoration: BoxDecoration(
       color: bgColor ?? getColorFromFills(json),
-      border: getBorder(json),
+      border: getBorder(json).border,
       borderRadius: getBorderRadius(json),
       boxShadow: getBoxShadow(json),
     ),
     padding: getPadding(json),
-    child: widget,
+    child: widget?.widget,
     height: height,
   ),
   '''
   Container(
-    key: ${getValueKeyComponent(widgetINSTANCE, name: json['name'])},
+    key: ${getValueKeyComponentString(widgetINSTANCE, name: json['name'])},
     decoration: BoxDecoration(
       color: ${bgColor ?? getColorFromFills(json)},
       border: ${getBorder(json)},

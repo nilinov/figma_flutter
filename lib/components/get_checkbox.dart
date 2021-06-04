@@ -34,7 +34,7 @@ class _GetCheckboxState extends State<GetCheckbox> {
 
 
     final children = getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
-    final child = wrapInstance(_json, children.widget, widget.level + 1);
+    final child = wrapInstance(_json, children, widget.level + 1);
 
     return GestureDetector(
       onTap: () => setState(() => checked = !checked),

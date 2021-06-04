@@ -20,10 +20,10 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           width: json['width'],
         ),
         '''SvgPicture.string(
-      json['svg'],
-      key: getValueKeyImage(json['svg'], type: 'SVG', name: json['name']),
-      height: json['height'],
-      width: json['width'],
+      ${json['svg']},
+      key: ${getValueKeyImageString(json['svg'], type: 'SVG', name: json['name'])},
+      height: ${json['height']},
+      width: ${json['width']},
     )''');
   } else if (json['png'] != null) {
     debugPrintWidget("Image", level: level, name: json['name']);
@@ -36,10 +36,10 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           width: json['width'],
         ),
         '''Image.memory(
-      base64Decode(json['png']),
-      key: getValueKeyImage(json['png'], type: 'PNG', name: json['name']),
-      height: json['height'],
-      width: json['width'],
+      ${base64Decode(json['png'])},
+      key: ${getValueKeyImageString(json['png'], type: 'PNG', name: json['name'])},
+      height: ${json['height']},
+      width: ${json['width']},
     )''');
   }
 
@@ -54,7 +54,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
             decoration: BoxDecoration(
               // color: getColorFromFills(json),
               color: Colors.white,
-              border: getBorder(json),
+              border: getBorder(json).border,
               borderRadius: getBorderRadius(json),
               boxShadow: getBoxShadow(json),
             ),
@@ -62,15 +62,15 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
             child: widget.widget,
           ),
           '''Container(
-        key: ${getValueKeyComponent(widget.widget, name: json['name'])},
+        key: ${getValueKeyComponentString(widget.widget, name: json['name'])},
         decoration: BoxDecoration(
           color: Colors.white,
-          ${wrapProp('border', getBorderString(json))}
+          ${wrapProp('border', getBorder(json))}
           ${wrapProp('borderRadius', getBorderRadiusString(json))}
           ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
         ${wrapProp('padding', getPadding(json))}
-        child: widget,
+        child: ${widget.code},
       )''');
     case 'RECTANGLE':
       var widget = (getChildrenByLayoutMode(json, level + 1));
@@ -79,28 +79,28 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       debugPrintWidget("Container", level: level, name: json['name']);
       return GWidget(
           Container(
-            key: ValueKey("RECTANGLE:${json['name']}"),
+            key: getValueKeyComponent(widget.widget, name: json['name']),
             width: json['width'],
             height: json['height'],
             decoration: BoxDecoration(
               color: getColorFromFills(json),
-              border: getBorder(json),
+              border: getBorder(json).border,
               borderRadius: getBorderRadius(json),
               boxShadow: getBoxShadow(json),
             ),
             child: widget.widget,
           ),
           '''Container(
-            key: ${ValueKey("RECTANGLE:${json['name']}")},
+            key: ${getValueKeyComponentString(widget.widget, name: json['name'])},
             width: ${json['width']},
             height: ${json['height']},
             decoration: BoxDecoration(
               ${wrapProp('color', getColorFromFillsString(json))}
-              ${wrapProp('border', getBorderString(json))}
+              ${wrapProp('border', getBorder(json))}
               ${wrapProp('borderRadius', getBorderRadiusString(json))}
               ${wrapProp('boxShadow', getBoxShadowString(json))}
             ),
-            child: widget,
+            child: ${widget.code},
           )''');
     case 'VECTOR':
       debugPrintWidget("SvgPicture", level: level, name: json['name']);
@@ -113,7 +113,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           ),
           '''SvgPicture.string(
         ${json['svg']},
-        key: ${getValueKeyImage(json['svg'], type: 'SVG', name: json['name'])},
+        key: ${getValueKeyImageString(json['svg'], type: 'SVG', name: json['name'])},
             width: ${json['width']},
             height: ${json['height']},
       )''');
@@ -173,12 +173,12 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
       return GWidget(
           Container(
-            key: ValueKey("FRAME:${json['name']} ($level) ${json['id']}"),
+            key: getValueKeyComponent(widget.widget, name: "FRAME:${json['name']} ($level) ${json['id']}"),
             width: width,
             height: height,
             decoration: BoxDecoration(
               color: getColorFromFills(json),
-              border: getBorder(json),
+              border: getBorder(json).border,
               borderRadius: getBorderRadius(json),
               boxShadow: getBoxShadow(json),
             ),
@@ -187,12 +187,12 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           ),
           '''
       Container(
-        key: ${ValueKey("FRAME:${json['name']} ($level) ${json['id']}")},
+        key: ${getValueKeyComponentString(widget.widget, name: "FRAME:${json['name']} ($level) ${json['id']}")},
         width: $width,
         height: $height,
         decoration: BoxDecoration(
           ${wrapProp('color', getColorFromFillsString(json))}
-          ${wrapProp('border', getBorderString(json))}
+          ${wrapProp('border', getBorder(json))}
           ${wrapProp('borderRadius', getBorderRadiusString(json))}
           ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
@@ -208,10 +208,10 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       debugPrintWidget("Container", level: level, name: json['name']);
 
       final widget = Container(
-        key: ValueKey("GROUP:${json['name']}"),
+        key: getValueKeyComponent(item.widget, name: "GROUP:${json['name']}"),
         decoration: BoxDecoration(
           color: getColorFromFills(json),
-          border: getBorder(json),
+          border: getBorder(json).border,
           borderRadius: getBorderRadius(json),
           boxShadow: getBoxShadow(json),
         ),
@@ -221,10 +221,10 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
       final widgetCode = '''
       Container(
-        key: ${ValueKey("GROUP:${json['name']}")},
+        key: ${getValueKeyComponentString(item.widget, name: "GROUP:${json['name']}")},
         decoration: BoxDecoration(
           ${wrapProp('color', getColorFromFillsString(json))}
-          ${wrapProp('border', getBorderString(json))}
+          ${wrapProp('border', getBorder(json))}
           ${wrapProp('borderRadius', getBorderRadiusString(json))}
           ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),

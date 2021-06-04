@@ -2,7 +2,6 @@
 import 'dart:js' as js;
 import 'package:flutter_visible/imports.dart';
 
-import 'ext.dart';
 
 class DemoWidget extends StatefulWidget {
   final bool isSample;

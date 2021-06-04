@@ -1,5 +1,20 @@
+import 'dart:core';
+
 import 'package:flutter_visible/imports.dart';
-import 'package:flutter_visible/ext.dart';
+
+GWidget getButtonLayout(Map<String, dynamic> json, bool isProcessTapped,
+    {required int level}) {
+  List? bg = (json['fills'] as List).reversed.toList();
+
+  if (isProcessTapped) {
+    bg = (json['fills'] as List?)!;
+  }
+
+  final _json = {...json, 'fills': bg};
+
+  final children = getChildrenByLayoutMode(json, level);
+  return wrapInstance(_json, children, level + 1);
+}
 
 class GetButton extends StatefulWidget {
   final Map<String, dynamic> json;
@@ -24,27 +39,18 @@ class _GetButtonState extends State<GetButton> {
 Widget getChild(GetButton widget, _GetButtonState state) {
   if (viewDebugProps) print('getButton');
 
-  List? bg = (widget.json['fills'] as List).reversed.toList();
-
-  if (state.isProcessTapped) {
-    bg = (widget.json['fills'] as List?)!;
-  }
-
-  final _json = {...widget.json, 'fills': bg};
-
-  final children = getChildrenByLayoutMode(widget.json, widget.level);
-  final child = wrapInstance(_json, children.widget, widget.level + 1);
-
   return GestureDetector(
     onTap: () {},
     onTapDown: (details) => state.setState(() => state.isProcessTapped = true),
     onTapUp: (details) => state.setState(() => state.isProcessTapped = false),
-    child: child.widget,
+    child: getButtonLayout(widget.json, state.isProcessTapped,
+        level: widget.level).widget,
   );
 }
 
+String GetButtonToCode({required String title, required String onTap}) {
+  return 'AppButton(title: "$title", onTap: $onTap)';
 
-String GetButtonToCode({required bool extractComponents}) {
   return '''
 class AppButton extends StatefulWidget {
   @override

@@ -1,32 +1,29 @@
 import 'package:flutter_visible/imports.dart';
 
-Border getBorder(Map<String, dynamic> json) {
+class GBorder {
+  final Border border;
+  final String code;
+
+  GBorder(this.border, this.code);
+
+  @override
+  String toString() => code;
+}
+
+GBorder getBorder(Map<String, dynamic> json) {
   if (viewDebugProps) print('getBorder');
   final stroke = ((json['strokes'] ?? []) as List)
       .firstWhere((element) => element['type'] == 'SOLID', orElse: () => null);
 
   if (stroke != null) {
-    return Border.all(
+    return GBorder(Border.all(
       color: getColor(stroke['color']),
       width: json['strokeWeight'] ?? 0,
-    );
-  }
-
-  return Border.all(width: 0, color: Colors.transparent);
-}
-
-String getBorderString(Map<String, dynamic> json) {
-  if (viewDebugProps) print('getBorderString');
-  final stroke = ((json['strokes'] ?? []) as List)
-      .firstWhere((element) => element['type'] == 'SOLID', orElse: () => null);
-
-  if (stroke != null) {
-    return '''Border.all(
+    ), '''Border.all(
       color: ${getColor(stroke['color'])},
       width: ${json['strokeWeight'] ?? 0},
-    )''';
+    )''');
   }
 
-  return '''Border.all(width: 0, color: Colors.transparent)''';
+  return GBorder(Border.all(width: 0, color: Colors.transparent), '''Border.all(width: 0, color: Colors.transparent)''');
 }
-

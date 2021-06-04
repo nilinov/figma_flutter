@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter_visible/imports.dart';
 
-getInput(Map<String, dynamic> json, int level) {
+GWidget getInput(Map<String, dynamic> json, int level) {
   if (viewDebugProps) print('getInput');
 
   final children = getFlatJson(json, result: []);
@@ -34,8 +34,8 @@ getInput(Map<String, dynamic> json, int level) {
     decoration: InputDecoration(
       labelText: !isAnimatedLabel ? (placeholder ?? '') : label,
       hintText: isAnimatedLabel ? (placeholder ?? '') : null,
-      hintStyle: getTextStyle(childPlaceholder),
-      labelStyle: getTextStyle(childLabel ?? childPlaceholder),
+      hintStyle: getTextStyle(childPlaceholder).textStyle,
+      labelStyle: getTextStyle(childLabel ?? childPlaceholder).textStyle,
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: borderFocusColor),
       ),
@@ -48,5 +48,5 @@ getInput(Map<String, dynamic> json, int level) {
     ),
   );
 
-  return input;
+  return GWidget(input, '''AppInput("$label", placeholder: "$placeholder", isAnimatedLabel: $isAnimatedLabel)''');
 }

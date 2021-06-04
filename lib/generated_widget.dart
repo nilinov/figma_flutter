@@ -5,6 +5,9 @@ class GWidget<T extends Widget> {
   final String code;
 
   const GWidget(this.widget, this.code);
+
+  @override
+  String toString() => this.code;
 }
 
 class GWidgetList<T>  {
@@ -12,6 +15,9 @@ class GWidgetList<T>  {
   final List<String> code;
 
   const GWidgetList(this.widget, this.code);
+
+  @override
+  String toString() => this.code.join('\n');
 }
 
 

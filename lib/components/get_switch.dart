@@ -33,7 +33,7 @@ class _GetSwitchState extends State<GetSwitch> {
     var variable = getVariable(widget.json, 'title');
 
     final children = getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
-    final res = wrapInstance(_json, children.widget, widget.level + 1);
+    final res = wrapInstance(_json, children, widget.level + 1);
 
     return GestureDetector(
       onTap: () => setState(() => checked = !checked),

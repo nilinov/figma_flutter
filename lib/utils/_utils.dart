@@ -12,3 +12,4 @@ export 'wrap_instance.dart';
 export 'get_instance_by_name.dart';
 export 'get_variable.dart';
 export 'get_box_shadow.dart';
+export 'get_text_style.dart';
