@@ -44,7 +44,11 @@ class _DemoWidgetState extends State<DemoWidget> {
               child: SingleChildScrollView(
             child: Padding(
               child: Container(
-                child: res?.widget ?? SizedBox(),
+                child: Column(
+                  children: [
+                    res?.widget ?? SizedBox(),
+                  ],
+                ),
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.8,
                     maxWidth: MediaQuery.of(context).size.width / 2),
