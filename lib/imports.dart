@@ -11,5 +11,6 @@ export 'package:flutter_visible/get_widget/get_children_by_layout_mode.dart';
 export 'utils/_utils.dart';
 export 'components/_components.dart';
 export 'get_widget/_get_widget.dart';
+export 'generated_widget.dart';
 
 const viewDebugProps = false;

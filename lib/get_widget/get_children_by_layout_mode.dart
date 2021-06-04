@@ -47,7 +47,7 @@ Alignment getAlign(Map<String, dynamic> json) {
   return alignment;
 }
 
-Widget? getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
+GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     {List<Variable?>? variables}) {
   if (viewDebugProps) print('getChildrenByLayoutMode');
 
@@ -56,106 +56,147 @@ Widget? getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       (json['children'] as List)
               .where((element) => element['visible'] == true)
               .length ==
-          0) return SizedBox();
+          0) return GWidget(SizedBox(), 'SizedBox()');
 
   if ((json['children'] as List)
-          .where((element) => element['visible'] == true)
-          .length ==
-      1 && json['children'][0]['type'] != 'TEXT') {
-
+              .where((element) => element['visible'] == true)
+              .length ==
+          1 &&
+      json['children'][0]['type'] != 'TEXT') {
     debugPrintWidget("Align", level: level, name: json['name']);
 
-    return Align(
-      child: getWidgetByMap(
-        (json['children'] as List)
-            .firstWhere((element) => element['visible'] == true),
-        level,
-        variables: variables,
-      ),
-      alignment: getAlign(json),
+    final child = getWidgetByMap(
+      (json['children'] as List)
+          .firstWhere((element) => element['visible'] == true),
+      level,
+      variables: variables,
     );
+
+    return GWidget(
+        Align(
+          child: child?.widget,
+          alignment: getAlign(json),
+        ),
+        '''Align(
+      child: ${child?.code},
+      alignment: ${getAlign(json)},
+    )''');
   }
 
   if (json['layoutMode'] == 'VERTICAL') {
     debugPrintWidget("Column", level: level, name: json['name']);
-    return Column(
-      crossAxisAlignment: getCrossAxisAlignment(json),
-      mainAxisAlignment: getMainAxisAlignment(json),
-      children: getLayoutChildren(
-        json,
-        space: json['itemSpacing'],
-        axis: Axis.vertical,
-        level: level,
-        variables: variables,
-      ) as List<Widget>,
+
+    final children = getLayoutChildren(
+      json,
+      space: json['itemSpacing'],
+      axis: Axis.vertical,
+      level: level,
+      variables: variables,
     );
+
+    return GWidget(
+        Column(
+          crossAxisAlignment: getCrossAxisAlignment(json),
+          mainAxisAlignment: getMainAxisAlignment(json),
+          children: children.widget.map((e) => e.widget).toList(),
+        ),
+        '''
+    Column(
+      crossAxisAlignment: ${getCrossAxisAlignment(json)},
+      mainAxisAlignment: ${getMainAxisAlignment(json)},
+      children: ${children.widget.map((e) => e.code).toList()},
+    )
+    ''');
   } else if (json['layoutMode'] == 'HORIZONTAL') {
     debugPrintWidget("Row", level: level, name: json['name']);
-    return Row(
-      crossAxisAlignment: getCrossAxisAlignment(json),
-      mainAxisAlignment: getMainAxisAlignment(json),
-      children: getLayoutChildren(
-        json,
-        space: json['itemSpacing'],
-        axis: Axis.horizontal,
-        level: level,
-        variables: variables,
-      ) as List<Widget>,
+
+    final children = getLayoutChildren(
+      json,
+      space: json['itemSpacing'],
+      axis: Axis.horizontal,
+      level: level,
+      variables: variables,
     );
+
+    return GWidget(
+        Row(
+          crossAxisAlignment: getCrossAxisAlignment(json),
+          mainAxisAlignment: getMainAxisAlignment(json),
+          children: children.widget.map((e) => e.widget).toList(),
+        ),
+        '''Row(
+      crossAxisAlignment: ${getCrossAxisAlignment(json)},
+      mainAxisAlignment: ${getMainAxisAlignment(json)},
+      children: ${children.widget.map((e) => e.code).toList()},
+    )''');
   } else {
     final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
     final baseY = (json['type'] == 'GROUP') ? json['y'] : 0;
     final baseW = json['width'];
     final baseH = json['height'];
 
-    final children = (json['children'] as List)
-        .map((e) {
-          final widget = getWidgetByMap(e, level + 1, variables: variables);
+    final List<Map<String, dynamic>> _childrenList =
+        (json['children'] as List<Map<String, dynamic>>)
+            .where((element) => element != null)
+            .toList();
 
-          if (widget == null) return null;
+    final List<GWidget> children = _childrenList.map((e) {
+      final widget = getWidgetByMap(e, level + 1, variables: variables);
 
-          if (viewDebugProps) if (viewDebugProps) {
-            print('getChildrenByLayoutMode: Stack: widget');
-            print(widget);
-          }
+      if (viewDebugProps) if (viewDebugProps) {
+        print('getChildrenByLayoutMode: Stack: widget');
+        print(widget);
+      }
 
-          debugPrintWidget("Positioned", level: level + 1, name: json['name']);
+      debugPrintWidget("Positioned", level: level + 1, name: json['name']);
 
-          final left = e['x'] - baseX;
-          final top = e['y'] - baseY;
+      final left = e['x'] - baseX;
+      final top = e['y'] - baseY;
 
-          final right = baseW - left - e['width'];
-          final bottom = baseH - top - e['height'];
+      final right = baseW - left - e['width'];
+      final bottom = baseH - top - e['height'];
 
-          return Positioned(
-            child: widget,
+      return GWidget<Widget>(
+          Positioned(
+            child: widget?.widget ?? SizedBox(),
             left: left,
             top: top,
             right: right,
             bottom: bottom,
             // width: e['width'],
             // height: e['height'],
-          );
-        })
-        .where((element) => element != null)
-        .toList();
+          ),
+          '''code''');
+    }).toList();
 
     if (viewDebugProps) {
       print({children});
     }
 
-    if (children.length == 0) return null;
+    if (children.length == 0) return gWidgetSizedBox;
 
     debugPrintWidget("Stack", level: level, name: json['name']);
 
-    if (json['primaryAxisSizingMode'] == null && json['counterAxisSizingMode'] == null) {
-      return SizedBox(
-        child: Stack(children: children as List<Widget>),
-        height: json['height'],
-        width: json['width'],
-      );
+    if (json['primaryAxisSizingMode'] == null &&
+        json['counterAxisSizingMode'] == null) {
+      final child = GWidget(
+          Stack(children: children.map((e) => e.widget).toList()),
+          '''Stack(children: ${children.map((e) => e.code).toList()})''');
+
+      return GWidget(
+          SizedBox(
+            child: child.widget,
+            height: json['height'],
+            width: json['width'],
+          ),
+          '''SizedBox(
+        child: ${child.code},
+        height: ${json['height']},
+        width: ${json['width']},
+      )''');
     }
 
-    return Stack(children: children as List<Widget>);
+    return GWidget(Stack(children: children.map((e) => e.widget).toList()),
+        '''Stack(children: ${children.map((e) => e.code).toList()})''');
   }
 }

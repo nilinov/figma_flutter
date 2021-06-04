@@ -22,7 +22,7 @@ class _GetCheckboxState extends State<GetCheckbox> {
   @override
   Widget build(BuildContext context) {
 
-    Map<String, dynamic>? _json = widget.json;
+    Map<String, dynamic> _json = widget.json;
 
     if (checked) {
       _json = (widget.json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=true'), orElse: () => null);
@@ -32,9 +32,13 @@ class _GetCheckboxState extends State<GetCheckbox> {
 
     var variable = getVariable(widget.json, 'title');
 
+
+    final children = getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
+    final child = wrapInstance(_json, children.widget, widget.level + 1);
+
     return GestureDetector(
       onTap: () => setState(() => checked = !checked),
-      child: wrapInstance(_json!, getChildrenByLayoutMode(_json, widget.level, variables: [variable]), widget.level + 1),
+      child: child.widget,
     );
   }
 }

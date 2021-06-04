@@ -26,7 +26,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
   }
 
-  bool? splitComponent = true;
+  bool splitComponent = true;
   bool inlineIcons = true;
   bool inlineImages = true;
   ImageExportEnum iconsExport = ImageExportEnum.inline;
@@ -38,14 +38,14 @@ class _DemoWidgetState extends State<DemoWidget> {
 
     if (json != null) {
       final res = getWidgetByMap(json, 0);
-      print(res.toWidget());
+      // print(res.toWidget());
       return Row(
         children: [
           Expanded(
               child: SingleChildScrollView(
             child: Padding(
               child: Container(
-                child: res,
+                child: res?.widget ?? SizedBox(),
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.8,
                     maxWidth: MediaQuery.of(context).size.width / 2),
@@ -65,7 +65,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                       GestureDetector(
                         onTap: () {
                           js.context.callMethod(
-                              'fallbackCopyTextToClipboard', [res.toWidget()]);
+                              'fallbackCopyTextToClipboard', [res?.code]);
                           ScaffoldMessenger.of(context)
                               .showSnackBar(SnackBar(content: Text("Copy")));
                         },
@@ -78,7 +78,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                       GestureDetector(
                         onTap: () {
                           js.context.callMethod('fallbackDownloadWidget',
-                              [res.toWidget(), 'demo_widget_1.dart']);
+                              [res?.code, 'demo_widget_1.dart']);
                         },
                         child: Container(
                           color: Colors.white,
@@ -94,7 +94,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                       Checkbox(
                         value: splitComponent,
                         onChanged: (bool? newValue) =>
-                            setState(() => splitComponent = newValue),
+                            setState(() => splitComponent = (newValue ?? true)),
                       ),
                       Text('Разделить компоненты'),
                     ],
@@ -119,15 +119,11 @@ class _DemoWidgetState extends State<DemoWidget> {
                   child: GestureDetector(
                     onTap: () {
                       js.context.callMethod(
-                          'fallbackCopyTextToClipboard', [res.toWidget()]);
+                          'fallbackCopyTextToClipboard', [res?.code]);
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text("Copy")));
                     },
-                    child: Text(splitComponent!
-                        ? res
-                            .toWidgets()
-                            .join('\n\n \\\\-----------------------------\n\n')
-                        : res.toCode(extractComponents: false)!),
+                    child: Text((splitComponent ? res?.code : res?.code) ?? ''),
                   ),
                 ),
               ),

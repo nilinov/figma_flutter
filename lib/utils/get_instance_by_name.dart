@@ -1,6 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
-getInstanceByName(Map<String, dynamic> json, int level) {
+Widget getInstanceByName(Map<String, dynamic> json, int level) {
   var widget;
 
   final name = (json['name'] as String).toUpperCase();
@@ -21,5 +21,5 @@ getInstanceByName(Map<String, dynamic> json, int level) {
       widget = getChildrenByLayoutMode(json, level);
   }
 
-  return wrapInstance(json, widget, level);
+  return wrapInstance(json, widget, level).widget;
 }

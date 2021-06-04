@@ -1,7 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
 TextStyle getTextStyle(Map<String, dynamic> json) {
-
   FontStyle fontStyle = FontStyle.normal;
   FontWeight fontWeight = FontWeight.normal;
   String? fontFamily = 'Roboto';
@@ -24,24 +23,25 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
       fontWeight = FontWeight.w100;
     }
 
-    if ((_fontStyle).contains('Light'))
-      fontWeight = FontWeight.w300;
+    if ((_fontStyle).contains('Light')) fontWeight = FontWeight.w300;
 
-    if ((_fontStyle).contains('Medium'))
-      fontWeight = FontWeight.w500;
+    if ((_fontStyle).contains('Medium')) fontWeight = FontWeight.w500;
 
-    if ((_fontStyle).contains('Bold'))
-      fontWeight = FontWeight.bold;
+    if ((_fontStyle).contains('Bold')) fontWeight = FontWeight.bold;
 
-    if ((_fontStyle).contains('Black'))
-      fontWeight = FontWeight.w900;
+    if ((_fontStyle).contains('Black')) fontWeight = FontWeight.w900;
   }
 
-  if (json['letterSpacing'] != null && json['letterSpacing']['unit'] == 'PIXELS') {
+  if (json['letterSpacing'] != null &&
+      json['letterSpacing']['unit'] == 'PIXELS') {
     letterSpacing = json['letterSpacing']['value'];
   }
 
-  TextStyle textStyle = TextStyle(fontWeight: fontWeight, fontFamily: fontFamily, fontStyle: fontStyle, letterSpacing: letterSpacing);
+  TextStyle textStyle = TextStyle(
+      fontWeight: fontWeight,
+      fontFamily: fontFamily,
+      fontStyle: fontStyle,
+      letterSpacing: letterSpacing);
 
   if (json['fontSize'] != null)
     textStyle = textStyle.copyWith(fontSize: json['fontSize']);
@@ -51,7 +51,7 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
   return textStyle;
 }
 
-Widget getText(Map<String, dynamic> json, int level,
+GWidget getText(Map<String, dynamic> json, int level,
     {List<Variable?>? variables}) {
   TextAlign textAlign = TextAlign.left;
   switch (json['textAlignHorizontal']) {
@@ -66,9 +66,11 @@ Widget getText(Map<String, dynamic> json, int level,
       break;
   }
 
+  String code = '';
+
   debugPrintWidget("Text", level: level + 1, name: json['name']);
 
-  String? text = json['characters'] ?? '';
+  String text = json['characters'] ?? '';
 
   if (variables != null) {
     final _name = json['name'].split('$String:')[1];
@@ -82,20 +84,36 @@ Widget getText(Map<String, dynamic> json, int level,
 
   print(variables);
 
-  Widget res = Text(text!.split('\\n').join('\n'),
+  Widget res = Text(text.split('\\n').join('\n'),
       textAlign: textAlign, style: getTextStyle(json));
 
+  code =
+      '''Text(${text.split('\\n').join('\n')}, textAlign: $textAlign, style: ${getTextStyle(json)})''';
+
   if ((json['styledText'] as List).length > 1) {
-    res = RichText(
-      textAlign: textAlign,
-      text: TextSpan(
-        children: (json['styledText'] as List).map((e) {
+    final children = GWidgetList(
+        (json['styledText'] as List).map((e) {
           return TextSpan(
               text: (e['text'] as String).replaceAll('\\n', '\n'),
               style: getTextStyle(e));
         }).toList(),
-      ),
+      (json['styledText'] as List).map((e) {
+        return '''TextSpan(
+            text: ${(e['text'] as String).replaceAll('\\n', '\n')},
+            style: ${getTextStyle(e)})''';
+      }).toList(),
     );
+    res = RichText(
+      textAlign: textAlign,
+      text: TextSpan(children: children.widget),
+    );
+
+    code = ''' 
+    RichText(
+      textAlign: $textAlign,
+      text: TextSpan(children: ${children.code}),
+    )
+    ''';
   }
 
   if (json['textAlignHorizontal'] == 'CENTER' &&
@@ -104,7 +122,9 @@ Widget getText(Map<String, dynamic> json, int level,
   } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
     debugPrintWidget("SizedBox", level: level + 1, name: json['name']);
     res = SizedBox(child: res, height: json['height'], width: json['width']);
-  } else if (json['textAutoResize'] == 'HEIGHT' && json['layoutGrow'] != 1 && json['layoutAlign'] != "STRETCH") {
+  } else if (json['textAutoResize'] == 'HEIGHT' &&
+      json['layoutGrow'] != 1 &&
+      json['layoutAlign'] != "STRETCH") {
     res = SizedBox(child: res, width: json['width']);
   }
 
@@ -115,5 +135,5 @@ Widget getText(Map<String, dynamic> json, int level,
 
   //TODO vertical align
 
-  return res;
+  return GWidget(res, code);
 }

@@ -31,12 +31,14 @@ class _GetButtonState extends State<GetButton> {
 
     final _json = {...widget.json, 'fills': bg};
 
+    final children = getChildrenByLayoutMode(widget.json, widget.level);
+    final child = wrapInstance(_json, children.widget, widget.level + 1);
+
     return GestureDetector(
       onTap: () {},
       onTapDown: (details) => setState(() => isProcessTapped = true),
       onTapUp: (details) => setState(() => isProcessTapped = false),
-      child: wrapInstance(_json,
-          getChildrenByLayoutMode(widget.json, widget.level), widget.level + 1),
+      child: child.widget,
     );
   }
 
