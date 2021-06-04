@@ -17,33 +17,35 @@ class _GetButtonState extends State<GetButton> {
 
   @override
   Widget build(BuildContext context) {
-    return getChild();
+    return getChild(widget, this);
+  }
+}
+
+Widget getChild(GetButton widget, _GetButtonState state) {
+  if (viewDebugProps) print('getButton');
+
+  List? bg = (widget.json['fills'] as List).reversed.toList();
+
+  if (state.isProcessTapped) {
+    bg = (widget.json['fills'] as List?)!;
   }
 
-  Widget getChild() {
-    if (viewDebugProps) print('getButton');
+  final _json = {...widget.json, 'fills': bg};
 
-    List? bg = (widget.json['fills'] as List).reversed.toList();
+  final children = getChildrenByLayoutMode(widget.json, widget.level);
+  final child = wrapInstance(_json, children.widget, widget.level + 1);
 
-    if (isProcessTapped) {
-      bg = (widget.json['fills'] as List?)!;
-    }
+  return GestureDetector(
+    onTap: () {},
+    onTapDown: (details) => state.setState(() => state.isProcessTapped = true),
+    onTapUp: (details) => state.setState(() => state.isProcessTapped = false),
+    child: child.widget,
+  );
+}
 
-    final _json = {...widget.json, 'fills': bg};
 
-    final children = getChildrenByLayoutMode(widget.json, widget.level);
-    final child = wrapInstance(_json, children.widget, widget.level + 1);
-
-    return GestureDetector(
-      onTap: () {},
-      onTapDown: (details) => setState(() => isProcessTapped = true),
-      onTapUp: (details) => setState(() => isProcessTapped = false),
-      child: child.widget,
-    );
-  }
-
-  String toCode({required bool extractComponents}) {
-    return '''
+String GetButtonToCode({required bool extractComponents}) {
+  return '''
 class AppButton extends StatefulWidget {
   @override
   _AppButtonState createState() => _AppButtonState();
@@ -58,10 +60,9 @@ class _AppButtonState extends State<AppButton> {
       onTap: () {},
       onTapDown: (details) => setState(() => isProcessTapped = true),
       onTapUp: (details) => setState(() => isProcessTapped = false),
-      child: ${getChild().toCode(extractComponents: extractComponents)},
+      child: SizedBox(),
     );
   }
 }
 ''';
-  }
 }

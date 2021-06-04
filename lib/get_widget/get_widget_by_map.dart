@@ -200,7 +200,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       )
       ''');
     case 'INSTANCE':
-      return GWidget(getInstanceByName(json, level), getInstanceByName(json, level).toString());
+      return getInstanceByName(json, level);
     case 'GROUP':
       final item = (getChildrenByLayoutMode(json, level + 1));
 
