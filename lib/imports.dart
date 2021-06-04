@@ -6,9 +6,10 @@ export 'package:flutter/services.dart';
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:flutter_visible/env.dart';
 export 'package:flutter_visible/get_data.dart';
-export 'package:flutter_visible/utils/get_children_by_layout_mode.dart';
+export 'package:flutter_visible/get_widget/get_children_by_layout_mode.dart';
 
 export 'utils/_utils.dart';
 export 'components/_components.dart';
+export 'get_widget/_get_widget.dart';
 
 const viewDebugProps = false;
