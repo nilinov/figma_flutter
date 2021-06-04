@@ -286,7 +286,9 @@ getKeyValue(Widget item) {
 
 String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
   if (value != null && value != excludeValue) {
-    return "$name: $value,";
+    if (value is String && value.isNotEmpty) {
+      return "$name: $value,";
+    }
   }
 
   return '';

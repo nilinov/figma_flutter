@@ -1,3 +1,4 @@
+import 'package:flutter_visible/ext.dart';
 import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
@@ -64,11 +65,11 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         key: ${getValueKeyComponent(widget.widget, name: json['name'])},
         decoration: BoxDecoration(
           color: Colors.white,
-          border: ${getBorderString(json)},
-          borderRadius: ${getBorderRadiusString(json)},
-          boxShadow: ${getBoxShadowString(json)},
+          ${wrapProp('border', getBorderString(json))}
+          ${wrapProp('borderRadius', getBorderRadiusString(json))}
+          ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
-        padding: getPadding(json),
+        ${wrapProp('padding', getPadding(json))}
         child: widget,
       )''');
     case 'RECTANGLE':
@@ -94,10 +95,10 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
             width: ${json['width']},
             height: ${json['height']},
             decoration: BoxDecoration(
-              color: ${getColorFromFillsString(json)},
-              border: ${getBorderString(json)},
-              borderRadius: ${getBorderRadiusString(json)},
-              boxShadow: ${getBoxShadowString(json)},
+              ${wrapProp('color', getColorFromFillsString(json))}
+              ${wrapProp('border', getBorderString(json))}
+              ${wrapProp('borderRadius', getBorderRadiusString(json))}
+              ${wrapProp('boxShadow', getBoxShadowString(json))}
             ),
             child: widget,
           )''');
@@ -190,12 +191,12 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         width: $width,
         height: $height,
         decoration: BoxDecoration(
-          color: ${getColorFromFillsString(json)},
-          border: ${getBorderString(json)},
-          borderRadius: ${getBorderRadiusString(json)},
-          boxShadow: ${getBoxShadowString(json)},
+          ${wrapProp('color', getColorFromFillsString(json))}
+          ${wrapProp('border', getBorderString(json))}
+          ${wrapProp('borderRadius', getBorderRadiusString(json))}
+          ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
-        padding: ${getPadding(json)},
+        ${wrapProp('padding', getPadding(json))}
         child: ${widget.code},
       )
       ''');
@@ -222,12 +223,12 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       Container(
         key: ${ValueKey("GROUP:${json['name']}")},
         decoration: BoxDecoration(
-          color: getColorFromFills(json),
-          border: getBorder(json),
-          borderRadius: getBorderRadius(json),
-          boxShadow: getBoxShadow(json),
+          ${wrapProp('color', getColorFromFillsString(json))}
+          ${wrapProp('border', getBorderString(json))}
+          ${wrapProp('borderRadius', getBorderRadiusString(json))}
+          ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
-        padding: getPadding(json),
+        ${wrapProp('padding', getPadding(json))}
         child: item.widget,
       )''';
 
