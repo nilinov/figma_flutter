@@ -4,8 +4,8 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
 
   FontStyle fontStyle = FontStyle.normal;
   FontWeight fontWeight = FontWeight.normal;
-  String fontFamily = 'Roboto';
-  double letterSpacing = 0;
+  String? fontFamily = 'Roboto';
+  double? letterSpacing = 0;
 
   if (json['fontName'] != null) {
     fontFamily = json['fontName']['family'];
@@ -52,7 +52,7 @@ TextStyle getTextStyle(Map<String, dynamic> json) {
 }
 
 Widget getText(Map<String, dynamic> json, int level,
-    {List<Variable> variables}) {
+    {List<Variable?>? variables}) {
   TextAlign textAlign = TextAlign.left;
   switch (json['textAlignHorizontal']) {
     case 'LEFT':
@@ -68,12 +68,12 @@ Widget getText(Map<String, dynamic> json, int level,
 
   debugPrintWidget("Text", level: level + 1, name: json['name']);
 
-  String text = json['characters'] ?? '';
+  String? text = json['characters'] ?? '';
 
   if (variables != null) {
     final _name = json['name'].split('$String:')[1];
 
-    final variable = variables.firstWhere((element) => element.name == _name);
+    final variable = variables.firstWhere((element) => element!.name == _name);
 
     if (variable != null) {
       text = variable.value ?? variable.defaultValue;
@@ -82,7 +82,7 @@ Widget getText(Map<String, dynamic> json, int level,
 
   print(variables);
 
-  Widget res = Text((text).split('\\n').join('\n'),
+  Widget res = Text(text!.split('\\n').join('\n'),
       textAlign: textAlign, style: getTextStyle(json));
 
   if ((json['styledText'] as List).length > 1) {

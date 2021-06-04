@@ -11,7 +11,6 @@ getInstanceByName(Map<String, dynamic> json, int level) {
       break;
     case 'BUTTON':
       return GetButton(json: json, level: level);
-      break;
     default:
       if (name.contains('CHECKBOX')) {
         return GetCheckbox(json: json, level: level);

@@ -1,3 +1,4 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 import 'package:flutter_visible/imports.dart';
 
@@ -6,7 +7,7 @@ import 'ext.dart';
 class DemoWidget extends StatefulWidget {
   final bool isSample;
 
-  const DemoWidget({Key key, this.isSample}) : super(key: key);
+  const DemoWidget({Key? key, required this.isSample}) : super(key: key);
 
   @override
   _DemoWidgetState createState() => _DemoWidgetState();
@@ -15,7 +16,7 @@ class DemoWidget extends StatefulWidget {
 enum ImageExportEnum { inline, consts, file }
 
 class _DemoWidgetState extends State<DemoWidget> {
-  Map<String, dynamic> json;
+  late Map<String, dynamic> json;
 
   @override
   Future<void> didChangeDependencies() async {
@@ -25,7 +26,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
   }
 
-  bool splitComponent = true;
+  bool? splitComponent = true;
   bool inlineIcons = true;
   bool inlineImages = true;
   ImageExportEnum iconsExport = ImageExportEnum.inline;
@@ -92,7 +93,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                     children: [
                       Checkbox(
                         value: splitComponent,
-                        onChanged: (bool newValue) =>
+                        onChanged: (bool? newValue) =>
                             setState(() => splitComponent = newValue),
                       ),
                       Text('Разделить компоненты'),
@@ -122,11 +123,11 @@ class _DemoWidgetState extends State<DemoWidget> {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text("Copy")));
                     },
-                    child: Text(splitComponent
+                    child: Text(splitComponent!
                         ? res
                             .toWidgets()
                             .join('\n\n \\\\-----------------------------\n\n')
-                        : res.toCode(extractComponents: false)),
+                        : res.toCode(extractComponents: false)!),
                   ),
                 ),
               ),
@@ -143,12 +144,12 @@ class _DemoWidgetState extends State<DemoWidget> {
 class ExportSettingImage extends StatelessWidget {
   final String title;
   final ImageExportEnum iconsExport;
-  final Function(ImageExportEnum value) onChange;
+  final Function(ImageExportEnum? value)? onChange;
 
   final bool expand;
 
   const ExportSettingImage(
-      {Key key, this.iconsExport, this.onChange, this.title, this.expand})
+      {Key? key, required this.iconsExport, required this.onChange, required this.title, required this.expand})
       : super(key: key);
 
   @override
@@ -190,6 +191,4 @@ String getTitleExportImage(ImageExportEnum iconsExport) {
     case ImageExportEnum.file:
       return 'Файл';
   }
-
-  return '';
 }

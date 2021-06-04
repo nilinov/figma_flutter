@@ -1,9 +1,7 @@
-import 'package:flutter_visible/json_text.dart';
-
-import 'imports.dart';
-
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
+import 'imports.dart';
 
 Future<String> getData(bool isAssets) async {
   if (isAssets) {
@@ -23,9 +21,3 @@ Future<String> getData(bool isAssets) async {
   print({res});
   return res as String;
 }
-
-
-
-
-
-

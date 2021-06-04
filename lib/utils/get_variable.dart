@@ -1,4 +1,4 @@
-Variable getNodeByVariable(Map<String, dynamic> json, String nameVariable) {
+Variable? getNodeByVariable(Map<String, dynamic> json, String nameVariable) {
   final name = json['name'] as String;
   if (name.contains('$String:')) {
     final _name = name.split('$String:')[1];
@@ -10,7 +10,7 @@ Variable getNodeByVariable(Map<String, dynamic> json, String nameVariable) {
     }
   }
 
-  final inChild = (json['children'] as List)?.firstWhere((element) => getNodeByVariable(element, nameVariable) != null, orElse: () => null);
+  final inChild = (json['children'] as List?)?.firstWhere((element) => getNodeByVariable(element, nameVariable) != null, orElse: () => null);
 
   if (inChild != null) {
     return getNodeByVariable(inChild, nameVariable);
@@ -22,8 +22,8 @@ Variable getNodeByVariable(Map<String, dynamic> json, String nameVariable) {
 class Variable {
   final dynamic defaultValue;
   final dynamic value;
-  final String name;
-  final String type;
+  final String? name;
+  final String? type;
 
   Variable({this.defaultValue, this.name, this.type, this.value});
 
@@ -38,6 +38,6 @@ class Variable {
   String toString() => "Variable(name: $name , defaultValue: $defaultValue , type: $type , value: $value)";
 }
 
-Variable getVariable(Map<String, dynamic> json, String nameVariable) {
+Variable? getVariable(Map<String, dynamic> json, String nameVariable) {
   return getNodeByVariable(json, nameVariable);
 }

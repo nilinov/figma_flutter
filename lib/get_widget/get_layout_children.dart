@@ -1,7 +1,7 @@
 import 'package:flutter_visible/imports.dart';
 
 List<Widget> getLayoutChildren(Map<String, dynamic> json,
-    {double space, Axis axis = Axis.horizontal, @required int level, List<Variable> variables}) {
+    {double? space, Axis axis = Axis.horizontal, required int level, List<Variable?>? variables}) {
   final res = <Widget>[];
 
   for (var i = 0; i < (json['children'] as List).length; i++) {
@@ -13,7 +13,7 @@ List<Widget> getLayoutChildren(Map<String, dynamic> json,
       }
     }
 
-    Widget widget = getWidgetByMap(json['children'][i], level + 1, variables: variables);
+    Widget? widget = getWidgetByMap(json['children'][i], level + 1, variables: variables);
 
     if (widget is Text) {
       if (axis == Axis.horizontal) {
@@ -23,8 +23,8 @@ List<Widget> getLayoutChildren(Map<String, dynamic> json,
       }
     }
 
-    res.add(widget);
+    if (widget != null) res.add(widget);
   }
 
-  return res.where((element) => element != null).toList();
+  return res;
 }

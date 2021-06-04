@@ -47,8 +47,8 @@ Alignment getAlign(Map<String, dynamic> json) {
   return alignment;
 }
 
-Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
-    {List<Variable> variables}) {
+Widget? getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
+    {List<Variable?>? variables}) {
   if (viewDebugProps) print('getChildrenByLayoutMode');
 
   if (json == null ||
@@ -87,7 +87,7 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
         axis: Axis.vertical,
         level: level,
         variables: variables,
-      ),
+      ) as List<Widget>,
     );
   } else if (json['layoutMode'] == 'HORIZONTAL') {
     debugPrintWidget("Row", level: level, name: json['name']);
@@ -100,7 +100,7 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
         axis: Axis.horizontal,
         level: level,
         variables: variables,
-      ),
+      ) as List<Widget>,
     );
   } else {
     final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
@@ -150,12 +150,12 @@ Widget getChildrenByLayoutMode(Map<String, dynamic> json, int level,
 
     if (json['primaryAxisSizingMode'] == null && json['counterAxisSizingMode'] == null) {
       return SizedBox(
-        child: Stack(children: children),
+        child: Stack(children: children as List<Widget>),
         height: json['height'],
         width: json['width'],
       );
     }
 
-    return Stack(children: children);
+    return Stack(children: children as List<Widget>);
   }
 }

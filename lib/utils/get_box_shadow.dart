@@ -1,6 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
-List<BoxShadow> getBoxShadow(Map<String, dynamic> json) {
+List<BoxShadow>? getBoxShadow(Map<String, dynamic> json) {
   if (viewDebugProps) print('getBoxShadow');
   if (json['topLeftRadius'] == null) return null;
 

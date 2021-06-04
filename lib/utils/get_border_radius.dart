@@ -1,6 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
-BorderRadius getBorderRadius(Map<String, dynamic> json) {
+BorderRadius? getBorderRadius(Map<String, dynamic> json) {
   if (viewDebugProps) print('getBorderRadius');
   if (json['topLeftRadius'] == null) return null;
 

@@ -1,9 +1,10 @@
+/*
 import 'package:flutter/cupertino.dart';
 
 abstract class AstComponent {
-  final String name;
+  final String? name;
 
-  AstComponent({@required this.name});
+  AstComponent({required this.name});
 
   dynamic toComponent();
 
@@ -11,7 +12,7 @@ abstract class AstComponent {
 }
 
 mixin AstComponentExt implements AstComponent {
-  String name;
+  String? name;
 
   toComponent();
 
@@ -21,21 +22,21 @@ mixin AstComponentExt implements AstComponent {
 abstract class AstChild with AstComponentExt {
   final AstComponent child;
 
-  AstChild({@required this.child});
+  AstChild({required this.child});
 }
 
 class AstBoxDecoration with AstComponentExt {
   final String name = 'BoxDecoration';
   final AstColor color;
-  final AstBorder border;
-  final AstBorderRadius borderRadius;
+  final AstBorder? border;
+  final AstBorderRadius? borderRadius;
   final Map<String, dynamic> json;
 
   AstBoxDecoration(
-      {@required this.color,
+      {required this.color,
       this.border,
       this.borderRadius,
-      @required this.json});
+      required this.json});
 
   factory AstBoxDecoration.fromJson(Map<String, dynamic> json) =>
       AstBoxDecoration(
@@ -47,9 +48,6 @@ class AstBoxDecoration with AstComponentExt {
         border: AstBorder.fromJson(json),
         json: json,
       );
-
-  @override
-  String print() {}
 
   @override
   BoxDecoration toComponent() {
@@ -69,10 +67,10 @@ class AstBorderRadius with AstComponentExt {
   final double bottomRight;
 
   AstBorderRadius({
-    @required this.topLeft,
-    @required this.topRight,
-    @required this.bottomLeft,
-    @required this.bottomRight,
+    required this.topLeft,
+    required this.topRight,
+    required this.bottomLeft,
+    required this.bottomRight,
   });
 
   factory AstBorderRadius.fromJson(Map<String, dynamic> json) =>
@@ -105,8 +103,8 @@ class AstBorder with AstComponentExt {
   final double width;
 
   AstBorder({
-    @required this.color,
-    @required this.width,
+    required this.color,
+    required this.width,
   });
 
   factory AstBorder.fromJson(Map<String, dynamic> json) {
@@ -134,19 +132,19 @@ class AstBorder with AstComponentExt {
 
 class AstColor with AstComponentExt {
   final name = 'Color';
-  final int r;
-  final int g;
-  final int b;
-  final double o;
+  final int? r;
+  final int? g;
+  final int? b;
+  final double? o;
 
   AstColor({
-    @required this.r,
-    @required this.g,
-    @required this.b,
+    required this.r,
+    required this.g,
+    required this.b,
     this.o,
   });
 
-  factory AstColor.fromJson(Map<String, dynamic> json) {
+  factory AstColor.fromJson(Map<String, dynamic>? json) {
     if (json == null) return null;
 
     return AstColor(
@@ -181,7 +179,7 @@ class AstColor with AstComponentExt {
 
   @override
   toComponent() {
-    return Color.fromRGBO(this.r, this.g, this.b, this.o ?? 1);
+    return Color.fromRGBO(this.r!, this.g!, this.b!, this.o ?? 1);
   }
 }
 
@@ -189,7 +187,7 @@ class AstSizes {
   final double width;
   final double height;
 
-  AstSizes({@required this.width, @required this.height});
+  AstSizes({required this.width, required this.height});
 
   factory AstSizes.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
@@ -208,10 +206,10 @@ class AstEdgeInsets with AstComponentExt {
   final double bottom;
 
   AstEdgeInsets({
-    @required this.top,
-    @required this.left,
-    @required this.right,
-    @required this.bottom,
+    required this.top,
+    required this.left,
+    required this.right,
+    required this.bottom,
   });
 
   factory AstEdgeInsets.fromJson(Map<String, dynamic> json) {
@@ -250,10 +248,10 @@ class AstContainer with AstComponentExt implements AstChild, AstComponent {
   final AstSizes size;
 
   AstContainer({
-    @required this.child,
-    @required this.decoration,
-    @required this.padding,
-    @required this.size,
+    required this.child,
+    required this.decoration,
+    required this.padding,
+    required this.size,
   });
 
   @override
@@ -273,20 +271,20 @@ class AstContainer with AstComponentExt implements AstChild, AstComponent {
 
 class AstLayout with AstComponentExt {
   final List<AstComponent> items;
-  final Axis axis;
+  final Axis? axis;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
 
   AstLayout({
-    @required this.items,
-    @required this.axis,
-    @required this.mainAxisAlignment,
-    @required this.crossAxisAlignment,
+    required this.items,
+    required this.axis,
+    required this.mainAxisAlignment,
+    required this.crossAxisAlignment,
   });
 
   factory AstLayout.fromJson(Map<String, dynamic> json) {
     if (json == null || json['children'] == null) return null;
-    Axis axis;
+    Axis? axis;
 
     switch(json['layoutMode']) {
       case 'VERTICAL':
@@ -348,3 +346,4 @@ getMainAxisAlignment(Map<String, dynamic> json) {
 
   return MainAxisAlignment.start;
 }
+*/

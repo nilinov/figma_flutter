@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter_visible/imports.dart';
 
 getInput(Map<String, dynamic> json, int level) {
@@ -5,10 +6,10 @@ getInput(Map<String, dynamic> json, int level) {
 
   final children = getFlatJson(json, result: []);
 
-  final childBorderDefault = children?.firstWhere((element) => element['name'] == 'border', orElse: () => null);
-  final childBorderFocus = children?.firstWhere((element) => element['name'] == 'borderFocus', orElse: () => null);
-  final childPlaceholder = children?.firstWhere((element) => element['name'] == 'placeholder', orElse: () => null);
-  final childLabel = children?.firstWhere((element) => element['name'] == 'label', orElse: () => null);
+  final childBorderDefault = children.firstWhereOrNull((element) => element['name'] == 'border');
+  final childBorderFocus = children.firstWhereOrNull((element) => element['name'] == 'borderFocus');
+  final childPlaceholder = children.firstWhereOrNull((element) => element['name'] == 'placeholder')!;
+  final childLabel = children.firstWhereOrNull((element) => element['name'] == 'label');
 
   Color borderDefaultColor = Colors.grey;
   Color borderFocusColor = Colors.blue;
@@ -21,7 +22,7 @@ getInput(Map<String, dynamic> json, int level) {
     borderFocusColor = getColorFromFills(childBorderFocus);
   }
 
-  final placeholder = childPlaceholder != null ? childPlaceholder['characters'] : null;
+  final placeholder = childPlaceholder['characters'];
   final label = childLabel != null ? childLabel['characters'] : null;
   bool isAnimatedLabel = false;
 

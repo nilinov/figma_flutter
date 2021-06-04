@@ -5,7 +5,7 @@ class GetButton extends StatefulWidget {
   final Map<String, dynamic> json;
   final int level;
 
-  const GetButton({Key key, @required this.json, @required this.level})
+  const GetButton({Key? key, required this.json, required this.level})
       : super(key: key);
 
   @override
@@ -23,10 +23,10 @@ class _GetButtonState extends State<GetButton> {
   Widget getChild() {
     if (viewDebugProps) print('getButton');
 
-    List bg = (widget.json['fills'] as List).reversed.toList();
+    List? bg = (widget.json['fills'] as List).reversed.toList();
 
     if (isProcessTapped) {
-      bg = (widget.json['fills'] as List);
+      bg = (widget.json['fills'] as List?)!;
     }
 
     final _json = {...widget.json, 'fills': bg};
@@ -40,7 +40,7 @@ class _GetButtonState extends State<GetButton> {
     );
   }
 
-  String toCode({@required bool extractComponents}) {
+  String toCode({required bool extractComponents}) {
     return '''
 class AppButton extends StatefulWidget {
   @override

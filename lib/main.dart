@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
 class PluginPage extends StatelessWidget {
   final bool isSample;
 
-  const PluginPage({Key key, this.isSample}) : super(key: key);
+  const PluginPage({Key? key, required this.isSample}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

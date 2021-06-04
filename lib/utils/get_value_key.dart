@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-ValueKey getValueKeyImage(String data, {String type, @required String name}) {
+ValueKey getValueKeyImage(String data, {String? type, required String? name}) {
   final String value = data.split('\"').join('"');
 
   // return ValueKey("$type:$value:$name");
@@ -15,7 +15,7 @@ ValueKey getValueKeyImage(String data, {String type, @required String name}) {
   return ValueKey(res);
 }
 
-ValueKey getValueKeyComponent(Widget value, {@required String name}) {
+ValueKey getValueKeyComponent(Widget? value, {required String? name}) {
 
   if (value == null) {
     return ValueKey('WIDGET:$name');

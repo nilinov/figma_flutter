@@ -1,7 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
 Color getColorFromFills(Map<String, dynamic> json) {
-  if (json == null) return Colors.transparent;
 
   if (viewDebugProps) print('getColorFromFills');
   final color1 = [...(json['strokes'] ?? []), ...(json['fills'] ?? [])]

@@ -1,7 +1,7 @@
 import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
-Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> variables }) {
+Widget? getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable?>? variables }) {
   if (json['visible'] == false || json['isMask'] == true || json['visible'] == false) {
     return null;
   }
@@ -77,8 +77,8 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> var
 
       debugPrintWidget("Container", level: level, name: json['name']);
 
-      double height;
-      double width;
+      double? height;
+      double? width;
 
       if (level == 0 || json['layoutMode'] == 'NONE') {
         height = json['height'];
@@ -132,7 +132,7 @@ Widget getWidgetByMap(Map<String, dynamic> json, int level, { List<Variable> var
     case 'INSTANCE':
       return getInstanceByName(json, level);
     case 'GROUP':
-      Widget item = (getChildrenByLayoutMode(json, level + 1));
+      Widget? item = (getChildrenByLayoutMode(json, level + 1));
 
       if (item == null) return null;
 

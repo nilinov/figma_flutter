@@ -1,11 +1,11 @@
 import 'package:flutter_visible/imports.dart';
 
-extension WidgetExt on Widget {
-  String toCode({@required bool extractComponents}) {
+extension WidgetExt on Widget? {
+  String? toCode({required bool extractComponents}) {
     if (this == null) return null;
 
-    if (extractComponents == true && this.key != null) {
-      final value = (this.key as ValueKey).value;
+    if (extractComponents == true && this!.key != null) {
+      final value = (this!.key as ValueKey).value;
       if (value is Map) {
         if (value['type'] == 'WIDGET') {
           return '''
@@ -16,8 +16,8 @@ extension WidgetExt on Widget {
     }
 
     if (this is Container) {
-      final Container item = this;
-      final padding = (item.padding as EdgeInsets).toCode();
+      final Container item = this as Container;
+      final padding = (item.padding as EdgeInsets?).toCode();
 
       final valDecoration = (item.decoration as BoxDecoration).toCode();
 
@@ -25,12 +25,12 @@ extension WidgetExt on Widget {
       Container(
         ${getKey(item)}
         ${valDecoration != '' ? "decoration: $valDecoration," : ""}
-        ${padding != null ? "padding: ${(item.padding as EdgeInsets).toCode()}," : ""}
+        ${padding != null ? "padding: ${(item.padding as EdgeInsets?).toCode()}," : ""}
         child: ${item.child.toCode(extractComponents: extractComponents)},
       )
       ''';
     } else if (this is Row) {
-      final Row item = this;
+      final Row item = this as Row;
       return '''
       Row(
         ${getKey(item)}
@@ -40,7 +40,7 @@ extension WidgetExt on Widget {
       )
       ''';
     } else if (this is Column) {
-      final Column item = this;
+      final Column item = this as Column;
       return '''
       Column(
         ${getKey(item)}
@@ -50,7 +50,7 @@ extension WidgetExt on Widget {
       )
       ''';
     } else if (this is Stack) {
-      final Stack item = this;
+      final Stack item = this as Stack;
       return '''
       Stack(
         ${getKey(item)}
@@ -58,7 +58,7 @@ extension WidgetExt on Widget {
       )
       ''';
     } else if (this is Positioned) {
-      final Positioned item = this;
+      final Positioned item = this as Positioned;
       return '''
       Positioned(
         ${getKey(item)}
@@ -70,7 +70,7 @@ extension WidgetExt on Widget {
       )
       ''';
     } else if (this is Expanded) {
-      final Expanded item = this;
+      final Expanded item = this as Expanded;
       return '''
       Expanded(
         ${getKey(item)}
@@ -78,7 +78,7 @@ extension WidgetExt on Widget {
       )
       ''';
     } else if (this is SizedBox) {
-      final SizedBox item = this;
+      final SizedBox item = this as SizedBox;
       if (item.child == null && item.width == null && item.height == null)
         return null;
       return '''
@@ -90,12 +90,12 @@ extension WidgetExt on Widget {
       )
       ''';
     } else if (this is Text) {
-      final Text item = this;
+      final Text item = this as Text;
       return '''
-        Text("${(this as Text).data}", ${getKey(item)} textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style.toCode()})
+        Text("${(this as Text).data}", ${getKey(item)} textAlign: ${(this as Text).textAlign}, style: ${(this as Text).style!.toCode()})
       ''';
     } else if (this is Align) {
-      final Align item = this;
+      final Align item = this as Align;
       return '''
         Align(
           child: ${item.child.toCode(extractComponents: extractComponents)},
@@ -103,17 +103,17 @@ extension WidgetExt on Widget {
         )
       ''';
     } else if (this is Divider) {
-      final Divider item = this;
+      final Divider item = this as Divider;
       return '''
         Divider(color: ${item.color})
       ''';
     } else if (this is VerticalDivider) {
-      final VerticalDivider item = this;
+      final VerticalDivider item = this as VerticalDivider;
       return '''
         VerticalDivider(color: ${item.color})
       ''';
     } else if (this is SvgPicture) {
-      final SvgPicture item = this;
+      final SvgPicture item = this as SvgPicture;
       return '''
         SvgPicture.string(\'''{getKeyValue(item)}\''',${getKey(item)}
         ${wrapProp('width', item.width)}
@@ -121,7 +121,7 @@ extension WidgetExt on Widget {
         )
       ''';
     } else if (this is Image) {
-      final Image item = this;
+      final Image item = this as Image;
       return '''
         SvgPicture.string(\'''{getKeyValue(item)}\''', ${getKey(item)}
         ${wrapProp('width', item.width)}
@@ -129,10 +129,10 @@ extension WidgetExt on Widget {
         )
       ''';
     }
-    return this.toStringDeep();
+    return this!.toStringDeep();
   }
 
-  String toWidget({String name}) {
+  String toWidget({String? name}) {
     return '''
       class ${name ?? 'Widget1'} extends StatelessWidget {
         @override
@@ -143,9 +143,11 @@ extension WidgetExt on Widget {
     ''';
   }
 
-  List<String> toWidgetsExport() {}
+  List<String> toWidgetsExport() {
+    return [];
+  }
 
-  List<String> toWidgets({String name}) {
+  List<String> toWidgets({String? name}) {
     final items = getChildren([this]);
 
     return [
@@ -164,19 +166,20 @@ extension WidgetExt on Widget {
   }
 }
 
-extension EdgeInsetsExt on EdgeInsets {
+extension EdgeInsetsExt on EdgeInsets? {
   toCode() {
     if (this == null) return null;
-    if (top == 0 && left == 0 && right == 0 && bottom == 0) return null;
-    if (top == left && left == right && right == bottom)
-      return 'EdgeInsets.all($left)';
+
+    if (this!.top == 0 && this!.left == 0 && this!.right == 0 && this!.bottom == 0) return null;
+    if (this!.top == this!.left && this!.left == this!.right && this!.right == this!.bottom)
+      return 'EdgeInsets.all($this!.left)';
 
     return '''
     EdgeInsets.only(
-      ${wrapProp('top', top)}
-      ${wrapProp('left', left)}
-      ${wrapProp('right', right)}
-      ${wrapProp('bottom', bottom)}
+      ${wrapProp('top', this!.top)}
+      ${wrapProp('left', this!.left)}
+      ${wrapProp('right', this!.right)}
+      ${wrapProp('bottom', this!.bottom)}
     )
     ''';
   }
@@ -236,7 +239,7 @@ int numKey = 1;
 
 getKey(Widget item) {
   if (item.key == null) return '';
-  dynamic value = (item.key as ValueKey)?.value ?? item.key;
+  dynamic value = (item.key as ValueKey?)?.value ?? item.key;
   if (value is Map) {
     if (value['type'] == 'SVG' || value['type'] == 'PNG') {
       value = '${value['type']}:${value['name']}';
@@ -255,7 +258,7 @@ getKey(Widget item) {
 getKeyName(Widget item) {
   print(item);
   if (item.key == null) return '';
-  dynamic value = (item.key as ValueKey)?.value ?? item.key;
+  dynamic value = (item.key as ValueKey?)?.value ?? item.key;
   if (value is Map) {
     if (value['type'] == 'SVG' || value['type'] == 'PNG') {
       return value['name'];
@@ -269,7 +272,7 @@ getKeyName(Widget item) {
 
 getKeyValue(Widget item) {
   if (item.key == null) return '';
-  dynamic value = (item.key as ValueKey)?.value;
+  dynamic value = (item.key as ValueKey?)?.value;
   if (value is Map) {
     if (value['type'] == 'SVG' || value['type'] == 'PNG') {
       return value['value'];
@@ -289,7 +292,7 @@ String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
   return '';
 }
 
-List<Widget> getChildren(List<Widget> items) {
+List<Widget?> getChildren(List<Widget?> items) {
   for (var i = 0; i < items.length; i++) {
     final item = items[i];
 

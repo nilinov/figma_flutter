@@ -1,7 +1,7 @@
 import 'package:flutter_visible/imports.dart';
 
-wrapInstance( Map<String, dynamic> json, Widget widget, int level, { Color bgColor } ) {
-  double height;
+wrapInstance( Map<String, dynamic> json, Widget? widget, int level, { Color? bgColor } ) {
+  double? height;
 
   if (json['counterAxisSizingMode'] == 'FIXED') {
     height = json['height'];
