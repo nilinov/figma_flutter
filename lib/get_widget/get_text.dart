@@ -52,6 +52,8 @@ GWidget getText(Map<String, dynamic> json, int level,
             text: ${(e['text'] as String).replaceAll('\\n', '\n')},
             style: ${getTextStyle(e).code})''';
       }).toList(),
+      components: [],
+      type: 'list-of-textspan'
     );
     res = RichText(
       textAlign: textAlign,
@@ -85,5 +87,5 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   //TODO vertical align
 
-  return GWidget(res, code);
+  return GWidget(res, code, type: 'wrap-text');
 }

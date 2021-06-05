@@ -43,15 +43,31 @@ Widget getChild(GetButton widget, _GetButtonState state) {
     onTap: () {},
     onTapDown: (details) => state.setState(() => state.isProcessTapped = true),
     onTapUp: (details) => state.setState(() => state.isProcessTapped = false),
-    child: getButtonLayout(widget.json, state.isProcessTapped,
-        level: widget.level).widget,
+    child:
+        getButtonLayout(widget.json, state.isProcessTapped, level: widget.level)
+            .widget,
   );
 }
 
 String GetButtonToCode({required String title, required String onTap}) {
   return 'AppButton(title: "$title", onTap: $onTap)';
+}
 
-  return '''
+GWidget getGButton(
+  Map<String, dynamic> json,
+  int level,
+) {
+  final item = GetButton(json: json, level: level);
+  return GWidget(
+    item,
+    GetButtonToCode(title: 'title', onTap: 'onTap'),
+    components: [
+      GWidget(AppButton(), GetButtonToCode(title: 'title', onTap: 'onTap'), type: 'AppButton-source')
+    ],
+    type: 'AppButton'
+  );
+}
+
 class AppButton extends StatefulWidget {
   @override
   _AppButtonState createState() => _AppButtonState();
@@ -69,6 +85,4 @@ class _AppButtonState extends State<AppButton> {
       child: SizedBox(),
     );
   }
-}
-''';
 }

@@ -10,14 +10,13 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
       widget = getInput(json, level);
       break;
     case 'BUTTON':
-      final item = GetButton(json: json, level: level);
-      return GWidget(item, GetButtonToCode(title: 'title', onTap: 'onTap'));
+      return getGButton(json, level);
     default:
       if (name.contains('CHECKBOX')) {
-        return GWidget(GetCheckbox(json: json, level: level), 'SizedBox()');
+        return GWidget(GetCheckbox(json: json, level: level), 'SizedBox()', type: 'CHECKBOX');
       }
       if (name.contains('SWITCH')) {
-        return GWidget(GetSwitch(json: json, level: level), '');
+        return GWidget(GetSwitch(json: json, level: level), '', type: 'SWITCH');
       }
       widget = getChildrenByLayoutMode(json, level);
   }

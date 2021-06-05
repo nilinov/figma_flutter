@@ -24,7 +24,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       key: ${getValueKeyImageString(json['svg'], type: 'SVG', name: json['name'])},
       height: ${json['height']},
       width: ${json['width']},
-    )''');
+    )''',
+        type: 'svg-image');
   } else if (json['png'] != null) {
     debugPrintWidget("Image", level: level, name: json['name']);
 
@@ -40,7 +41,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       key: ${getValueKeyImageString(json['png'], type: 'PNG', name: json['name'])},
       height: ${json['height']},
       width: ${json['width']},
-    )''');
+    )''',
+        type: 'png-image');
   }
 
   switch (json['type']) {
@@ -71,7 +73,9 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         ),
         ${wrapProp('padding', getPadding(json))}
         child: ${widget.code},
-      )''');
+      )''',
+          components: [widget],
+          type: 'component');
     case 'RECTANGLE':
       var widget = (getChildrenByLayoutMode(json, level + 1));
       if (widget == null) return null;
@@ -101,7 +105,9 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
               ${wrapProp('boxShadow', getBoxShadowString(json))}
             ),
             child: ${widget.code},
-          )''');
+          )''',
+          components: [widget],
+          type: 'rectangle');
     case 'VECTOR':
       debugPrintWidget("SvgPicture", level: level, name: json['name']);
       return GWidget(
@@ -116,7 +122,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         key: ${getValueKeyImageString(json['svg'], type: 'SVG', name: json['name'])},
             width: ${json['width']},
             height: ${json['height']},
-      )''');
+      )''',
+          type: 'svg-image');
     case 'TEXT':
       return getText(json, level + 1, variables: variables);
     case 'FRAME':
@@ -178,7 +185,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
       GWidget container = GWidget(
           Container(
-            key: getValueKeyComponent(widget.widget, name: "FRAME:${json['name']} ($level) ${json['id']}"),
+            key: getValueKeyComponent(widget.widget,
+                name: "FRAME:${json['name']} ($level) ${json['id']}"),
             width: width,
             height: height,
             decoration: BoxDecoration(
@@ -204,10 +212,14 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         ${wrapProp('padding', getPadding(json))}
         child: ${widget.code},
       )
-      ''');
+      ''',
+          components: [widget],
+          type: 'frame');
 
       if (expanded) {
-        return GWidget(Expanded(child: container.widget), '''Expanded(child: ${container.code})''');
+        return GWidget(Expanded(child: container.widget),
+            '''Expanded(child: ${container.code})''',
+            components: [widget], type: 'expanded-frame');
       }
 
       return container;
@@ -250,22 +262,30 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         return GWidget(
             SizedBox(
                 child: widget, height: json['height'], width: json['width']),
-            '''SizedBox(child: $widgetCode, height: ${json['height']}, width: ${json['width']})''');
+            '''SizedBox(child: $widgetCode, height: ${json['height']}, width: ${json['width']})''',
+            components: [
+              GWidget(widget, widgetCode, type: 'wrap-stack-sizedbox')
+            ],
+            type: 'wrap-stack-sizedbox');
       }
 
       return GWidget(
-        Expanded(child: widget),
-        ''' Expanded(child: $widgetCode)''',
-      );
+          Expanded(child: widget), ''' Expanded(child: $widgetCode)''',
+          components: [GWidget(widget, widgetCode, type: 'expanded')],
+          type: 'expanded');
     case 'LINE':
       debugPrintWidget("Container", level: level, name: json['name']);
 
       if (json['rotation'] == 0 || json['rotation'] == 180) {
-        return GWidget(Divider(color: getColorFromFills(json)), '''Divider(color: ${getColorFromFills(json)})''');
+        return GWidget(Divider(color: getColorFromFills(json)),
+            '''Divider(color: ${getColorFromFills(json)})''',
+            type: 'line');
       }
 
       if (json['rotation'] == 90 || json['rotation'] == 270) {
-        return GWidget(VerticalDivider(color: getColorFromFills(json)), '''VerticalDivider(color: ${getColorFromFills(json)})''');
+        return GWidget(VerticalDivider(color: getColorFromFills(json)),
+            '''VerticalDivider(color: ${getColorFromFills(json)})''',
+            type: 'line');
       }
 
       return null;
