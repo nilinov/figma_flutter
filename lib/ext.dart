@@ -289,6 +289,15 @@ String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
     if (value is String && value.isNotEmpty) {
       return "$name: $value,";
     }
+    if (value is double || value is num || value is int) {
+      return "$name: $value,";
+    }
+    if (value is Color) {
+      return "$name: $value,";
+    }
+    if (value is bool) {
+      return "$name: $value,";
+    }
   }
 
   return '';

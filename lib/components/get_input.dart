@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter_visible/ext.dart';
 import 'package:flutter_visible/imports.dart';
 
 GWidget getInput(Map<String, dynamic> json, int level) {
@@ -45,23 +46,25 @@ GWidget getInput(Map<String, dynamic> json, int level) {
     styleLabel: styleLabel.textStyle,
   );
 
+  final code = '''
+          AppInput(
+            ${wrapProp('placeholder', '"$placeholder"')}
+            ${wrapProp('label', '"$label"')}
+            ${wrapProp('borderDefaultColor', borderDefaultColor)}
+            ${wrapProp('borderFocusColor', borderFocusColor)}
+            ${wrapProp('stylePlaceholder', {stylePlaceholder.code})}
+            ${wrapProp('isAnimatedLabel', isAnimatedLabel)}
+            ${wrapProp('styleLabel', styleLabel.code)}
+          )
+          ''';
+
   return GWidget(
       input,
-      '''AppInput("$label", placeholder: "$placeholder", isAnimatedLabel: $isAnimatedLabel)''',
+    code,
       components: [
         GWidget(
           input,
-          '''
-          AppInput(
-            placeholder: "$placeholder",
-            borderDefaultColor: $borderDefaultColor,
-            borderFocusColor: $borderFocusColor,
-            stylePlaceholder: ${stylePlaceholder.code},
-            isAnimatedLabel: $isAnimatedLabel,
-            label: $label,
-            styleLabel: ${styleLabel.textStyle},
-          )
-          ''',
+          AppInputString,
           type: 'AppInput-source',
         )
       ],
@@ -70,6 +73,49 @@ GWidget getInput(Map<String, dynamic> json, int level) {
 }
 
 class AppInput extends StatelessWidget {
+  final bool isAnimatedLabel;
+  final String? placeholder;
+  final String label;
+  final TextStyle? styleLabel;
+  final TextStyle? stylePlaceholder;
+  final Color borderFocusColor;
+  final Color borderDefaultColor;
+
+  const AppInput({
+    Key? key,
+    required this.isAnimatedLabel,
+    this.placeholder,
+    required this.label,
+    this.styleLabel,
+    this.stylePlaceholder,
+    required this.borderFocusColor,
+    required this.borderDefaultColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: !isAnimatedLabel ? (placeholder ?? '') : label,
+        hintText: isAnimatedLabel ? (placeholder ?? '') : null,
+        hintStyle: stylePlaceholder,
+        labelStyle: styleLabel ?? stylePlaceholder,
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: borderFocusColor),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: borderDefaultColor),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: borderDefaultColor),
+        ),
+      ),
+    );
+  }
+}
+
+
+const String AppInputString = '''class AppInput extends StatelessWidget {
   final bool isAnimatedLabel;
   final String? placeholder;
   final String label;
@@ -110,3 +156,4 @@ class AppInput extends StatelessWidget {
     );
   }
 }
+''';
