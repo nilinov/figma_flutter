@@ -78,10 +78,10 @@ GWidget getText(Map<String, dynamic> json, int level,
     res = SizedBox(child: res, width: json['width']);
   }
 
-  if (json['layoutGrow'] == 1) {
-    debugPrintWidget("Expanded", level: level + 1, name: json['name']);
-    res = Expanded(child: res);
-  }
+  // if (json['layoutGrow'] == 1) {
+  //   debugPrintWidget("Expanded", level: level + 1, name: json['name']);
+  //   res = Expanded(child: res);
+  // }
 
   //TODO vertical align
 

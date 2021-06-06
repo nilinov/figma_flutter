@@ -27,7 +27,7 @@ String getValueKeyImageString(String data, {String? type, required String? name}
     'name': '$name',
   };
 
-  return "ValueKey('$res')";
+  return '''ValueKey('$name')''';
 }
 
 ValueKey getValueKeyComponent(Widget? value, {required String? name}) {

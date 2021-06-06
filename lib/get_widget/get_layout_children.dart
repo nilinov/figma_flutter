@@ -5,6 +5,7 @@ GWidgetList<GWidget> getLayoutChildren(Map<String, dynamic> json,
   final res = <GWidget>[];
 
   for (var i = 0; i < (json['children'] as List).length; i++) {
+    // add space between items
     if (i != 0 && space != null && space != 0) {
       if (axis == Axis.horizontal) {
         res.add(GWidget(SizedBox(width: space), '''SizedBox(width: $space)'''));
@@ -13,17 +14,26 @@ GWidgetList<GWidget> getLayoutChildren(Map<String, dynamic> json,
       }
     }
 
-    GWidget? widget = getWidgetByMap(json['children'][i], level + 1, variables: variables);
+    final itemJson = json['children'][i];
+    GWidget? widget = getWidgetByMap(itemJson, level + 1, variables: variables);
 
-    if (widget?.widget is Text) {
+    if (widget == null) continue;
+
+    if (widget.widget is Text) {
       if (axis == Axis.horizontal) {
-        widget = GWidget(Expanded(child: widget?.widget ?? SizedBox()), '''Expanded(child: ${widget?.code})''');
+        widget = wrapExpanded(widget);
       } else {
-        widget = GWidget(SizedBox(child: widget?.widget, width: double.infinity), '''SizedBox(child: ${widget?.code}, width: double.infinity)''');
+        widget = wrapSizedBox(widget, width: double.infinity);
+      }
+    } else {
+      if (axis == Axis.horizontal) {
+        if (isPrimaryAxisSizingModeAuto(json) && layoutGrow(itemJson) == 1) {
+          widget = wrapExpanded(widget);
+        }
       }
     }
 
-    if (widget != null) res.add(widget);
+    res.add(widget);
   }
 
   return GWidgetList(res, res.map((e) => e.code).toList());

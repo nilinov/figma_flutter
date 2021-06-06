@@ -63,7 +63,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
               .length ==
           1 &&
       json['children'][0]['type'] != 'TEXT' &&
-      !isFillWidth(json)
+      !isFillWidthVertical(json)
   ) {
     debugPrintWidget("Align", level: level, name: json['name']);
 

@@ -20,7 +20,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           width: json['width'],
         ),
         '''SvgPicture.string(
-      ${json['svg']},
+      \'''${json['svg']}\''',
       key: ${getValueKeyImageString(json['svg'], type: 'SVG', name: json['name'])},
       height: ${json['height']},
       width: ${json['width']},
@@ -36,7 +36,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           width: json['width'],
         ),
         '''Image.memory(
-      ${base64Decode(json['png'])},
+      \'''${base64Decode(json['png'])}\''',
       key: ${getValueKeyImageString(json['png'], type: 'PNG', name: json['name'])},
       height: ${json['height']},
       width: ${json['width']},
@@ -130,55 +130,42 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
       double? height;
       double? width;
+      var name = json['name'];
 
       if (level == 0 || json['layoutMode'] == 'NONE') {
         height = json['height'];
         width = json['width'];
-      } else if (json['layoutMode'] == 'HORIZONTAL') {
-        if (json['primaryAxisSizingMode'] == 'FIXED' &&
-            json['layoutGrow'] == 0) {
+      } else if (isHorizontal(json)) {
+        if (isPrimaryAxisSizingModeFixed(json) &&
+            layoutGrow(json) == 0) {
           // fixed h
           height = json['height'];
-        } else if (json['primaryAxisSizingMode'] == 'FIXED' &&
-            json['layoutGrow'] == 1) {
+        } else if (isPrimaryAxisSizingModeFixed(json) && layoutGrow(json) == 1) {
           // fill h
           height = double.infinity;
-        } else if (json['primaryAxisSizingMode'] == 'AUTO') {
+        } else if (isPrimaryAxisSizingModeAuto(json)) {
           // hug h
         }
 
-        if (json['layoutAlign'] == 'INHERIT' &&
-            json['counterAxisSizingMode'] == 'FIXED') {
-          //fixed w
-          width = json['width'];
-        } else if (json['layoutAlign'] == 'STRETCH' &&
-            json['counterAxisSizingMode'] == 'FIXED') {
+        if (isStretch(json) && isCounterAxisSizingModeFixed(json)) {
           //fill w
           width = double.infinity;
-        } else if (json['layoutAlign'] == 'INHERIT' &&
-            json['counterAxisSizingMode'] == 'AUTO') {
-          //hug w
         }
       }
 
-      if (json['primaryAxisSizingMode'] == 'FIXED') {
+      if (isPrimaryAxisSizingModeFixed(json)) {
         // fixed w
         width = json['width'];
-
-        if (json['layoutAlign'] == 'STRETCH') {
-          // fill w
-          expanded = true;
-          width = null;
-        }
       }
 
-      if (json['counterAxisSizingMode'] == 'FIXED') {
+      if (isCounterAxisSizingModeFixed(json)) {
         height = json['height'];
       }
 
       GWidget container = GWidget(
           Container(
-            key: getValueKeyComponent(widget.widget, name: "FRAME:${json['name']} ($level) ${json['id']}"),
+            key: getValueKeyComponent(widget.widget,
+                name: "FRAME:${json['name']} ($level) ${json['id']}"),
             width: width,
             height: height,
             decoration: BoxDecoration(
@@ -205,10 +192,6 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         child: ${widget.code},
       )
       ''');
-
-      if (expanded) {
-        return GWidget(Expanded(child: container.widget), '''Expanded(child: ${container.code})''');
-      }
 
       return container;
     case 'INSTANCE':
@@ -243,8 +226,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
         child: item.widget,
       )''';
 
-      if ((json['primaryAxisSizingMode'] == 'FIXED' &&
-              json['counterAxisSizingMode'] == 'FIXED') ||
+      if ((isPrimaryAxisSizingModeFixed(json) &&
+              isCounterAxisSizingModeFixed(json)) ||
           (json['primaryAxisSizingMode'] == null &&
               json['counterAxisSizingMode'] == null)) {
         return GWidget(
@@ -261,11 +244,13 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       debugPrintWidget("Container", level: level, name: json['name']);
 
       if (json['rotation'] == 0 || json['rotation'] == 180) {
-        return GWidget(Divider(color: getColorFromFills(json)), '''Divider(color: ${getColorFromFills(json)})''');
+        return GWidget(Divider(color: getColorFromFills(json)),
+            '''Divider(color: ${getColorFromFills(json)})''');
       }
 
       if (json['rotation'] == 90 || json['rotation'] == 270) {
-        return GWidget(VerticalDivider(color: getColorFromFills(json)), '''VerticalDivider(color: ${getColorFromFills(json)})''');
+        return GWidget(VerticalDivider(color: getColorFromFills(json)),
+            '''VerticalDivider(color: ${getColorFromFills(json)})''');
       }
 
       return null;

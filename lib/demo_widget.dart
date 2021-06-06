@@ -37,7 +37,7 @@ class _DemoWidgetState extends State<DemoWidget> {
 
     if (json != null) {
       final res = getWidgetByMap(json ?? {}, 0);
-      // print(res.toWidget());
+      print(res?.code);
       return Row(
         children: [
           Expanded(

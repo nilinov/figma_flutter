@@ -18,6 +18,6 @@ Future<String> getData(bool isAssets) async {
     }
     await Future.delayed(Duration(seconds: 1));
   }
-  print({res});
+  // print({res});
   return res as String;
 }
