@@ -37,13 +37,6 @@ class _DemoWidgetState extends State<DemoWidget> {
 
     if (json != null) {
       final res = getWidgetByMap(json ?? {}, 0);
-
-      final components = res != null ? getAllComponents(res,  result: []) : [];
-
-      print('---------------------');
-      print(components);
-      print('---------------------');
-
       // print(res.toWidget());
       return Row(
         children: [
@@ -51,7 +44,11 @@ class _DemoWidgetState extends State<DemoWidget> {
               child: SingleChildScrollView(
             child: Padding(
               child: Container(
-                child: res?.widget ?? SizedBox(),
+                child: Column(
+                  children: [
+                    res?.widget ?? SizedBox(),
+                  ],
+                ),
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.of(context).size.height * 0.8,
                     maxWidth: MediaQuery.of(context).size.width / 2),

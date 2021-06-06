@@ -62,7 +62,9 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
               .where((element) => element['visible'] == true)
               .length ==
           1 &&
-      json['children'][0]['type'] != 'TEXT') {
+      json['children'][0]['type'] != 'TEXT' &&
+      !isFillWidthVertical(json)
+  ) {
     debugPrintWidget("Align", level: level, name: json['name']);
 
     final child = getWidgetByMap(
@@ -71,6 +73,10 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       level,
       variables: variables,
     );
+
+    var layoutMode = json['layoutMode'];
+    var primaryAxisSizingMode = json['primaryAxisSizingMode'];
+    var layoutAlign = json['layoutAlign'];
 
     if (child == null) return gWidgetSizedBox('empty-child');
 

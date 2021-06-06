@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_visible/demo_widget.dart';
+import 'package:flutter_visible/demo_widget1.dart';
 import 'package:flutter_visible/env.dart';
 
 void main() {
@@ -33,6 +34,7 @@ class PluginPage extends StatelessWidget {
         children: [
           Text('Version: 1'),
           Expanded(child: Container(child: DemoWidget(isSample: isSample))),
+          // Expanded(child: Container(child: Widget1())),
         ],
       ),
     );
