@@ -2,7 +2,6 @@
 import 'dart:js' as js;
 import 'package:flutter_visible/imports.dart';
 
-
 class DemoWidget extends StatefulWidget {
   final bool isSample;
 
@@ -41,8 +40,10 @@ class _DemoWidgetState extends State<DemoWidget> {
       final res = getWidgetByMap(json ?? {}, 0);
 
       if (res != null) {
-        final List<GWidget> list = getAllComponents(res, result: []).where((element) => element.type.contains('App')).where((element) =>
-        element.type.contains('source')).toList();
+        final List<GWidget> list = getAllComponents(res, result: [])
+            .where((element) => element.type.contains('App'))
+            .where((element) => element.type.contains('source'))
+            .toList();
 
         print([res, ...list].map((e) => e.type).join(';'));
         components = [res, ...list];
@@ -52,92 +53,87 @@ class _DemoWidgetState extends State<DemoWidget> {
       return Row(
         children: [
           Expanded(
-              child: SingleChildScrollView(
-            child: Padding(
-              child: Container(
-                child: Column(
-                  children: [
-                    res?.widget ?? SizedBox(),
-                  ],
-                ),
-                constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.8,
-                    maxWidth: MediaQuery.of(context).size.width / 2),
-              ),
-              padding: EdgeInsets.all(20),
+              child: Padding(
+            child: Container(
+              child: SingleChildScrollView(child: Column(children: [res?.widget ?? SizedBox()])),
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.9,
+                  maxWidth: MediaQuery.of(context).size.width / 2),
             ),
+            padding: EdgeInsets.all(20),
           )),
           if (MediaQuery.of(context).size.width > 800)
-          Expanded(
-              child: Container(
-                  child: Column(
-            children: [
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          js.context.callMethod(
-                              'fallbackCopyTextToClipboard', [res?.code]);
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text("Copy")));
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.all(10),
-                          child: Text('Click to clipboard text'),
+            Expanded(
+                child: Container(
+                    child: Column(
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            js.context.callMethod(
+                                'fallbackCopyTextToClipboard', [res?.code]);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text("Copy")));
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Text('Click to clipboard text'),
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          js.context.callMethod('fallbackDownloadWidget',
-                              [res?.code, 'demo_widget_1.dart']);
-                        },
-                        child: Container(
-                          color: Colors.white,
-                          padding: EdgeInsets.all(10),
-                          child: Text('Click to download widget'),
+                        GestureDetector(
+                          onTap: () {
+                            js.context.callMethod('fallbackDownloadWidget',
+                                [res?.code, 'demo_widget_1.dart']);
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            padding: EdgeInsets.all(10),
+                            child: Text('Click to download widget'),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  ...components.map((e) => Padding(
-                    padding: const EdgeInsets.all(8.0),
+                      ],
+                    ),
+                    Divider(),
+                    ...components.map((e) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              downloadWidget(e);
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.save),
+                                SizedBox(width: 10),
+                                Text("${e.type}"),
+                              ],
+                            ),
+                          ),
+                        )),
+                    Divider(),
+                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
                     child: GestureDetector(
                       onTap: () {
-                        downloadWidget(e);
+                        js.context.callMethod(
+                            'fallbackCopyTextToClipboard', [res?.code]);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text("Copy")));
                       },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.save),
-                          SizedBox(width: 10),
-                          Text("${e.type}"),
-                        ],
-                      ),
+                      child:
+                          Text((splitComponent ? res?.code : res?.code) ?? ''),
                     ),
-                  )),
-                  Divider(),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: GestureDetector(
-                    onTap: () {
-                      js.context.callMethod(
-                          'fallbackCopyTextToClipboard', [res?.code]);
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text("Copy")));
-                    },
-                    child: Text((splitComponent ? res?.code : res?.code) ?? ''),
                   ),
                 ),
-              ),
-            ],
-          ))),
+              ],
+            ))),
         ],
       );
     }
@@ -148,8 +144,8 @@ class _DemoWidgetState extends State<DemoWidget> {
   void downloadWidget(GWidget<Widget> e) {
     final name = e.type.split('-source').join('');
 
-    js.context.callMethod(
-        'fallbackDownloadWidget', [e.widgetCode, "$name.dart"]);
+    js.context
+        .callMethod('fallbackDownloadWidget', [e.widgetCode, "$name.dart"]);
   }
 }
 
@@ -161,7 +157,11 @@ class ExportSettingImage extends StatelessWidget {
   final bool expand;
 
   const ExportSettingImage(
-      {Key? key, required this.iconsExport, required this.onChange, required this.title, required this.expand})
+      {Key? key,
+      required this.iconsExport,
+      required this.onChange,
+      required this.title,
+      required this.expand})
       : super(key: key);
 
   @override
