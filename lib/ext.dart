@@ -34,7 +34,7 @@ extension WidgetExt on Widget? {
       return '''
       Row(
         ${getKey(item)}
-        children: [${item.children.where((element) => element != null).map((e) => e.toCode(extractComponents: extractComponents)).join(', ')}],
+        children: [${item.children.map((e) => e.toCode(extractComponents: extractComponents)).join(', ')}],
         crossAxisAlignment: ${item.crossAxisAlignment},
         mainAxisAlignment: ${item.mainAxisAlignment},
       )
@@ -44,7 +44,7 @@ extension WidgetExt on Widget? {
       return '''
       Column(
         ${getKey(item)}
-        children: [${item.children.where((element) => element != null).map((e) => e.toCode(extractComponents: extractComponents)).join(', ')}],
+        children: [${item.children.map((e) => e.toCode(extractComponents: extractComponents)).join(', ')}],
         crossAxisAlignment: ${item.crossAxisAlignment},
         mainAxisAlignment: ${item.mainAxisAlignment},
       )

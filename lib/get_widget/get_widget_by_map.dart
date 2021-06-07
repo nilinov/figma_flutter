@@ -129,10 +129,6 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
     case 'FRAME':
       final widget = getChildrenByLayoutMode(json, level + 1);
 
-      if (widget == null) return null;
-
-      bool expanded = false;
-
       debugPrintWidget("Container", level: level, name: json['name']);
 
       double? height;
