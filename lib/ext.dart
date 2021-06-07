@@ -290,6 +290,9 @@ String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
       return "$name: $value,";
     }
     if (value is double || value is num || value is int) {
+      if (value == double.infinity) {
+        return "$name: double.infinity,";
+      }
       return "$name: $value,";
     }
     if (value is Color) {

@@ -31,12 +31,23 @@ class _DemoWidgetState extends State<DemoWidget> {
   ImageExportEnum iconsExport = ImageExportEnum.inline;
   ImageExportEnum imagesExport = ImageExportEnum.inline;
 
+  List<GWidget> components = [];
+
   @override
   Widget build(BuildContext context) {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
       final res = getWidgetByMap(json ?? {}, 0);
+
+      if (res != null) {
+        final List<GWidget> list = getAllComponents(res, result: []).where((element) => element.type.contains('App')).where((element) =>
+        element.type.contains('source')).toList();
+
+        print([res, ...list].map((e) => e.type).join(';'));
+        components = [res, ...list];
+      }
+
       // print(res.toWidget());
       return Row(
         children: [
@@ -92,30 +103,25 @@ class _DemoWidgetState extends State<DemoWidget> {
                     ],
                   ),
                   Divider(),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: splitComponent,
-                        onChanged: (bool? newValue) =>
-                            setState(() => splitComponent = (newValue ?? true)),
+                  ...components.map((e) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        downloadWidget(e);
+                      },
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.save),
+                          SizedBox(width: 10),
+                          Text("${e.type}"),
+                        ],
                       ),
-                      Text('Разделить компоненты'),
-                    ],
-                  ),
-/*
-                  ExportSettingImage(
-                    title: 'Иконки',
-                    iconsExport: iconsExport,
-                    onChange: (props) => setState(() => iconsExport = props),
-                  ),
-                  ExportSettingImage(
-                    title: 'Встроенные картинки',
-                    iconsExport: imagesExport,
-                    onChange: (props) => setState(() => imagesExport = props),
-                  ),
-*/
+                    ),
+                  )),
                   Divider(),
                 ],
+                crossAxisAlignment: CrossAxisAlignment.start,
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -137,6 +143,13 @@ class _DemoWidgetState extends State<DemoWidget> {
     }
 
     return Center(child: CircularProgressIndicator());
+  }
+
+  void downloadWidget(GWidget<Widget> e) {
+    final name = e.type.split('-source').join('');
+
+    js.context.callMethod(
+        'fallbackDownloadWidget', [e.widgetCode, "$name.dart"]);
   }
 }
 
