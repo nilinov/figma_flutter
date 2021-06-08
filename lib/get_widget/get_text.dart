@@ -19,7 +19,7 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   debugPrintWidget("Text", level: level + 1, name: json['name']);
 
-  String text = json['characters'] ?? '';
+  String text = '"' + (json['characters'] ?? '') + '"';
 
   if (variables != null) {
     final _name = json['name'].split('$String:')[1];
@@ -29,7 +29,7 @@ GWidget getText(Map<String, dynamic> json, int level,
     if (variable != null) {
       if (variable.inCodeVariable == false) {
         text = variable.value ?? variable.defaultValue;
-        text = "${text.split('\\n').join('\n')}";
+        text = '"${text.split('\\n').join('\n')}"';
       } else {
         if (variable.template != null) {
           text = variable.template?.replaceAll('\$variable', variable.name ?? '') ?? 'variable';
@@ -41,8 +41,7 @@ GWidget getText(Map<String, dynamic> json, int level,
   }
 
   final style  = getTextStyle(json);
-  Widget res = Text(text.split('\\n').join('\n'),
-      textAlign: textAlign, style: style.textStyle);
+  Widget res = Text(text,textAlign: textAlign, style: style.textStyle);
 
   code =
       '''Text($text, textAlign: $textAlign, style: ${getTextStyle(json)})''';
@@ -56,7 +55,7 @@ GWidget getText(Map<String, dynamic> json, int level,
         }).toList(),
       (json['styledText'] as List).map((e) {
         return '''TextSpan(
-            text: ${(e['text'] as String).replaceAll('\\n', '\n')},
+            text: "${(e['text'] as String).replaceAll('\\n', '\n')}", 
             style: ${getTextStyle(e).code})''';
       }).toList(),
       components: [],

@@ -1,17 +1,17 @@
 import 'package:flutter_visible/imports.dart';
 
-class GetCheckbox extends StatefulWidget {
+class GetCheckboxRunTime extends StatefulWidget {
   final Json json;
   final int level;
 
-  const GetCheckbox({Key? key, required this.json, required this.level})
+  const GetCheckboxRunTime({Key? key, required this.json, required this.level})
       : super(key: key);
 
   @override
-  _GetCheckboxState createState() => _GetCheckboxState();
+  _GetCheckboxRunTimeState createState() => _GetCheckboxRunTimeState();
 }
 
-class _GetCheckboxState extends State<GetCheckbox> {
+class _GetCheckboxRunTimeState extends State<GetCheckboxRunTime> {
   bool checked = false;
 
   @override
@@ -87,13 +87,13 @@ GWidget getCheckbox(Json json, int level) {
 
   final name = getNameByJson(json);
 
-  return GWidget(GetCheckbox(json: json, level: level + 1),
-      code: 'AppCheckbox("${variable?.defaultValue}")',
+  return GWidget(GetCheckboxRunTime(json: json, level: level + 1),
+      code: '$name("${variable?.defaultValue}")',
       type: 'AppCheckbox',
       name: name,
       components: [
         GWidget(
-          GetCheckbox(json: json, level: level + 1),
+          GetCheckboxRunTime(json: json, level: level + 1),
           type: 'AppCheckbox-source',
           fullCode: getCheckboxCode(childUnChecked, childChecked, name),
           name: name,

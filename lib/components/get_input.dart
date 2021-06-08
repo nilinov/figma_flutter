@@ -122,7 +122,7 @@ const String AppInputString = '''class AppInput extends StatelessWidget {
   final String? placeholder;
   final String label;
   final TextStyle? styleLabel;
-  final TextStyle stylePlaceholder;
+  final TextStyle? stylePlaceholder;
   final Color borderFocusColor;
   final Color borderDefaultColor;
 
@@ -132,7 +132,7 @@ const String AppInputString = '''class AppInput extends StatelessWidget {
     this.placeholder,
     required this.label,
     this.styleLabel,
-    required this.stylePlaceholder,
+    this.stylePlaceholder,
     required this.borderFocusColor,
     required this.borderDefaultColor,
   }) : super(key: key);

@@ -26,7 +26,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
     final name = getNameByJson(json);
 
     return GWidget(pngImage,
-        code: '''AppImages.${name}''',
+        code: '''Image.asset(AppImages.${name})''',
         type: 'png-image',
         name: name,
         components: [
@@ -57,14 +57,13 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
             child: widget.widget,
           ),
           code: '''Container(
-        key: ${getValueKeyComponentString(widget.widget, name: json['name'])},
         decoration: BoxDecoration(
           color: Colors.white,
           ${wrapProp('border', getBorder(json))}
           ${wrapProp('borderRadius', getBorderRadiusString(json))}
           ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
-        ${wrapProp('padding', getPadding(json))}
+        ${wrapProp('padding', getPaddingString(json))}
         child: ${widget.code},
       )''',
           components: [widget],
@@ -88,7 +87,6 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
             child: widget.widget,
           ),
           code: '''Container(
-            key: ${getValueKeyComponentString(widget.widget, name: json['name'])},
             width: ${json['width']},
             height: ${json['height']},
             decoration: BoxDecoration(
@@ -112,7 +110,6 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           ),
           code: '''SvgPicture.string(
         ${json['svg']},
-        key: ${getValueKeyImageString(json['svg'], type: 'SVG', name: json['name'])},
             width: ${json['width']},
             height: ${json['height']},
       )''',
@@ -175,7 +172,6 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           ),
           code: '''
       Container(
-        key: ${getValueKeyComponentString(widget.widget, name: "FRAME:${json['name']} ($level) ${json['id']}")},
         ${wrapProp('width', width)}
         ${wrapProp('height', height)}
         decoration: BoxDecoration(
@@ -184,7 +180,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           ${wrapProp('borderRadius', getBorderRadiusString(json))}
           ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
-        ${wrapProp('padding', getPadding(json))}
+        ${wrapProp('padding', getPaddingString(json))}
         child: ${widget.code},
       )
       ''',
@@ -213,15 +209,14 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
       final widgetCode = '''
       Container(
-        key: ${getValueKeyComponentString(item.widget, name: "GROUP:${json['name']}")},
         decoration: BoxDecoration(
           ${wrapProp('color', getColorFromFillsString(json))}
           ${wrapProp('border', getBorder(json))}
           ${wrapProp('borderRadius', getBorderRadiusString(json))}
           ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
-        ${wrapProp('padding', getPadding(json))}
-        child: item.widget,
+        ${wrapProp('padding', getPaddingString(json))}
+        child: ${item.widget},
       )''';
 
       if ((isPrimaryAxisSizingModeFixed(json) &&

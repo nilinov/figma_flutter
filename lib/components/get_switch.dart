@@ -1,16 +1,16 @@
 import 'package:flutter_visible/imports.dart';
 
-class GetSwitch extends StatefulWidget {
+class GetSwitchRuntime extends StatefulWidget {
   final Map<String, dynamic> json;
   final int level;
 
-  const GetSwitch({Key? key, required this.json, required this.level}) : super(key: key);
+  const GetSwitchRuntime({Key? key, required this.json, required this.level}) : super(key: key);
 
   @override
-  _GetSwitchState createState() => _GetSwitchState();
+  _GetSwitchRuntimeState createState() => _GetSwitchRuntimeState();
 }
 
-class _GetSwitchState extends State<GetSwitch> {
+class _GetSwitchRuntimeState extends State<GetSwitchRuntime> {
   bool checked = false;
 
   @override
@@ -45,3 +45,71 @@ class _GetSwitchState extends State<GetSwitch> {
     );
   }
 }
+
+GWidget getSwitch(Json json, int level) {
+  final _jsonChecked = (json['variants']['children'] as List?)?.firstWhere(
+          (element) => (element['name'] as String).contains('checked=true'),
+      orElse: () => null)!;
+  final _jsonUnChecked = (json['variants']['children'] as List?)?.firstWhere(
+          (element) => (element['name'] as String).contains('checked=false'),
+      orElse: () => null);
+
+  final List<GWidget> GIcons = [];
+
+  Future.forEach(<Json>[
+    ...getJsonIcon(_jsonChecked),
+    ...getJsonIcon(_jsonUnChecked),
+  ], (Json element) {
+    GIcons.addAll(getJsonIcon(element).map((e) => getSvg(e)).toList());
+  });
+
+  var variable = getVariable(json, 'title', inCodeVariable: true, template: "widget.\$variable");
+
+  final childUnChecked = wrapInstance(
+      _jsonUnChecked,
+      getChildrenByLayoutMode(_jsonUnChecked, level, variables: [variable]),
+      level + 1);
+  final childChecked = wrapInstance(
+      _jsonChecked,
+      getChildrenByLayoutMode(_jsonChecked, level, variables: [variable]),
+      level + 1);
+
+  final name = getNameByJson(json);
+
+  return GWidget(GetSwitchRuntime(json: json, level: level + 1),
+      code: '$name("${variable?.defaultValue}")',
+      type: 'AppSwitch',
+      name: name,
+      components: [
+        GWidget(
+          GetSwitchRuntime(json: json, level: level + 1),
+          type: 'AppSwitch-source',
+          fullCode: getSwitchCode(childUnChecked, childChecked, name),
+          name: name,
+        ),
+        ...GIcons,
+      ]);
+}
+
+getSwitchCode(GWidget unchecked, GWidget checked, String name) => '''
+class $name extends StatefulWidget {
+  final String title;
+  
+  $name(this.title);
+
+  @override
+  _${name}State createState() => _${name}State();
+}
+
+class _${name}State extends State<$name> {
+  bool isChecked = false;
+  
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => setState(() => isChecked = !isChecked),
+      child: isChecked ? ${checked.code} : ${unchecked.code},
+    );
+  }
+}
+''';

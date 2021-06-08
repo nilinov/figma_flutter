@@ -34,14 +34,13 @@ GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Co
   ),
       code: '''
   Container(
-    key: ${getValueKeyComponentString(widgetINSTANCE, name: json['name'])},
     decoration: BoxDecoration(
       color: ${bgColor ?? getColorFromFills(json)},
       border: ${getBorder(json)},
       borderRadius: ${getBorderRadius(json)},
       boxShadow: ${getBoxShadow(json)},
     ),
-    padding: ${getPadding(json)},
+    padding: ${getPaddingString(json)},
     child: $widget,
     height: $height,
   )

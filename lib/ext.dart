@@ -298,6 +298,9 @@ String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
     if (value is Color) {
       return "$name: $value,";
     }
+    if (value is EdgeInsets) {
+      return "const EdgeInsets.only(top: ${value.top}, bottom: ${value.bottom}, left: ${value.left}, right: ${value.right}),";
+    }
     if (value is bool) {
       return "$name: $value,";
     }

@@ -16,7 +16,7 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
         return getCheckbox(json, level);
       }
       if (name.contains('SWITCH')) {
-        return GWidget(GetSwitch(json: json, level: level), type: 'SWITCH');
+        return getSwitch(json, level);
       }
       widget = getChildrenByLayoutMode(json, level);
   }
