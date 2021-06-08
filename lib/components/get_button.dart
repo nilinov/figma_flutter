@@ -45,7 +45,7 @@ GWidget getGButton(
   return GWidget(
     item,
     code: code,
-    components: [GWidget(item, code: AppButtonCode, type: 'AppButton-source', fullCode: AppButtonCode)],
+    components: [GWidget(item, code: AppButtonCode, type: 'AppButton-source', name: 'Button', fullCode: AppButtonCode)],
     type: 'AppButton'
   );
 }
