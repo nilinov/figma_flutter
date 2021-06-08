@@ -46,7 +46,7 @@ class _DemoWidgetState extends State<DemoWidget> {
             .toList();
 
         print([res, ...list].map((e) => e.type).join(';'));
-        components = [res, ...list];
+        components = [res, ...list, getAssets(list)];
       }
 
       // print(res.toWidget());

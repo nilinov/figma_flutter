@@ -20,21 +20,20 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       width: json['width'],
     );
 
+    final name = getNameByJson(json);
+
     return GWidget(
       svgImage,
-      code: '''SvgPicture.string(
-      \'''${json['svg']}\''',
-      key: ${getValueKeyImageString(json['svg'], type: 'SVG', name: json['name'])},
-      height: ${json['height']},
-      width: ${json['width']},
-    )''',
+      code: '''AppIcons.${name}''',
       type: 'svg-image',
       components: [
-        GWidget(svgImage,
-            type: 'svg-source',
-            fullCode: json['svg'],
-            fileName: "${getNameByJson(json)}.svg",
-            name: getNameByJson(json))
+        GWidget(
+          svgImage,
+          type: 'svg-source',
+          fullCode: json['svg'],
+          fileName: "${name}.svg",
+          name: name,
+        )
       ],
     );
   } else if (json['png'] != null) {
@@ -49,12 +48,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
     final name = getNameByJson(json);
 
     return GWidget(pngImage,
-        code: '''Image.memory(
-      \'''${base64Decode(json['png'])}\''',
-      key: ${getValueKeyImageString(json['png'], type: 'PNG', name: json['name'])},
-      height: ${json['height']},
-      width: ${json['width']},
-    )''',
+        code: '''AppImages.${name}''',
         type: 'png-image',
         name: name,
         components: [
@@ -204,8 +198,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           code: '''
       Container(
         key: ${getValueKeyComponentString(widget.widget, name: "FRAME:${json['name']} ($level) ${json['id']}")},
-        width: $width,
-        height: $height,
+        ${wrapProp('width', width)}
+        ${wrapProp('height', height)}
         decoration: BoxDecoration(
           ${wrapProp('color', getColorFromFillsString(json))}
           ${wrapProp('border', getBorder(json))}
