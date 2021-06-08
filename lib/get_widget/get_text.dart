@@ -27,18 +27,25 @@ GWidget getText(Map<String, dynamic> json, int level,
     final variable = variables.firstWhere((element) => element!.name == _name);
 
     if (variable != null) {
-      text = variable.value ?? variable.defaultValue;
+      if (variable.inCodeVariable == false) {
+        text = variable.value ?? variable.defaultValue;
+        text = "${text.split('\\n').join('\n')}";
+      } else {
+        if (variable.template != null) {
+          text = variable.template?.replaceAll('\$variable', variable.name ?? '') ?? 'variable';
+        } else {
+          text = variable.name ?? 'variable';
+        }
+      }
     }
   }
-
-  print(variables);
 
   final style  = getTextStyle(json);
   Widget res = Text(text.split('\\n').join('\n'),
       textAlign: textAlign, style: style.textStyle);
 
   code =
-      '''Text("${text.split('\\n').join('\n')}", textAlign: $textAlign, style: ${getTextStyle(json)})''';
+      '''Text($text, textAlign: $textAlign, style: ${getTextStyle(json)})''';
 
   if ((json['styledText'] as List).length > 1) {
     final children = GWidgetList(

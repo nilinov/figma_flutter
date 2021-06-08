@@ -13,7 +13,7 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
       return getGButton(json, level);
     default:
       if (name.contains('CHECKBOX')) {
-        return GWidget(GetCheckbox(json: json, level: level), code: 'SizedBox()', type: 'CHECKBOX');
+        return getCheckbox(json, level);
       }
       if (name.contains('SWITCH')) {
         return GWidget(GetSwitch(json: json, level: level), type: 'SWITCH');

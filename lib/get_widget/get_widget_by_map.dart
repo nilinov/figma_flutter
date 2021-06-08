@@ -12,30 +12,8 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
   if (json['svg'] != null) {
     debugPrintWidget("SvgPicture", level: level, name: json['name']);
+    return getSvg(json);
 
-    final svgImage = SvgPicture.string(
-      json['svg'],
-      key: getValueKeyImage(json['svg'], type: 'SVG', name: json['name']),
-      height: json['height'],
-      width: json['width'],
-    );
-
-    final name = getNameByJson(json);
-
-    return GWidget(
-      svgImage,
-      code: '''AppIcons.${name}''',
-      type: 'svg-image',
-      components: [
-        GWidget(
-          svgImage,
-          type: 'svg-source',
-          fullCode: json['svg'],
-          fileName: "${name}.svg",
-          name: name,
-        )
-      ],
-    );
   } else if (json['png'] != null) {
     debugPrintWidget("Image", level: level, name: json['name']);
 

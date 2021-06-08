@@ -1,8 +1,9 @@
 import 'package:flutter_visible/imports.dart';
 
+
 class GWidget<T extends Widget> {
   final T widget;
-  final String? code;
+  final String? _code;
   final String type;
   final String? name;
   final String? _fileName;
@@ -11,20 +12,22 @@ class GWidget<T extends Widget> {
 
   const GWidget(
     this.widget, {
-    this.code,
+    String? code,
     this.components = const [],
     required this.type,
     this.name,
     dynamic fullCode,
     String? fileName,
   })  : _fileName = fileName,
-        _fullCode = fullCode;
+        _fullCode = fullCode,
+        _code = code;
 
   @override
-  String toString() => code ?? _fullCode ?? '';
+  String toString() => _code ?? _fullCode ?? '';
+
+  String? get code => _code;
 
   get _name => name ?? type.split('-source').join('');
-
   String get fileName => _fileName ?? "${name}.dart";
 
   get fullCode => _fullCode != null
@@ -33,7 +36,7 @@ class GWidget<T extends Widget> {
 class $_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return $code;
+    return $_code;
   }
 }  
   ''';

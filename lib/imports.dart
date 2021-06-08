@@ -15,3 +15,5 @@ export 'wrap_widgets/_wrap_widgets.dart';
 export 'generated_widget.dart';
 
 const viewDebugProps = false;
+
+typedef Json = Map<String, dynamic>;
