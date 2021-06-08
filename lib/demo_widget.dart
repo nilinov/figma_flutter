@@ -132,7 +132,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                             .showSnackBar(SnackBar(content: Text("Copy")));
                       },
                       child:
-                          Text((splitComponent ? res?.code : res?.code) ?? ''),
+                          Text(res?.fullCode ?? ''),
                     ),
                   ),
                 ),

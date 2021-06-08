@@ -78,6 +78,7 @@ GWidget getSwitch(Json json, int level) {
 
   return GWidget(GetSwitchRuntime(json: json, level: level + 1),
       code: '$name("${variable?.defaultValue}")',
+      fullCode: getSwitchCode(childUnChecked, childChecked, name),
       type: 'AppSwitch',
       name: name,
       components: [

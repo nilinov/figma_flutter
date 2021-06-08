@@ -299,6 +299,10 @@ String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
       return "$name: $value,";
     }
     if (value is EdgeInsets) {
+      if (value.top == 0 && value.bottom == 0 && value.left == 0 && value.right == 0) {
+        return '';
+      }
+
       return "const EdgeInsets.only(top: ${value.top}, bottom: ${value.bottom}, left: ${value.left}, right: ${value.right}),";
     }
     if (value is bool) {

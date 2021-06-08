@@ -180,7 +180,15 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
           // width: e['width'],
           // height: e['height'],
         ),
-        code: '''code''',
+        code: '''
+        Positioned(
+          child: ${widget?.code ?? 'SizedBox()'},
+          left: $left,
+          top: $top,
+          right: $right,
+          bottom: $bottom,
+        )
+        ''',
         type: 'Positioned',
       );
     }).toList();

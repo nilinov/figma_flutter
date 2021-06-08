@@ -216,7 +216,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
           ${wrapProp('boxShadow', getBoxShadowString(json))}
         ),
         ${wrapProp('padding', getPaddingString(json))}
-        child: ${item.widget},
+        child: ${item.code},
       )''';
 
       if ((isPrimaryAxisSizingModeFixed(json) &&
