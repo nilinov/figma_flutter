@@ -60,11 +60,11 @@ GWidget getInput(Map<String, dynamic> json, int level) {
 
   return GWidget(
       input,
-    code,
+    code: code,
       components: [
         GWidget(
           input,
-          AppInputString,
+          code: AppInputString,
           type: 'AppInput-source',
           fullCode: AppInputString,
         )

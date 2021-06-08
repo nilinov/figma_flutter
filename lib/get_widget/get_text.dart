@@ -87,5 +87,5 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   //TODO vertical align
 
-  return GWidget(res, code, type: 'wrap-text');
+  return GWidget(res, code: code, type: 'wrap-text');
 }

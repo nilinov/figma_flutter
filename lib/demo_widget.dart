@@ -41,7 +41,7 @@ class _DemoWidgetState extends State<DemoWidget> {
 
       if (res != null) {
         final List<GWidget> list = getAllComponents(res, result: [])
-            .where((element) => element.type.contains('App'))
+            // .where((element) => element.type.contains('App'))
             .where((element) => element.type.contains('source'))
             .toList();
 
@@ -109,7 +109,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                               children: [
                                 Icon(Icons.save),
                                 SizedBox(width: 10),
-                                Text("${e.type}"),
+                                Text("${e.name ?? e.type}"),
                               ],
                             ),
                           ),
@@ -145,7 +145,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     final name = e.type.split('-source').join('');
 
     js.context
-        .callMethod('fallbackDownloadWidget', [e.widgetCode, "$name.dart"]);
+        .callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
   }
 }
 

@@ -32,7 +32,7 @@ GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Co
     child: widget.widget,
     height: height,
   ),
-  '''
+      code: '''
   Container(
     key: ${getValueKeyComponentString(widgetINSTANCE, name: json['name'])},
     decoration: BoxDecoration(

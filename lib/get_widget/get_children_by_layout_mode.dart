@@ -85,7 +85,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         child: child.widget,
         alignment: getAlign(json),
       ),
-      '''Align(
+      code: '''Align(
       child: ${child.code},
       alignment: ${getAlign(json)},
     )''',
@@ -111,7 +111,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         mainAxisAlignment: getMainAxisAlignment(json),
         children: children.widget.map((e) => e.widget).toList(),
       ),
-      '''
+      code: '''
     Column(
       crossAxisAlignment: ${getCrossAxisAlignment(json)},
       mainAxisAlignment: ${getMainAxisAlignment(json)},
@@ -138,7 +138,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         mainAxisAlignment: getMainAxisAlignment(json),
         children: children.widget.map((e) => e.widget).toList(),
       ),
-      '''Row(
+      code: '''Row(
       crossAxisAlignment: ${getCrossAxisAlignment(json)},
       mainAxisAlignment: ${getMainAxisAlignment(json)},
       children: ${children.widget.map((e) => e.code).toList()},
@@ -180,7 +180,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
           // width: e['width'],
           // height: e['height'],
         ),
-        '''code''',
+        code: '''code''',
         type: 'Positioned',
       );
     }).toList();
@@ -197,7 +197,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         json['counterAxisSizingMode'] == null) {
       final child = GWidget(
           Stack(children: children.map((e) => e.widget).toList()),
-          '''Stack(children: ${children.map((e) => e.code).toList()})''',
+          code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
           type: 'stack');
 
       return GWidget(
@@ -206,7 +206,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
             height: json['height'],
             width: json['width'],
           ),
-          '''SizedBox(
+          code: '''SizedBox(
         child: ${child.code},
         height: ${json['height']},
         width: ${json['width']},
@@ -216,7 +216,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
 
     return GWidget(
       Stack(children: children.map((e) => e.widget).toList()),
-      '''Stack(children: ${children.map((e) => e.code).toList()})''',
+      code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
       type: 'stack',
     );
   }

@@ -2,27 +2,34 @@ import 'package:flutter_visible/imports.dart';
 
 class GWidget<T extends Widget> {
   final T widget;
-  final String code;
+  final String? code;
   final String type;
   final String? name;
-  final String? fullCode;
+  final String? _fileName;
+  final dynamic _fullCode;
   final List<GWidget> components;
 
   const GWidget(
-    this.widget,
-    this.code, {
+    this.widget, {
+    this.code,
     this.components = const [],
     required this.type,
     this.name,
-    this.fullCode,
-  });
+    dynamic fullCode,
+    String? fileName,
+  })  : _fileName = fileName,
+        _fullCode = fullCode;
 
   @override
-  String toString() => this.code;
+  String toString() => code ?? _fullCode ?? '';
 
   get _name => name ?? type.split('-source').join('');
 
-  get widgetCode => fullCode != null ? fullCode : '''
+  String get fileName => _fileName ?? "${name}.dart";
+
+  get fullCode => _fullCode != null
+      ? _fullCode
+      : '''
 class $_name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -47,7 +54,7 @@ class GWidgetList<T> {
 
 gWidgetSizedBox(String type) => GWidget(
       SizedBox(),
-      "SizedBox()",
+      code: "SizedBox()",
       components: [],
       type: type,
     );

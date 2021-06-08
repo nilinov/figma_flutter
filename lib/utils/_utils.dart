@@ -14,3 +14,4 @@ export 'get_variable.dart';
 export 'get_box_shadow.dart';
 export 'get_text_style.dart';
 export 'is_fill_width.dart';
+export 'get_name_by_json.dart';
