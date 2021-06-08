@@ -67,7 +67,7 @@ GWidget getInput(Map<String, dynamic> json, int level) {
           code: AppInputString,
           type: 'AppInput-source',
           fullCode: AppInputString,
-          name: 'Input',
+          name: getNameByJson(json),
         )
       ],
     type: 'AppInput',

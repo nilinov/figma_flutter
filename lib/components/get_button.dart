@@ -42,12 +42,16 @@ GWidget getGButton(
     onTap: () {},
   )''';
 
-  return GWidget(
-    item,
-    code: code,
-    components: [GWidget(item, code: AppButtonCode, type: 'AppButton-source', name: 'Button', fullCode: AppButtonCode)],
-    type: 'AppButton'
-  );
+  return GWidget(item,
+      code: code,
+      components: [
+        GWidget(item,
+            code: AppButtonCode,
+            type: 'AppButton-source',
+            name: getNameByJson(json),
+            fullCode: AppButtonCode)
+      ],
+      type: 'AppButton');
 }
 
 class AppButton extends StatefulWidget {

@@ -45,8 +45,12 @@ class _DemoWidgetState extends State<DemoWidget> {
             .where((element) => element.type.contains('source'))
             .toList();
 
+        final Map<String, GWidget> names = {};
+
+        Future.forEach(list, (GWidget element) => names[element.name ?? ''] = element);
+
         print([res, ...list].map((e) => e.type).join(';'));
-        components = [res, ...list, getAssets(list)];
+        components = [res, ...names.values, getAssets(list)];
       }
 
       // print(res.toWidget());
