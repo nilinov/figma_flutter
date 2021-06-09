@@ -40,6 +40,6 @@ class Variable {
   String toString() => "Variable(name: $name , defaultValue: $defaultValue , type: $type , value: $value)";
 }
 
-Variable? getVariable(Map<String, dynamic> json, String nameVariable, { bool inCodeVariable = false, String? template }) {
+Variable? getVariable(Map<String, dynamic> json, String nameVariable, { required bool inCodeVariable, String? template }) {
   return getNodeByVariable(json, nameVariable, inCodeVariable: inCodeVariable, template: template);
 }

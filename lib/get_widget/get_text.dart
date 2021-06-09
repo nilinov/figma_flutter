@@ -19,7 +19,7 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   debugPrintWidget("Text", level: level + 1, name: json['name']);
 
-  String text = '"' + (json['characters'] ?? '') + '"';
+  String text = (json['characters'] ?? '');
 
   if (variables != null) {
     final _name = json['name'].split('$String:')[1];
@@ -29,7 +29,7 @@ GWidget getText(Map<String, dynamic> json, int level,
     if (variable != null) {
       if (variable.inCodeVariable == false) {
         text = variable.value ?? variable.defaultValue;
-        text = '"${text.split('\\n').join('\n')}"';
+        text = '${text.split('\\n').join('\n')}';
       } else {
         if (variable.template != null) {
           text = variable.template?.replaceAll('\$variable', variable.name ?? '') ?? 'variable';

@@ -34,7 +34,7 @@ class _GetSwitchRuntimeState extends State<GetSwitchRuntime> {
       }
     }
 
-    var variable = getVariable(widget.json, 'title');
+    var variable = getVariable(widget.json, 'title', inCodeVariable: false);
 
     final children = getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
     final res = wrapInstance(_json, children, widget.level + 1);
