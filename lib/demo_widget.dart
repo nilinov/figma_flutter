@@ -37,7 +37,7 @@ class _DemoWidgetState extends State<DemoWidget> {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
-      final res = getWidgetByMap(json ?? {}, 0);
+      final res = getWidgetByMap(json ?? {}, 0, name: 'screen');
 
       if (res != null) {
         final List<GWidget> list = getAllComponents(res, result: [])
@@ -45,11 +45,13 @@ class _DemoWidgetState extends State<DemoWidget> {
             .where((element) => element.type.contains('source'))
             .toList();
 
+        list.sort((e1, e2) => e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
+        list.sort((e1, e2) => e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
+
         final Map<String, GWidget> names = {};
 
         Future.forEach(list, (GWidget element) => names[element.name ?? ''] = element);
 
-        print([res, ...list].map((e) => e.type).join(';'));
         components = [res, ...names.values, getAssets(list)];
       }
 
