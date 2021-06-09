@@ -1,6 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
-GWidget getAssets(List<GWidget> items) {
+GWidget getAssets(List<GWidget> items, { required String name}) {
   final images = items.where((element) => element.type == 'png-source').toList();
   final icons = items.where((element) => element.type == 'svg-source').toList();
 
@@ -8,9 +8,12 @@ GWidget getAssets(List<GWidget> items) {
   ''';
 
   if (images.length > 0) {
+    final imageNames = <String, GWidget>{};
+    Future.forEach(images, (GWidget element) => imageNames[element.name ?? ''] = element);
+
     imagesCode = '''
 class AppImages {
-  ${images.map((e) => "static const ${e.name} = 'assets/images/${e.fileName}';").join('\n')}
+  ${imageNames.values.map((e) => "static const ${e.name} = 'assets/images/${e.fileName}';").join('\n')}
 }
 ''';
   }
@@ -19,14 +22,20 @@ class AppImages {
   ''';
 
   if (icons.length > 0) {
+    final iconsNames = <String, GWidget>{};
+
+    Future.forEach(icons, (GWidget element) => iconsNames[element.name ?? ''] = element);
+
     iconsCode = '''
 class AppIcons {
-  ${icons.map((e) => "static const ${e.name} = 'assets/icons/${e.fileName}';").join('\n')}
+  ${iconsNames.values.map((e) => "static const ${e.name} = 'assets/icons/${e.fileName}';").join('\n')}
 }
 ''';
   }
 
   final fullCode = ''' 
+  import "_$name.dart";
+  
 $imagesCode
 $iconsCode
 ''';

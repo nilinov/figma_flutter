@@ -5,21 +5,22 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
 
   final name = (json['name'] as String).toUpperCase();
 
-  switch (name) {
-    case 'INPUT':
-      widget = getInput(json, level);
-      break;
-    case 'BUTTON':
-      return getGButton(json, level);
-    default:
-      if (name.contains('CHECKBOX')) {
-        return getCheckbox(json, level);
-      }
-      if (name.contains('SWITCH')) {
-        return getSwitch(json, level);
-      }
-      widget = getChildrenByLayoutMode(json, level);
+
+  if (name.contains('INPUT')) {
+    widget = getInput(json, level);
+    return wrapInstance(json, widget, level);
   }
+  if (name.contains('BUTTON')) {
+    return getGButton(json, level);
+  }
+  if (name.contains('CHECKBOX')) {
+    return getCheckbox(json, level);
+  }
+  if (name.contains('SWITCH')) {
+    return getSwitch(json, level);
+  }
+
+  widget = getChildrenByLayoutMode(json, level);
 
   return wrapInstance(json, widget, level);
 }

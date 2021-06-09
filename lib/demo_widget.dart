@@ -45,14 +45,30 @@ class _DemoWidgetState extends State<DemoWidget> {
             .where((element) => element.type.contains('source'))
             .toList();
 
-        list.sort((e1, e2) => e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
-        list.sort((e1, e2) => e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
+        list.sort((e1, e2) =>
+            e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
+        list.sort((e1, e2) =>
+            e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
 
         final Map<String, GWidget> names = {};
 
-        Future.forEach(list, (GWidget element) => names[element.name ?? ''] = element);
+        Future.forEach(
+            list, (GWidget element) => names[element.name ?? ''] = element);
 
-        components = [res, ...names.values, getAssets(list)];
+        final assetsExport = getAssets(list, name: res.name ?? '');
+
+        components = [
+          res,
+          ...names.values.map((e) {
+            if (e.type.contains('svg') ||
+                e.type.contains('png') ||
+                e.type.contains('import')) return e;
+
+            return e.copyWith(prefixCodeLine: 'import "_${res.name}.dart";\n');
+          }),
+          assetsExport,
+          getImports([...list, assetsExport], name: res.name ?? ''),
+        ];
       }
 
       // print(res.toWidget());
@@ -61,7 +77,8 @@ class _DemoWidgetState extends State<DemoWidget> {
           Expanded(
               child: Padding(
             child: Container(
-              child: SingleChildScrollView(child: Column(children: [res?.widget ?? SizedBox()])),
+              child: SingleChildScrollView(
+                  child: Column(children: [res?.widget ?? SizedBox()])),
               constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.9,
                   maxWidth: MediaQuery.of(context).size.width / 2),
@@ -133,8 +150,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text("Copy")));
                       },
-                      child:
-                          Text(res?.fullCode ?? ''),
+                      child: Text(res?.fullCode ?? ''),
                     ),
                   ),
                 ),
@@ -150,8 +166,7 @@ class _DemoWidgetState extends State<DemoWidget> {
   void downloadWidget(GWidget<Widget> e) {
     final name = e.type.split('-source').join('');
 
-    js.context
-        .callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
+    js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
   }
 }
 

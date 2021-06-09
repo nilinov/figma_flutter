@@ -26,6 +26,8 @@ GWidget getInput(Map<String, dynamic> json, int level) {
     borderFocusColor = getColorFromFills(childBorderFocus);
   }
 
+  final name = getNameByJson(json);
+
   final placeholder = childPlaceholder['characters'];
   final label = childLabel != null ? childLabel['characters'] : null;
   bool isAnimatedLabel = false;
@@ -47,7 +49,7 @@ GWidget getInput(Map<String, dynamic> json, int level) {
   );
 
   final code = '''
-          AppInput(
+          $name(
             ${wrapProp('placeholder', '"$placeholder"')}
             ${wrapProp('label', '"$label"')}
             ${wrapProp('borderDefaultColor', borderDefaultColor)}
@@ -64,10 +66,10 @@ GWidget getInput(Map<String, dynamic> json, int level) {
       components: [
         GWidget(
           input,
-          code: AppInputString,
+          code: appInputString(name),
           type: 'AppInput-source',
-          fullCode: AppInputString,
-          name: getNameByJson(json),
+          fullCode: appInputString(name),
+          name: name,
         )
       ],
     type: 'AppInput',
@@ -117,7 +119,7 @@ class AppInput extends StatelessWidget {
 }
 
 
-const String AppInputString = '''class AppInput extends StatelessWidget {
+String appInputString(String name) => '''class $name extends StatelessWidget {
   final bool isAnimatedLabel;
   final String? placeholder;
   final String label;
@@ -126,7 +128,7 @@ const String AppInputString = '''class AppInput extends StatelessWidget {
   final Color borderFocusColor;
   final Color borderDefaultColor;
 
-  const AppInput({
+  const $name({
     Key? key,
     required this.isAnimatedLabel,
     this.placeholder,

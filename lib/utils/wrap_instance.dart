@@ -1,3 +1,4 @@
+import 'package:flutter_visible/ext.dart';
 import 'package:flutter_visible/imports.dart';
 
 GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Color? bgColor } ) {
@@ -40,9 +41,9 @@ GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Co
       borderRadius: ${getBorderRadius(json)},
       boxShadow: ${getBoxShadow(json)},
     ),
-    padding: ${getPaddingString(json)},
+    ${wrapProp('padding', getPaddingString(json))}
+    ${wrapProp('height', height)}
     child: $widget,
-    height: $height,
   )
   ''',
     components: [widget],

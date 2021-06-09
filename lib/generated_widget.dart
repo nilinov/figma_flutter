@@ -9,6 +9,7 @@ class GWidget<T extends Widget> {
   final dynamic _fullCode;
   final List<GWidget> components;
   final List<Variable> variables;
+  final String prefixCodeLine;
 
   const GWidget(
     this.widget, {
@@ -19,6 +20,7 @@ class GWidget<T extends Widget> {
     dynamic fullCode,
     String? fileName,
     this.variables = const [],
+    this.prefixCodeLine = '',
   })  : _fileName = fileName,
         _fullCode = fullCode,
         _code = code;
@@ -33,18 +35,24 @@ class GWidget<T extends Widget> {
   String get fileName => _fileName ?? "${name}.dart";
 
   get fullCode {
-    if (_fullCode != null) return _fullCode;
+    if (_fullCode != null && prefixCodeLine.isNotEmpty) return '''
+    $prefixCodeLine
+    $_fullCode
+    '''; else if (_fullCode != null) {
+      return _fullCode;
+    }
 
     String variablesCode = '''''';
     if (variables.isNotEmpty) {
       variablesCode = '''
         ${variables.map((e) => "final String ${e.name};").join('\n')}
       
-        const ${name}({Key? key${ variables.map((e) => e.defaultValue == null ? ", required this.${e.name}" : ", this.${e.name} = \"${e.defaultValue}\"").join('')}}) : super(key: key);
+        const ${name}({Key? key${variables.map((e) => e.defaultValue == null ? ", required this.${e.name}" : ", this.${e.name} = \"${e.defaultValue}\"").join('')}}) : super(key: key);
       ''';
     }
 
     return '''
+    $prefixCodeLine
 class $_name extends StatelessWidget {
   $variablesCode
   @override
@@ -53,6 +61,44 @@ class $_name extends StatelessWidget {
   }
 }  
   ''';
+  }
+
+  GWidget copyWith(
+     {
+       T? widget,
+       String? code,
+    String? type,
+    String? name,
+    String? fileName,
+    dynamic fullCode,
+    List<GWidget>? components,
+    List<Variable>? variables,
+    String? prefixCodeLine,
+  }) {
+    if ((widget == null || identical(widget, this.widget)) &&
+        (code == null || identical(code, this._code)) &&
+        (type == null || identical(type, this.type)) &&
+        (name == null || identical(name, this.name)) &&
+        (fileName == null || identical(fileName, this._fileName)) &&
+        (fullCode == null || identical(fullCode, this._fullCode)) &&
+        (components == null || identical(components, this.components)) &&
+        (variables == null || identical(variables, this.variables)) &&
+        (prefixCodeLine == null ||
+            identical(prefixCodeLine, this.prefixCodeLine))) {
+      return this;
+    }
+
+    return new GWidget(
+      widget ?? this.widget,
+      code: code ?? this._code,
+      type: type ?? this.type,
+      name: name ?? this.name,
+      fileName: fileName ?? this._fileName,
+      fullCode: fullCode ?? this._fullCode,
+      components: components ?? this.components,
+      variables: variables ?? this.variables,
+      prefixCodeLine: prefixCodeLine ?? this.prefixCodeLine,
+    );
   }
 }
 
@@ -89,7 +135,6 @@ List<GWidget> getAllComponents(GWidget item, {required List<GWidget> result}) {
   return res;
 }
 
-
 class dd extends StatelessWidget {
   final String id;
 
@@ -100,5 +145,4 @@ class dd extends StatelessWidget {
     // TODO: implement build
     throw UnimplementedError();
   }
-
 }
