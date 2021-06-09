@@ -13,7 +13,6 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
   if (json['svg'] != null) {
     debugPrintWidget("SvgPicture", level: level, name: json['name']);
     return getSvg(json);
-
   } else if (json['png'] != null) {
     debugPrintWidget("Image", level: level, name: json['name']);
 
@@ -42,35 +41,37 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
   switch (json['type']) {
     case 'COMPONENT':
-      var widget = getChildrenByLayoutMode(json, level + 1);
+      var variables = getAllVariables(json, inCodeVariable: false);
+      var variablesSource = getAllVariables(json, inCodeVariable: true);
+
+      var widget = getChildrenByLayoutMode(json, level + 1, variables: variables);
+      var widgetSource = getChildrenByLayoutMode(json, level + 1, variables: variablesSource);
       debugPrintWidget("Container", level: level, name: json['name']);
 
+      String nameComponent = name ?? json['name'] ?? '';
+      String nameSource = json['name'] ?? name ?? '';
+
+      final item = wrapContainer(widget, json, nameComponent);
+      final itemSource = wrapContainer(widgetSource, json, nameSource);
+
       return GWidget(
-          Container(
-            key: getValueKeyComponent(widget.widget, name: json['name']),
-            decoration: BoxDecoration(
-              // color: getColorFromFills(json),
-              color: Colors.white,
-              border: getBorder(json).border,
-              borderRadius: getBorderRadius(json),
-              boxShadow: getBoxShadow(json),
-            ),
-            padding: getPadding(json),
-            child: widget.widget,
+        item.widget,
+        type: item.type,
+        code: '''
+          $nameSource(${variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
+        ''',
+        components: [
+          GWidget(
+            itemSource.widget,
+            type: "${itemSource.type}-source",
+            code: itemSource.code,
+            components: [],
+            name: nameSource,
+            variables: variablesSource,
           ),
-          code: '''Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          ${wrapProp('border', getBorder(json))}
-          ${wrapProp('borderRadius', getBorderRadiusString(json))}
-          ${wrapProp('boxShadow', getBoxShadowString(json))}
-        ),
-        ${wrapProp('padding', getPaddingString(json))}
-        child: ${widget.code},
-      )''',
-          components: [widget],
-          name: _name,
-          type: 'component');
+        ],
+        name: "${nameComponent}",
+      );
     case 'RECTANGLE':
       var widget = (getChildrenByLayoutMode(json, level + 1));
       if (widget == null) return null;
@@ -267,3 +268,4 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
       return null;
   }
 }
+

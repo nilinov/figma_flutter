@@ -22,9 +22,10 @@ GWidget getText(Map<String, dynamic> json, int level,
   String text = (json['characters'] ?? '');
 
   if (variables != null) {
-    final _name = json['name'].split('$String:')[1];
+    final _name = (json['name'] as String).split('$String:').last;
 
-    final variable = variables.firstWhere((element) => element!.name == _name);
+    final _variable = variables.where((element) => element!.name == _name);
+    final variable = _variable.isNotEmpty ? _variable.first : null;
 
     if (variable != null) {
       if (variable.inCodeVariable == false) {

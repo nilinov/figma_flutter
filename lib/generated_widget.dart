@@ -1,6 +1,5 @@
 import 'package:flutter_visible/imports.dart';
 
-
 class GWidget<T extends Widget> {
   final T widget;
   final String? _code;
@@ -9,6 +8,7 @@ class GWidget<T extends Widget> {
   final String? _fileName;
   final dynamic _fullCode;
   final List<GWidget> components;
+  final List<Variable> variables;
 
   const GWidget(
     this.widget, {
@@ -18,6 +18,7 @@ class GWidget<T extends Widget> {
     this.name,
     dynamic fullCode,
     String? fileName,
+    this.variables = const [],
   })  : _fileName = fileName,
         _fullCode = fullCode,
         _code = code;
@@ -28,18 +29,31 @@ class GWidget<T extends Widget> {
   String? get code => _code;
 
   get _name => name ?? type.split('-source').join('');
+
   String get fileName => _fileName ?? "${name}.dart";
 
-  get fullCode => _fullCode != null
-      ? _fullCode
-      : '''
+  get fullCode {
+    if (_fullCode != null) return _fullCode;
+
+    String variablesCode = '''''';
+    if (variables.isNotEmpty) {
+      variablesCode = '''
+        ${variables.map((e) => "final String ${e.name};").join('\n')}
+      
+        const ${name}({Key? key${ variables.map((e) => e.defaultValue == null ? ", required this.${e.name}" : ", this.${e.name} = \"${e.defaultValue}\"").join('')}}) : super(key: key);
+      ''';
+    }
+
+    return '''
 class $_name extends StatelessWidget {
+  $variablesCode
   @override
   Widget build(BuildContext context) {
     return $_code;
   }
 }  
   ''';
+  }
 }
 
 class GWidgetList<T> {
@@ -73,4 +87,18 @@ List<GWidget> getAllComponents(GWidget item, {required List<GWidget> result}) {
   });
 
   return res;
+}
+
+
+class dd extends StatelessWidget {
+  final String id;
+
+  const dd({Key? key, required this.id}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+
 }

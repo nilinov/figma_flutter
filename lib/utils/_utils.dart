@@ -16,3 +16,4 @@ export 'get_text_style.dart';
 export 'is_fill_width.dart';
 export 'get_name_by_json.dart';
 export 'get_json_icon.dart';
+export 'wrap_container.dart';
