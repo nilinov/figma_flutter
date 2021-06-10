@@ -2,8 +2,8 @@ import 'package:flutter_visible/ext.dart';
 import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
-GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
-    {List<Variable?>? variables, String? name}) {
+GWidget? getWidgetByMap(Json json, int level,
+    {List<Variable?>? variables, String? name, Json? parent}) {
   if (json['visible'] == false ||
       json['isMask'] == true ||
       json['visible'] == false) {
@@ -105,7 +105,7 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
     case 'TEXT':
       return getText(json, level + 1, variables: variables);
     case 'FRAME':
-      final widget = getChildrenByLayoutMode(json, level + 1);
+      GWidget widget = getChildrenByLayoutMode(json, level + 1);
 
       debugPrintWidget("Container", level: level, name: json['name']);
 
@@ -129,7 +129,12 @@ GWidget? getWidgetByMap(Map<String, dynamic> json, int level,
 
         if (isStretch(json) && isCounterAxisSizingModeFixed(json)) {
           //fill w
-          width = double.infinity;
+          if (parent != null && parent['layoutMode'] != 'NONE') {
+            //Expanded
+            width = null;
+          } else {
+            width = double.infinity;
+          }
         }
       }
 

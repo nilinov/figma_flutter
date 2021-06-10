@@ -122,6 +122,13 @@ gWidgetSizedBox(String type) => GWidget(
       type: type,
     );
 
+gWidgetExpanded(GWidget widget, String type) => GWidget(
+      Expanded(child: widget.widget),
+      code: "Expanded(child: ${widget.code})",
+      components: [widget],
+      type: type,
+    );
+
 List<GWidget> getAllComponents(GWidget item, {required List<GWidget> result}) {
   // print("getAllComponents ${item.type}");
   final List<GWidget> res = [];

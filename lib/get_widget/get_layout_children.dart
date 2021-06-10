@@ -35,7 +35,8 @@ GWidgetList<GWidget> getLayoutChildren(
 
     final itemJson = json['children'][i];
 
-    GWidget? widget = getWidgetByMap(itemJson, level + 1, variables: variables);
+    GWidget? widget =
+        getWidgetByMap(itemJson, level + 1, variables: variables, parent: json);
 
     if (widget?.widget is Text) {
       if (axis == Axis.horizontal && widget != null) {
@@ -50,6 +51,10 @@ GWidgetList<GWidget> getLayoutChildren(
     }
   }
 
-  return GWidgetList(res, res.map((e) => e.code ?? '').toList(),
-      components: res, type: 'wrap-layout');
+  return GWidgetList(
+    res,
+    res.map((e) => e.code ?? '').toList(),
+    components: res,
+    type: 'wrap-layout',
+  );
 }

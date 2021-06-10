@@ -19,6 +19,10 @@ String getPaddingString(Map<String, dynamic> json) {
     return '';
   }
 
+  if (value.top == value.bottom && value.top == value.left && value.top == value.right) {
+    return 'EdgeInsets.all(${json['paddingTop']})';
+  }
+
   return '''EdgeInsets.only(
     top: ${json['paddingTop'] ?? 0},
     left: ${json['paddingLeft'] ?? 0},

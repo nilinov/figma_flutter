@@ -59,7 +59,7 @@ GTextStyle getTextStyle(Map<String, dynamic> json) {
   if (json['fills'] != null)
     textStyle = textStyle.copyWith(color: getColorFromFills(json));
 
-  return GTextStyle(textStyle, '''
+  var source = '''
   TextStyle(
       ${wrapProp('fontSize', json['fontSize'])}
       ${wrapProp('color', getColorFromFillsString(json))}
@@ -67,6 +67,23 @@ GTextStyle getTextStyle(Map<String, dynamic> json) {
       fontFamily: "$fontFamily",
       fontStyle: $fontStyle,
       letterSpacing: $letterSpacing)
-  ''');
+  ''';
+
+  if (json['textStyleId'] != null && json['textStyleId'] != '') {
+    final style = StylesApp.firstWhere((element) => element.id == json['textStyleId'], orElse: () => Style(json: {}));
+    if (style.type == StyleType.TEXT) {
+      source = "AppStyledText.${style.name}.copyWith(color: ${getColorFromFillsString(json)})";
+
+      if (json['fillStyleId'] != null && json['fillStyleId'] != '') {
+        final styleFill = StylesApp.firstWhere((element) => element.id == json['fillStyleId'], orElse: () => Style(json: {}));
+
+        if (styleFill.type != StyleType.INVALID) {
+          source = "AppStyledText.${style.name}.copyWith(color: AppStyledPaint.${styleFill.name})";
+        }
+      }
+    }
+  }
+
+  return GTextStyle(textStyle, source);
 }
 
