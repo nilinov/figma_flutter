@@ -84,11 +84,11 @@ GWidget getText(Map<String, dynamic> json, int level,
     // center
   } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
     debugPrintWidget("SizedBox", level: level + 1, name: json['name']);
-    res = SizedBox(child: res, height: json['height'], width: json['width']);
+    res = SizedBox(child: res, height: toDouble(json['height']), width: toDouble(json['width']));
   } else if (json['textAutoResize'] == 'HEIGHT' &&
       json['layoutGrow'] != 1 &&
       json['layoutAlign'] != "STRETCH") {
-    res = SizedBox(child: res, width: json['width']);
+    res = SizedBox(child: res, width: toDouble(json['width']));
   }
 
   // if (json['layoutGrow'] == 1) {

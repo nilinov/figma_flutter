@@ -55,13 +55,13 @@ GTextStyle getTextStyle(Map<String, dynamic> json) {
       letterSpacing: letterSpacing);
 
   if (json['fontSize'] != null)
-    textStyle = textStyle.copyWith(fontSize: json['fontSize']);
+    textStyle = textStyle.copyWith(fontSize: toDouble(json['fontSize']));
   if (json['fills'] != null)
     textStyle = textStyle.copyWith(color: getColorFromFills(json));
 
   var source = '''
   TextStyle(
-      ${wrapProp('fontSize', json['fontSize'])}
+      ${wrapProp('fontSize', toDouble(json['fontSize']))}
       ${wrapProp('color', getColorFromFillsString(json))}
       fontWeight: $fontWeight,
       fontFamily: "$fontFamily",

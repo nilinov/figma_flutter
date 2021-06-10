@@ -10,9 +10,9 @@ List<BoxShadow>? getBoxShadow(Map<String, dynamic> json) {
       .map(
         (e) => BoxShadow(
           color: getColor(e['color']),
-          blurRadius: e['radius'],
-          spreadRadius: e['spread'],
-          offset: Offset(e['offset']['x'], e['offset']['y']),
+          blurRadius: toDouble(e['radius']) ?? 0,
+          spreadRadius: toDouble(e['spread']) ?? 0,
+          offset: Offset(toDouble(e['offset']['x']) ?? 0, toDouble(e['offset']['y']) ?? 0),
         ),
       )
       .toList();
@@ -38,6 +38,6 @@ String getBoxShadowOne(Json json) {
           color: ${getColor(json['color'])},
           blurRadius: ${json['radius']},
           spreadRadius: ${json['spread']},
-          offset: ${Offset(json['offset']['x'], json['offset']['y'])},
+          offset: ${Offset(toDouble(json['offset']['x']) ?? 0, toDouble(json['offset']['y']) ?? 0)},
         )''';
 }

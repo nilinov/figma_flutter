@@ -40,7 +40,7 @@ GWidgetList<GWidget> getLayoutChildren(
 
     if (widget?.widget is Text) {
       if (axis == Axis.horizontal && widget != null) {
-        widget = wrapExpanded(widget);
+        widget = wrapExpanded(widget, json: json, level: level);
       } else if (widget != null) {
         widget = wrapSizedBox(widget, width: double.infinity);
       }

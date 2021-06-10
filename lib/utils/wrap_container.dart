@@ -25,8 +25,8 @@ GWidget<Container> wrapContainer(
       child: widget.widget,
     ),
     code: '''Container(
-      ${wrapProp('width', width)}
-      ${wrapProp('height', height)}
+      ${wrapProp('width', toDouble(width))}
+      ${wrapProp('height', toDouble(height))}
       decoration: BoxDecoration(
         ${wrapProp('color', color ?? getColorFromFillsString(json))}
         ${wrapProp('border', getBorder(json))}

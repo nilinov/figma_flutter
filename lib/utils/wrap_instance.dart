@@ -5,7 +5,7 @@ GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Co
   double? height;
 
   if (json['counterAxisSizingMode'] == 'FIXED') {
-    height = json['height'];
+    height = toDouble(json['height']);
   }
 
   debugPrintWidget("Container", level: level, name: json['name']);

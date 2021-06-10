@@ -85,8 +85,8 @@ extension WidgetExt on Widget? {
       SizedBox(
         ${getKey(item)}
         child: ${item.child.toCode(extractComponents: extractComponents)},
-        ${wrapProp('width', item.width)}
-        ${wrapProp('height', item.height)}
+        ${wrapProp('width', toDouble(item.width))}
+        ${wrapProp('height', toDouble(item.height))}
       )
       ''';
     } else if (this is Text) {
@@ -116,16 +116,16 @@ extension WidgetExt on Widget? {
       final SvgPicture item = this as SvgPicture;
       return '''
         SvgPicture.string(\'''{getKeyValue(item)}\''',${getKey(item)}
-        ${wrapProp('width', item.width)}
-        ${wrapProp('height', item.height)}
+        ${wrapProp('width', toDouble(item.width))}
+        ${wrapProp('height', toDouble(item.height))}
         )
       ''';
     } else if (this is Image) {
       final Image item = this as Image;
       return '''
         SvgPicture.string(\'''{getKeyValue(item)}\''', ${getKey(item)}
-        ${wrapProp('width', item.width)}
-        ${wrapProp('height', item.height)}
+        ${wrapProp('width', toDouble(item.width))}
+        ${wrapProp('height', toDouble(item.height))}
         )
       ''';
     }
@@ -218,7 +218,7 @@ extension BorderExt on Border {
     return '''
       Border.all(
         ${wrapProp('color', bottom.color)}
-        ${wrapProp('width', bottom.width)}
+        ${wrapProp('width', toDouble(bottom.width))}
       )
     ''';
   }

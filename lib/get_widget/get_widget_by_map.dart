@@ -1,4 +1,3 @@
-import 'package:flutter_visible/ext.dart';
 import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
@@ -19,8 +18,8 @@ GWidget? getWidgetByMap(Json json, int level,
     final pngImage = Image.memory(
       base64Decode(json['png']),
       key: getValueKeyImage(json['png'], type: 'PNG', name: json['name']),
-      height: json['height'],
-      width: json['width'],
+      height: toDouble(json['height']),
+      width: toDouble(json['width']),
     );
     final name = getNameByJson(json);
 
@@ -46,18 +45,18 @@ GWidget? getWidgetByMap(Json json, int level,
       var variablesSource = getAllVariables(json, inCodeVariable: true);
 
       var widget =
-          getChildrenByLayoutMode(json, level + 1, variables: variables);
+      getChildrenByLayoutMode(json, level + 1, variables: variables);
       var widgetSource =
-          getChildrenByLayoutMode(json, level + 1, variables: variablesSource);
+      getChildrenByLayoutMode(json, level + 1, variables: variablesSource);
       debugPrintWidget("Container", level: level, name: json['name']);
 
       String nameComponent = name ?? json['name'] ?? '';
       String nameSource = json['name'] ?? name ?? '';
 
-      final item =
-          wrapContainer(widget, json, nameComponent, color: Colors.white);
-      final itemSource =
-          wrapContainer(widgetSource, json, nameSource, color: Colors.white);
+      final item = wrapContainer(widget, json, nameComponent,
+          color: Colors.white, type: 'wrap-component');
+      final itemSource = wrapContainer(widgetSource, json, nameSource,
+          color: Colors.white, type: 'wrap-component');
 
       return GWidget(
         item.widget,
@@ -96,8 +95,8 @@ GWidget? getWidgetByMap(Json json, int level,
         ),
         code: '''SvgPicture.string(
         ${json['svg']},
-            width: ${json['width']},
-            height: ${json['height']},
+            width: ${toDouble(json['width'])},
+            height: ${toDouble(json['height'])},
       )''',
         type: 'svg-image',
         components: [],
@@ -107,18 +106,17 @@ GWidget? getWidgetByMap(Json json, int level,
     case 'FRAME':
       GWidget widget = getChildrenByLayoutMode(json, level + 1);
 
-      debugPrintWidget("Container", level: level, name: json['name']);
-
       double? height;
       double? width;
+      bool isExpanded = false;
 
-      if (level == 0 || json['layoutMode'] == 'NONE') {
-        height = json['height'];
-        width = json['width'];
+      if (/*level == 0 || */json['layoutMode'] == 'NONE') {
+        height = toDouble(json['height']);
+        width = toDouble(json['width']);
       } else if (isHorizontal(json)) {
         if (isPrimaryAxisSizingModeFixed(json) && layoutGrow(json) == 0) {
           // fixed h
-          height = json['height'];
+          height = toDouble(json['height']);
         } else if (isPrimaryAxisSizingModeFixed(json) &&
             layoutGrow(json) == 1) {
           // fill h
@@ -132,6 +130,7 @@ GWidget? getWidgetByMap(Json json, int level,
           if (parent != null && parent['layoutMode'] != 'NONE') {
             //Expanded
             width = null;
+            isExpanded = true;
           } else {
             width = double.infinity;
           }
@@ -139,14 +138,39 @@ GWidget? getWidgetByMap(Json json, int level,
       }
 
       if (isPrimaryAxisSizingModeFixed(json)) {
-        // fixed w
-        width = json['width'];
+        if (parent != null && isHorizontal(parent)) {
+          //Expanded
+          width = null;
+          isExpanded = true;
+        } else if (parent != null && isVertical(parent)) {
+          //fill width
+          width = double.infinity;
+        } else {
+          // fixed w
+          width = toDouble(json['width']);
+        }
       }
 
       if (isCounterAxisSizingModeFixed(json)) {
-        height = json['height'];
+        if (parent != null && isVertical(parent)) {
+          //Expanded
+          // width = null;
+          // isExpanded = true;
+        } else if (parent != null && isHorizontal(parent)) {
+          //fill h
+          height = double.infinity;
+        } else {
+          // fixed h
+          // height = toDouble(json['height']);
+        }
       }
 
+      if (isExpanded) {
+        return wrapExpanded(widget, level: level + 1, json: json);
+        // return widget;
+      }
+
+      debugPrintWidget("Container", level: level, name: json['name']);
       GWidget container = wrapContainer(widget, json, _name,
           type: 'frame', height: height, width: width);
 
@@ -161,16 +185,16 @@ GWidget? getWidgetByMap(Json json, int level,
       final widget = wrapContainer(item, json, _name, type: 'GROUP');
 
       if ((isPrimaryAxisSizingModeFixed(json) &&
-              isCounterAxisSizingModeFixed(json)) ||
+          isCounterAxisSizingModeFixed(json)) ||
           (json['primaryAxisSizingMode'] == null &&
               json['counterAxisSizingMode'] == null)) {
         return GWidget(
             SizedBox(
                 child: widget.widget,
-                height: json['height'],
-                width: json['width']),
+                height: toDouble(json['height']),
+                width: toDouble(json['width'])),
             code:
-                '''SizedBox(child: ${widget.code}, height: ${json['height']}, width: ${json['width']})''',
+            '''SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
             components: [
               GWidget(widget.widget,
                   code: widget.code,
@@ -205,7 +229,7 @@ GWidget? getWidgetByMap(Json json, int level,
       if (json['rotation'] == 90 || json['rotation'] == 270) {
         return GWidget(VerticalDivider(color: getColorFromFills(json)),
             code:
-                '''VerticalDivider(color: ${getColorFromFillsString(json)})''',
+            '''VerticalDivider(color: ${getColorFromFillsString(json)})''',
             name: _name,
             components: [],
             type: 'line');
