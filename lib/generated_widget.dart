@@ -14,7 +14,7 @@ class GWidget<T extends Widget> {
   const GWidget(
     this.widget, {
     String? code,
-    this.components = const [],
+    required this.components,
     required this.type,
     this.name,
     dynamic fullCode,
@@ -133,16 +133,4 @@ List<GWidget> getAllComponents(GWidget item, {required List<GWidget> result}) {
   });
 
   return res;
-}
-
-class dd extends StatelessWidget {
-  final String id;
-
-  const dd({Key? key, required this.id}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
 }

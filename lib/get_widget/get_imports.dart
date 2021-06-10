@@ -1,6 +1,6 @@
 import 'package:flutter_visible/imports.dart';
 
-GWidget getImports(List<GWidget> items, { required String name}) {
+GWidget getImports(List<GWidget> items, {required String name}) {
   final files = items
       .where((element) =>
           element.type != 'png-source' && element.type != 'svg-source')
@@ -11,7 +11,8 @@ GWidget getImports(List<GWidget> items, { required String name}) {
 
   if (files.length > 0) {
     final imageNames = <String, GWidget>{};
-    Future.forEach(files, (GWidget element) => imageNames[element.name ?? ''] = element);
+    Future.forEach(
+        files, (GWidget element) => imageNames[element.name ?? ''] = element);
 
     filesCode = '''
 export "../_imports.dart";
@@ -20,9 +21,12 @@ export "../_imports.dart";
 ''';
   }
 
-  return GWidget(SizedBox(),
-      type: 'imports-code',
-      fileName: '_$name.dart',
-      fullCode: filesCode,
-      name: 'Imports file');
+  return GWidget(
+    SizedBox(),
+    type: 'imports-code',
+    fileName: '_$name.dart',
+    fullCode: filesCode,
+    name: 'Imports file',
+    components: [],
+  );
 }

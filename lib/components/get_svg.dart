@@ -21,6 +21,7 @@ GWidget getSvg(Json json) {
         fullCode: json['svg'],
         fileName: "${name}.svg",
         name: name,
+        components: [],
       )
     ],
   );

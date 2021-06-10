@@ -46,7 +46,6 @@ class Style {
 
   String get toCode {
     if (type == StyleType.PAINT) {
-      print(json);
       final colors = (json['paints'] as List)
           .where((e) => e['type'] == 'SOLID' && e['visible'] == true)
           .map((e) => getColor(e['color']))
@@ -75,45 +74,58 @@ class Style {
   }
 }
 
-List<GWidget> getStyle(List<Json> json) {
+List<Style> getStyles(List<Json> json) {
   final list = json.map((e) => Style(json: e)).toList()
     ..sort((e1, e2) => e1.type.toString().compareTo(e2.type.toString()));
 
+  return list;
+}
+
+List<GWidget> getStyleCode(List<Style> list) {
   final fullCodeTexts = '''
     abstract class AppStyledText {
       ${list.where((element) => element.type == StyleType.TEXT).map((e) => e.toCode).join('\n')}
     }
   ''';
-  final texts = GWidget(SizedBox(),
-      type: 'styled-text',
-      prefixCodeLine: 'import "../_imports.dart";',
-      name: 'StyledText',
-      fileName: 'styled_text.dart',
-      fullCode: fullCodeTexts);
+  final texts = GWidget(
+    SizedBox(),
+    type: 'styled-text',
+    prefixCodeLine: 'import "../_imports.dart";',
+    name: 'StyledText',
+    fileName: 'styled_text.dart',
+    fullCode: fullCodeTexts,
+    components: [],
+  );
 
   final fullCodePaints = '''
     abstract class AppStyledPaint {
       ${list.where((element) => element.type == StyleType.PAINT).map((e) => e.toCode).join('\n')}
     }
   ''';
-  final paints = GWidget(SizedBox(),
-      type: 'styled-paints',
-      prefixCodeLine: 'import "../_imports.dart";',
-      name: 'StyledPaints',
-      fileName: 'styled_paints.dart',
-      fullCode: fullCodePaints);
+  final paints = GWidget(
+    SizedBox(),
+    type: 'styled-paints',
+    prefixCodeLine: 'import "../_imports.dart";',
+    name: 'StyledPaints',
+    fileName: 'styled_paints.dart',
+    fullCode: fullCodePaints,
+    components: [],
+  );
 
   final fullCodeEffect = '''
     abstract class AppStyledEffects {
       ${list.where((element) => element.type == StyleType.EFFECT).map((e) => e.toCode).join('\n')}
     }
   ''';
-  final effects = GWidget(SizedBox(),
-      type: 'styled-paints',
-      prefixCodeLine: 'import "../_imports.dart";',
-      name: 'StyledEffects',
-      fileName: 'styled_effects.dart',
-      fullCode: fullCodeEffect);
+  final effects = GWidget(
+    SizedBox(),
+    type: 'styled-paints',
+    prefixCodeLine: 'import "../_imports.dart";',
+    name: 'StyledEffects',
+    fileName: 'styled_effects.dart',
+    fullCode: fullCodeEffect,
+    components: [],
+  );
 
   return [texts, paints, effects];
 }

@@ -36,7 +36,7 @@ GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Co
       code: '''
   Container(
     decoration: BoxDecoration(
-      color: ${bgColor ?? getColorFromFills(json)},
+      color: ${bgColor ?? getColorFromFillsString(json)},
       border: ${getBorder(json)},
       borderRadius: ${getBorderRadius(json)},
       boxShadow: ${getBoxShadow(json)},

@@ -63,8 +63,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
               .length ==
           1 &&
       json['children'][0]['type'] != 'TEXT' &&
-      !isFillWidthVertical(json)
-  ) {
+      !isFillWidthVertical(json)) {
     debugPrintWidget("Align", level: level, name: json['name']);
 
     final child = getWidgetByMap(
@@ -144,6 +143,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       children: ${children.widget.map((e) => e.code).toList()},
     )''',
       type: 'Row',
+      components: children.components,
     );
   } else {
     final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
@@ -190,6 +190,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         )
         ''',
         type: 'Positioned',
+        components: [widget!]
       );
     }).toList();
 
@@ -204,9 +205,11 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     if (json['primaryAxisSizingMode'] == null &&
         json['counterAxisSizingMode'] == null) {
       final child = GWidget(
-          Stack(children: children.map((e) => e.widget).toList()),
-          code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
-          type: 'stack');
+        Stack(children: children.map((e) => e.widget).toList()),
+        code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
+        type: 'stack',
+        components: children,
+      );
 
       return GWidget(
           SizedBox(
@@ -219,13 +222,15 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         height: ${json['height']},
         width: ${json['width']},
       )''',
-          type: 'wrap-stack');
+          type: 'wrap-stack',
+          components: [child]);
     }
 
     return GWidget(
       Stack(children: children.map((e) => e.widget).toList()),
       code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
       type: 'stack',
+      components: children,
     );
   }
 }

@@ -37,8 +37,9 @@ class _DemoWidgetState extends State<DemoWidget> {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
+      StylesApp = getStyles((json!['styles'] as List).map((e) => e as Json).toList());
       final res = getWidgetByMap(json!['json'] ?? {}, 0, name: 'screen');
-      final styles = getStyle((json!['styles'] as List).map((e) => e as Json).toList());
+      final styles = getStyleCode(StylesApp);
 
       if (res != null) {
         final List<GWidget> list = getAllComponents(res, result: [])
@@ -59,7 +60,7 @@ class _DemoWidgetState extends State<DemoWidget> {
         final assetsExport = getAssets(list, name: res.name ?? '');
 
         components = [
-          res,
+          res.copyWith(prefixCodeLine: 'import "_${res.fileName}";'),
           ...names.values.map((e) {
             if (e.type.contains('svg') ||
                 e.type.contains('png') ||
@@ -152,7 +153,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text("Copy")));
                       },
-                      child: Text(res?.fullCode ?? ''),
+                      child: Text(res?.fullCode?.toString() ?? ''),
                     ),
                   ),
                 ),
@@ -166,8 +167,6 @@ class _DemoWidgetState extends State<DemoWidget> {
   }
 
   void downloadWidget(GWidget<Widget> e) {
-    final name = e.type.split('-source').join('');
-
     js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
   }
 }

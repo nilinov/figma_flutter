@@ -87,6 +87,8 @@ GWidget getSwitch(Json json, int level) {
           type: 'AppSwitch-source',
           fullCode: getSwitchCode(childUnChecked, childChecked, name),
           name: name,
+          // TODO проверить экспорт нужных картинок
+          components: [],
         ),
         ...GIcons,
       ]);

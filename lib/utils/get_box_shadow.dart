@@ -5,7 +5,8 @@ List<BoxShadow>? getBoxShadow(Map<String, dynamic> json) {
   if (json['topLeftRadius'] == null) return null;
 
   return (json['effects'] as List)
-      .where((element) => element['type'] == 'DROP_SHADOW' && element['visible'] == true)
+      .where((element) =>
+          element['type'] == 'DROP_SHADOW' && element['visible'] == true)
       .map(
         (e) => BoxShadow(
           color: getColor(e['color']),
@@ -21,12 +22,15 @@ String? getBoxShadowString(Map<String, dynamic> json) {
   if (viewDebugProps) print('getBoxShadowString');
   if (json['topLeftRadius'] == null) return null;
 
-  return (json['effects'] as List)
-      .where((element) => element['type'] == 'DROP_SHADOW' && element['visible'] == true)
+  final code = (json['effects'] as List)
+      .where((element) =>
+          element['type'] == 'DROP_SHADOW' && element['visible'] == true)
       .map(
         (e) => getBoxShadowOne(e),
       )
       .join('\n');
+
+  return "[$code]";
 }
 
 String getBoxShadowOne(Json json) {

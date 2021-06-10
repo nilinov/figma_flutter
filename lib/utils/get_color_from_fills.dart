@@ -16,6 +16,14 @@ Color getColorFromFills(Map<String, dynamic> json) {
 String getColorFromFillsString(Map<String, dynamic> json) {
 
   if (viewDebugProps) print('getColorFromFills');
+
+  if (json['fillStyleId'] != null && json['fillStyleId'] != '') {
+    final style = StylesApp.firstWhere((element) => element.id == json['fillStyleId'], orElse: () => Style(json: {}));
+    if (style.type == StyleType.PAINT) {
+      return "AppStyledPaint.${style.name}";
+    }
+  }
+
   final color1 = [...(json['strokes'] ?? []), ...(json['fills'] ?? [])]
       .firstWhere((element) => element['type'] == 'SOLID', orElse: () => null);
 

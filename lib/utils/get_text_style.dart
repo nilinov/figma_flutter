@@ -62,7 +62,7 @@ GTextStyle getTextStyle(Map<String, dynamic> json) {
   return GTextStyle(textStyle, '''
   TextStyle(
       ${wrapProp('fontSize', json['fontSize'])}
-      ${wrapProp('color', getColorFromFills(json))}
+      ${wrapProp('color', getColorFromFillsString(json))}
       fontWeight: $fontWeight,
       fontFamily: "$fontFamily",
       fontStyle: $fontStyle,

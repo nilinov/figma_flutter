@@ -45,11 +45,14 @@ GWidget getGButton(
   return GWidget(item,
       code: code,
       components: [
-        GWidget(item,
-            code: AppButtonCode,
-            type: 'AppButton-source',
-            name: getNameByJson(json),
-            fullCode: AppButtonCode)
+        GWidget(
+          item,
+          code: AppButtonCode,
+          type: 'AppButton-source',
+          name: getNameByJson(json),
+          fullCode: AppButtonCode,
+          components: [],
+        )
       ],
       type: 'AppButton');
 }

@@ -15,6 +15,11 @@ export 'wrap_widgets/_wrap_widgets.dart';
 export 'generated_widget.dart';
 export 'get_style.dart';
 
+import 'get_style.dart';
+
 const viewDebugProps = false;
 
+
 typedef Json = Map<String, dynamic>;
+
+List<Style> StylesApp = [];

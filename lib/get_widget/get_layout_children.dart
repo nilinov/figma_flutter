@@ -13,11 +13,23 @@ GWidgetList<GWidget> getLayoutChildren(
     // add space between items
     if (i != 0 && space != null && space != 0) {
       if (axis == Axis.horizontal) {
-        res.add(GWidget(SizedBox(width: space), code: '''SizedBox(width: $space)''',
-            type: 'space-width'));
+        res.add(
+          GWidget(
+            SizedBox(width: space),
+            code: '''SizedBox(width: $space)''',
+            type: 'space-width',
+            components: [],
+          ),
+        );
       } else {
-        res.add(GWidget(SizedBox(height: space), code: '''SizedBox(height: $space)''',
-            type: 'space-height'));
+        res.add(
+          GWidget(
+            SizedBox(height: space),
+            code: '''SizedBox(height: $space)''',
+            type: 'space-height',
+            components: [],
+          ),
+        );
       }
     }
 
@@ -38,5 +50,6 @@ GWidgetList<GWidget> getLayoutChildren(
     }
   }
 
-  return GWidgetList(res, res.map((e) => e.code ?? '').toList(), components: res, type: 'wrap-layout');
+  return GWidgetList(res, res.map((e) => e.code ?? '').toList(),
+      components: res, type: 'wrap-layout');
 }
