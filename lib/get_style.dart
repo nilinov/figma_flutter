@@ -86,7 +86,7 @@ List<GWidget> getStyle(List<Json> json) {
   ''';
   final texts = GWidget(SizedBox(),
       type: 'styled-text',
-      prefixCodeLine: 'import "../_imports.dart"',
+      prefixCodeLine: 'import "../_imports.dart";',
       name: 'StyledText',
       fileName: 'styled_text.dart',
       fullCode: fullCodeTexts);
@@ -98,7 +98,7 @@ List<GWidget> getStyle(List<Json> json) {
   ''';
   final paints = GWidget(SizedBox(),
       type: 'styled-paints',
-      prefixCodeLine: 'import "../_imports.dart"',
+      prefixCodeLine: 'import "../_imports.dart";',
       name: 'StyledPaints',
       fileName: 'styled_paints.dart',
       fullCode: fullCodePaints);
@@ -110,7 +110,7 @@ List<GWidget> getStyle(List<Json> json) {
   ''';
   final effects = GWidget(SizedBox(),
       type: 'styled-paints',
-      prefixCodeLine: 'import "../_imports.dart"',
+      prefixCodeLine: 'import "../_imports.dart";',
       name: 'StyledEffects',
       fileName: 'styled_effects.dart',
       fullCode: fullCodeEffect);
