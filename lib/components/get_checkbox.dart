@@ -97,6 +97,8 @@ GWidget getCheckbox(Json json, int level) {
           type: 'AppCheckbox-source',
           fullCode: getCheckboxCode(childUnChecked, childChecked, name),
           name: name,
+          // TODO проверить экспорт нужных картинок
+          components: [],
         ),
         ...GIcons,
       ]);

@@ -18,7 +18,7 @@ GWidget getGButton(
   Color bg = getColorFromFills(
       {...json, 'fills': (json['fills'] as List).reversed.toList()});
   Color bgTapped = getColorFromFills(json);
-  double height = json['height'] ?? 0.0;
+  double height = toDouble(json['height']) ?? 0.0;
 
   BorderRadius borderRadius = getBorderRadius(json) ?? BorderRadius.zero;
   String borderRadiusString = getBorderRadiusString(json) ?? '';
@@ -45,11 +45,14 @@ GWidget getGButton(
   return GWidget(item,
       code: code,
       components: [
-        GWidget(item,
-            code: AppButtonCode,
-            type: 'AppButton-source',
-            name: getNameByJson(json),
-            fullCode: AppButtonCode)
+        GWidget(
+          item,
+          code: AppButtonCode,
+          type: 'AppButton-source',
+          name: getNameByJson(json),
+          fullCode: AppButtonCode,
+          components: [],
+        )
       ],
       type: 'AppButton');
 }

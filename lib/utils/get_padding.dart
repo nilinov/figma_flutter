@@ -3,10 +3,10 @@ import 'package:flutter_visible/imports.dart';
 EdgeInsets getPadding(Map<String, dynamic> json) {
   if (viewDebugProps) print('getPadding');
   return EdgeInsets.only(
-    top: json['paddingTop'] ?? 0,
-    left: json['paddingLeft'] ?? 0,
-    right: json['paddingRight'] ?? 0,
-    bottom: json['paddingBottom'] ?? 0,
+    top: toDouble(json['paddingTop']) ?? 0,
+    left: toDouble(json['paddingLeft']) ?? 0,
+    right: toDouble(json['paddingRight']) ?? 0,
+    bottom: toDouble(json['paddingBottom']) ?? 0,
   );
 }
 
@@ -19,10 +19,14 @@ String getPaddingString(Map<String, dynamic> json) {
     return '';
   }
 
+  if (value.top == value.bottom && value.top == value.left && value.top == value.right) {
+    return 'EdgeInsets.all(${toDouble(json['paddingTop'])})';
+  }
+
   return '''EdgeInsets.only(
-    top: ${json['paddingTop'] ?? 0},
-    left: ${json['paddingLeft'] ?? 0},
-    right: ${json['paddingRight'] ?? 0},
-    bottom: ${json['paddingBottom'] ?? 0},
+    top: ${toDouble(json['paddingTop'] ?? 0)},
+    left: ${toDouble(json['paddingLeft'] ?? 0)},
+    right: ${toDouble(json['paddingRight'] ?? 0)},
+    bottom: ${toDouble(json['paddingBottom'] ?? 0)},
   )''';
 }

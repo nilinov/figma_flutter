@@ -63,8 +63,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
               .length ==
           1 &&
       json['children'][0]['type'] != 'TEXT' &&
-      !isFillWidthVertical(json)
-  ) {
+      !isFillWidthVertical(json)) {
     debugPrintWidget("Align", level: level, name: json['name']);
 
     final child = getWidgetByMap(
@@ -99,7 +98,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
 
     final children = getLayoutChildren(
       json,
-      space: json['itemSpacing'],
+      space: toDouble(json['itemSpacing']),
       axis: Axis.vertical,
       level: level,
       variables: variables,
@@ -126,7 +125,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
 
     final children = getLayoutChildren(
       json,
-      space: json['itemSpacing'],
+      space: toDouble(json['itemSpacing']),
       axis: Axis.horizontal,
       level: level,
       variables: variables,
@@ -144,12 +143,13 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       children: ${children.widget.map((e) => e.code).toList()},
     )''',
       type: 'Row',
+      components: children.components,
     );
   } else {
-    final baseX = (json['type'] == 'GROUP') ? json['x'] : 0;
-    final baseY = (json['type'] == 'GROUP') ? json['y'] : 0;
-    final baseW = json['width'];
-    final baseH = json['height'];
+    final double baseX = (json['type'] == 'GROUP') ? toDouble(json['x']) ?? 0 : 0;
+    final double baseY = (json['type'] == 'GROUP') ? toDouble(json['y']) ?? 0 : 0;
+    final double baseW = toDouble(json['width']) ?? 0;
+    final double baseH = toDouble(json['height']) ?? 0;
 
     final List _childrenList =
         (json['children']).where((element) => element != null).toList();
@@ -164,11 +164,11 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
 
       debugPrintWidget("Positioned", level: level + 1, name: json['name']);
 
-      final left = e['x'] - baseX;
-      final top = e['y'] - baseY;
+      final double left = (toDouble(e['x']) ?? 0) - baseX;
+      final double top = (toDouble(e['y']) ?? 0) - baseY;
 
-      final right = baseW - left - e['width'];
-      final bottom = baseH - top - e['height'];
+      final double right = baseW - left - (toDouble(e['width']) ?? 0);
+      final double bottom = baseH - top - (toDouble(e['height']) ?? 0);
 
       return GWidget<Widget>(
         Positioned(
@@ -190,6 +190,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         )
         ''',
         type: 'Positioned',
+        components: [widget!]
       );
     }).toList();
 
@@ -204,28 +205,33 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     if (json['primaryAxisSizingMode'] == null &&
         json['counterAxisSizingMode'] == null) {
       final child = GWidget(
-          Stack(children: children.map((e) => e.widget).toList()),
-          code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
-          type: 'stack');
+        Stack(children: children.map((e) => e.widget).toList()),
+        code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
+        type: 'stack',
+        components: children,
+      );
 
       return GWidget(
           SizedBox(
             child: child.widget,
-            height: json['height'],
-            width: json['width'],
+            height: toDouble(json['height']),
+            width: toDouble(json['width']),
           ),
           code: '''SizedBox(
         child: ${child.code},
         height: ${json['height']},
         width: ${json['width']},
       )''',
-          type: 'wrap-stack');
+          type: 'wrap-stack',
+          components: [child]);
     }
 
     return GWidget(
       Stack(children: children.map((e) => e.widget).toList()),
       code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
       type: 'stack',
+      components: children,
     );
   }
 }
+

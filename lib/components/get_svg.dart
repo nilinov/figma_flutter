@@ -4,8 +4,8 @@ GWidget getSvg(Json json) {
   final svgImage = SvgPicture.string(
     json['svg'],
     key: getValueKeyImage(json['svg'], type: 'SVG', name: json['name']),
-    height: json['height'],
-    width: json['width'],
+    height: toDouble(json['height']),
+    width: toDouble(json['width']),
   );
 
   final name = getNameByJson(json);
@@ -21,6 +21,7 @@ GWidget getSvg(Json json) {
         fullCode: json['svg'],
         fileName: "${name}.svg",
         name: name,
+        components: [],
       )
     ],
   );

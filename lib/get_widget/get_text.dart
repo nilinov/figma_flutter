@@ -20,6 +20,7 @@ GWidget getText(Map<String, dynamic> json, int level,
   debugPrintWidget("Text", level: level + 1, name: json['name']);
 
   String text = (json['characters'] ?? '');
+  String textSource = '"' + (json['characters'] ?? '') + '"';
 
   if (variables != null) {
     final _name = (json['name'] as String).split('$String:').last;
@@ -31,12 +32,15 @@ GWidget getText(Map<String, dynamic> json, int level,
       if (variable.inCodeVariable == false) {
         text = variable.value ?? variable.defaultValue;
         text = '${text.split('\\n').join('\n')}';
+        textSource = '"$text"';
       } else {
         if (variable.template != null) {
           text = variable.template?.replaceAll('\$variable', variable.name ?? '') ?? 'variable';
         } else {
           text = variable.name ?? 'variable';
         }
+
+        textSource = text;
       }
     }
   }
@@ -45,7 +49,7 @@ GWidget getText(Map<String, dynamic> json, int level,
   Widget res = Text(text,textAlign: textAlign, style: style.textStyle);
 
   code =
-      '''Text($text, textAlign: $textAlign, style: ${getTextStyle(json)})''';
+      '''Text($textSource, textAlign: $textAlign, style: ${getTextStyle(json)})''';
 
   if ((json['styledText'] as List).length > 1) {
     final children = GWidgetList(
@@ -80,11 +84,11 @@ GWidget getText(Map<String, dynamic> json, int level,
     // center
   } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
     debugPrintWidget("SizedBox", level: level + 1, name: json['name']);
-    res = SizedBox(child: res, height: json['height'], width: json['width']);
+    res = SizedBox(child: res, height: toDouble(json['height']), width: toDouble(json['width']));
   } else if (json['textAutoResize'] == 'HEIGHT' &&
       json['layoutGrow'] != 1 &&
       json['layoutAlign'] != "STRETCH") {
-    res = SizedBox(child: res, width: json['width']);
+    res = SizedBox(child: res, width: toDouble(json['width']));
   }
 
   // if (json['layoutGrow'] == 1) {
@@ -94,5 +98,5 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   //TODO vertical align
 
-  return GWidget(res, code: code, type: 'wrap-text');
+  return GWidget(res, code: code, type: 'wrap-text', components: []);
 }

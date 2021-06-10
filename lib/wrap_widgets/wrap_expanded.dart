@@ -1,6 +1,9 @@
+import 'package:flutter/rendering.dart';
 import 'package:flutter_visible/imports.dart';
 
-GWidget wrapExpanded(GWidget widget) {
+GWidget wrapExpanded(GWidget widget, {required int level, required Json json}) {
+  debugPrintWidget("Expanded", level: level, name: json['name']);
+
   return GWidget(
     Expanded(child: widget.widget),
       code: '''Expanded(child: ${widget.code})''',

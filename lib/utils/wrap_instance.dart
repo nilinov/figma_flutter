@@ -5,7 +5,7 @@ GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Co
   double? height;
 
   if (json['counterAxisSizingMode'] == 'FIXED') {
-    height = json['height'];
+    height = toDouble(json['height']);
   }
 
   debugPrintWidget("Container", level: level, name: json['name']);
@@ -36,7 +36,7 @@ GWidget wrapInstance( Map<String, dynamic> json, GWidget widget, int level, { Co
       code: '''
   Container(
     decoration: BoxDecoration(
-      color: ${bgColor ?? getColorFromFills(json)},
+      color: ${bgColor ?? getColorFromFillsString(json)},
       border: ${getBorder(json)},
       borderRadius: ${getBorderRadius(json)},
       boxShadow: ${getBoxShadow(json)},

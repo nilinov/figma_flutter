@@ -45,6 +45,7 @@ $iconsCode
     type: 'assets-code',
     fileName: 'assets.dart',
     fullCode: fullCode,
-    name: 'Assets file'
+    name: 'Assets file',
+    components: [],
   );
 }
