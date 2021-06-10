@@ -24,12 +24,16 @@ String? getBoxShadowString(Map<String, dynamic> json) {
   return (json['effects'] as List)
       .where((element) => element['type'] == 'DROP_SHADOW' && element['visible'] == true)
       .map(
-        (e) => '''BoxShadow(
-          color: ${getColor(e['color'])},
-          blurRadius: ${e['radius']},
-          spreadRadius: ${e['spread']},
-          offset: ${Offset(e['offset']['x'], e['offset']['y'])},
-        )''',
+        (e) => getBoxShadowOne(e),
       )
       .join('\n');
+}
+
+String getBoxShadowOne(Json json) {
+  return '''BoxShadow(
+          color: ${getColor(json['color'])},
+          blurRadius: ${json['radius']},
+          spreadRadius: ${json['spread']},
+          offset: ${Offset(json['offset']['x'], json['offset']['y'])},
+        )''';
 }

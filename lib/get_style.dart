@@ -60,6 +60,16 @@ class Style {
         static const $name = ${getTextStyle(json)};
       ''';
     }
+    if (type == StyleType.EFFECT) {
+      final effects = (json['effects'] as List)
+          .where((e) => e['type'] == 'DROP_SHADOW' && e['visible'] == true)
+          .map((e) => getBoxShadowOne(e))
+          .toList();
+
+      return '''
+        static const $name = [${effects.join(', ')}];
+      ''';
+    }
     return '''
     ''';
   }
@@ -93,5 +103,17 @@ List<GWidget> getStyle(List<Json> json) {
       fileName: 'styled_paints.dart',
       fullCode: fullCodePaints);
 
-  return [texts, paints];
+  final fullCodeEffect = '''
+    abstract class AppStyledEffects {
+      ${list.where((element) => element.type == StyleType.EFFECT).map((e) => e.toCode).join('\n')}
+    }
+  ''';
+  final effects = GWidget(SizedBox(),
+      type: 'styled-paints',
+      prefixCodeLine: 'import "../_imports.dart"',
+      name: 'StyledEffects',
+      fileName: 'styled_effects.dart',
+      fullCode: fullCodeEffect);
+
+  return [texts, paints, effects];
 }
