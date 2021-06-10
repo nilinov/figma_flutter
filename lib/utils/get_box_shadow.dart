@@ -22,7 +22,15 @@ String? getBoxShadowString(Map<String, dynamic> json) {
   if (viewDebugProps) print('getBoxShadowString');
   if (json['topLeftRadius'] == null) return null;
 
-  final code = (json['effects'] as List)
+  if (json['effectStyleId'] != null && json['effectStyleId'] != '') {
+    final style = StylesApp.firstWhere((element) => element.id == json['effectStyleId'], orElse: () => Style(json: {}));
+    if (style.type == StyleType.EFFECT) {
+      return "AppStyledEffects.${style.name}";
+    }
+  }
+
+
+    final code = (json['effects'] as List)
       .where((element) =>
           element['type'] == 'DROP_SHADOW' && element['visible'] == true)
       .map(
