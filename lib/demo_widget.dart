@@ -37,7 +37,8 @@ class _DemoWidgetState extends State<DemoWidget> {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
-      final res = getWidgetByMap(json ?? {}, 0, name: 'screen');
+      final res = getWidgetByMap(json!['json'] ?? {}, 0, name: 'screen');
+      final styles = getStyle((json!['styles'] as List).map((e) => e as Json).toList());
 
       if (res != null) {
         final List<GWidget> list = getAllComponents(res, result: [])
@@ -67,7 +68,8 @@ class _DemoWidgetState extends State<DemoWidget> {
             return e.copyWith(prefixCodeLine: 'import "_${res.name}.dart";\n');
           }),
           assetsExport,
-          getImports([...list, assetsExport], name: res.name ?? ''),
+          getImports([...list, assetsExport,], name: res.name ?? ''),
+          ...styles,
         ];
       }
 

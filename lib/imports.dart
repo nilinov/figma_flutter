@@ -13,6 +13,7 @@ export 'components/_components.dart';
 export 'get_widget/_get_widget.dart';
 export 'wrap_widgets/_wrap_widgets.dart';
 export 'generated_widget.dart';
+export 'get_style.dart';
 
 const viewDebugProps = false;
 
