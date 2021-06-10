@@ -6,6 +6,7 @@ window.addEventListener('message', receiver, false);
 
 function receiver(e) {
     console.log('receiver data in figma plugin app')
+    console.log(e.data)
     window.figma_json = e.data;
 }
 
