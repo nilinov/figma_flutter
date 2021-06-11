@@ -220,13 +220,17 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       components: children,
     );
 
-    if (json['name'] == 'ProgrammGF') {
-      return widget;
+    double? w;
+    double? h;
+
+    if (!isStretch(json)) {
+      w = toDouble(json['width']);
     }
 
-    return wrapSizedBox(
-        widget,
-        height: toDouble(json['height']),
-        width: toDouble(json['width']));
+    if (!isGrow(json)) {
+      h = toDouble(json['height']);
+    }
+
+    return wrapSizedBox(widget, height: h, width: w);
   }
 }

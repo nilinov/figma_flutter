@@ -55,18 +55,11 @@ GWidget? getWidgetByMap(Json json, int level,
       String nameComponent = name ?? json['name'] ?? '';
       String nameSource = json['name'] ?? name ?? '';
 
-      double? w;
-      double? h;
-
       if (parent != null && isExpanded(parent, json)) {
         return wrapExpanded(widget, level: level, json: json);
       }
 
-      if (parent != null &&
-          (isExpandedWidth(parent, json) || isExpandedHeight(parent, json))) {
-        w = !isExpandedWidth(parent, json) ? toDouble(json['width']) : null;
-        h = !isExpandedHeight(parent, json) ? toDouble(json['height']) : null;
-      }
+      SizeWidget size = parent != null ? getSize(parent, json) : SizeWidget.empty();
 
       // if (level == 0) {
       //   w = toDouble(json['width']);
@@ -74,9 +67,9 @@ GWidget? getWidgetByMap(Json json, int level,
       // }
       //
       final item = wrapContainer(widget, json, nameComponent,
-          color: Colors.white, type: 'wrap-component', width: w, height: h);
+          color: Colors.white, type: 'wrap-component', width: size.w, height: size.h);
       final itemSource = wrapContainer(widgetSource, json, nameSource,
-          color: Colors.white, type: 'wrap-component', width: w, height: h);
+          color: Colors.white, type: 'wrap-component', width: size.w, height: size.h);
 
       return GWidget(
         item.widget,
@@ -159,11 +152,23 @@ GWidget? getWidgetByMap(Json json, int level,
               isCounterAxisSizingModeFixed(json)) ||
           (json['primaryAxisSizingMode'] == null &&
               json['counterAxisSizingMode'] == null)) {
+
+        double? w;
+        double? h;
+
+        if (!isStretch(json)) {
+          w = toDouble(json['width']);
+        }
+
+        if (!isGrow(json)) {
+          h = toDouble(json['height']);
+        }
+
         return GWidget(
             SizedBox(
                 child: widget.widget,
-                height: toDouble(json['height']),
-                width: toDouble(json['width'])),
+                height: h,
+                width: w),
             code:
                 '''SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
             components: [
