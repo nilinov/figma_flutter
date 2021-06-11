@@ -23,3 +23,9 @@ getMainAxisAlignment(Map<String, dynamic> json) {
 
   return MainAxisAlignment.start;
 }
+
+MainAxisSize getMainAxisSize(Map<String, dynamic> json) {
+  if (json['primaryAxisSizingMode'] == "AUTO") return MainAxisSize.min;
+
+  return MainAxisSize.max;
+}

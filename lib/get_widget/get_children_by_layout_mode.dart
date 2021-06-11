@@ -111,12 +111,14 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
 
     return GWidget(
       Column(
+        mainAxisSize: getMainAxisSize(json),
         crossAxisAlignment: getCrossAxisAlignment(json),
         mainAxisAlignment: getMainAxisAlignment(json),
         children: children.widget.map((e) => e.widget).toList(),
       ),
       code: '''
     Column(
+      mainAxisSize: ${getMainAxisSize(json)},
       crossAxisAlignment: ${getCrossAxisAlignment(json)},
       mainAxisAlignment: ${getMainAxisAlignment(json)},
       children: ${children.widget.map((e) => e.code).toList()},
@@ -140,9 +142,11 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       Row(
         crossAxisAlignment: getCrossAxisAlignment(json),
         mainAxisAlignment: getMainAxisAlignment(json),
+        mainAxisSize: getMainAxisSize(json),
         children: children.widget.map((e) => e.widget).toList(),
       ),
       code: '''Row(
+      mainAxisSize: ${getMainAxisSize(json)},
       crossAxisAlignment: ${getCrossAxisAlignment(json)},
       mainAxisAlignment: ${getMainAxisAlignment(json)},
       children: ${children.widget.map((e) => e.code).toList()},
