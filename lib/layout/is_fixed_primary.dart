@@ -34,9 +34,21 @@ bool isExpandedWidth(Json parent, Json json) {
 bool isExpandedHeight(Json parent, Json json) {
   if (isAutoLayout(parent)) {
     if (isVertical(parent)) {
-      return isGrow(json);
+      if (isGrow(json)) {
+        return true;
+      } else {
+        if (isPrimaryAxisSizingModeAuto(json)) {
+          return true;
+        }
+      }
     } else if (isHorizontal(parent)) {
-      return isStretch(json);
+      if (isStretch(json)) {
+        return true;
+      } else {
+        if (isPrimaryAxisSizingModeAuto(json)) {
+          return true;
+        }
+      }
     }
   }
 
