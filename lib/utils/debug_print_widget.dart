@@ -1,4 +1,9 @@
-debugPrintWidget(String tag, {int level = 0, String? name}) {
+import 'package:flutter_visible/imports.dart';
+
+debugPrintWidget(String tag, {int level = 0, String? name, required Json json}) {
   // return;
-  print(List.generate(level, (index) => "\t").join('') + " $tag" + ((name != null) ? "($name)" : ''));
+
+  final startTabs = List.generate(level, (index) => "\t").join('');
+
+  print(startTabs + " $tag" + ((name != null) ? "($name)" : ''));
 }

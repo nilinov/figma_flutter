@@ -8,6 +8,7 @@ export 'package:flutter_visible/env.dart';
 export 'package:flutter_visible/get_widget/get_children_by_layout_mode.dart';
 
 export 'utils/_utils.dart';
+export 'layout/_layout.dart';
 export 'components/_components.dart';
 export 'get_widget/_get_widget.dart';
 export 'wrap_widgets/_wrap_widgets.dart';

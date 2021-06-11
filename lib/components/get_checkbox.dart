@@ -48,7 +48,7 @@ class _GetCheckboxRunTimeState extends State<GetCheckboxRunTime> {
 
     final children =
         getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
-    final child = wrapInstance(_json, children, widget.level + 1);
+    final child = wrapContainer(children, _json, 'Checkbox: child');
 
     return GestureDetector(
       onTap: () => setState(() => checked = !checked),
@@ -74,16 +74,19 @@ GWidget getCheckbox(Json json, int level) {
     GIcons.addAll(getJsonIcon(element).map((e) => getSvg(e)).toList());
   });
 
-  var variable = getVariable(json, 'title', inCodeVariable: true, template: "widget.\$variable");
+  var variable = getVariable(json, 'title',
+      inCodeVariable: true, template: "widget.\$variable");
 
-  final childUnChecked = wrapInstance(
-      _jsonUnChecked,
-      getChildrenByLayoutMode(_jsonUnChecked, level, variables: [variable]),
-      level + 1);
-  final childChecked = wrapInstance(
-      _jsonChecked,
-      getChildrenByLayoutMode(_jsonChecked, level, variables: [variable]),
-      level + 1);
+  final childUnChecked = wrapContainer(
+    getChildrenByLayoutMode(_jsonUnChecked, level, variables: [variable]),
+    _jsonUnChecked,
+    'Checkbox: childUnChecked',
+  );
+  final childChecked = wrapContainer(
+    getChildrenByLayoutMode(_jsonChecked, level, variables: [variable]),
+    _jsonChecked,
+    'Checkbox: childChecked',
+  );
 
   final name = getNameByJson(json);
 

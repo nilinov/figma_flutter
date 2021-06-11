@@ -10,10 +10,11 @@ GWidget? getWidgetByMap(Json json, int level,
   }
 
   if (json['svg'] != null) {
-    debugPrintWidget("SvgPicture", level: level, name: json['name']);
+    debugPrintWidget("SvgPicture",
+        level: level, name: json['name'], json: json);
     return getSvg(json);
   } else if (json['png'] != null) {
-    debugPrintWidget("Image", level: level, name: json['name']);
+    debugPrintWidget("Image", level: level, name: json['name'], json: json);
 
     final pngImage = Image.memory(
       base64Decode(json['png']),
@@ -45,18 +46,37 @@ GWidget? getWidgetByMap(Json json, int level,
       var variablesSource = getAllVariables(json, inCodeVariable: true);
 
       var widget =
-      getChildrenByLayoutMode(json, level + 1, variables: variables);
+          getChildrenByLayoutMode(json, level + 1, variables: variables);
       var widgetSource =
-      getChildrenByLayoutMode(json, level + 1, variables: variablesSource);
-      debugPrintWidget("Container", level: level, name: json['name']);
+          getChildrenByLayoutMode(json, level + 1, variables: variablesSource);
+      debugPrintWidget("Container",
+          level: level, name: json['name'], json: json);
 
       String nameComponent = name ?? json['name'] ?? '';
       String nameSource = json['name'] ?? name ?? '';
 
+      double? w;
+      double? h;
+
+      if (parent != null && isExpanded(parent, json)) {
+        return wrapExpanded(widget, level: level, json: json);
+      }
+
+      if (parent != null &&
+          (isExpandedWidth(parent, json) || isExpandedHeight(parent, json))) {
+        w = !isExpandedWidth(parent, json) ? toDouble(json['width']) : null;
+        h = !isExpandedHeight(parent, json) ? toDouble(json['height']) : null;
+      }
+
+      // if (level == 0) {
+      //   w = toDouble(json['width']);
+      //   h = toDouble(json['width']);
+      // }
+      //
       final item = wrapContainer(widget, json, nameComponent,
-          color: Colors.white, type: 'wrap-component');
+          color: Colors.white, type: 'wrap-component', width: w, height: h);
       final itemSource = wrapContainer(widgetSource, json, nameSource,
-          color: Colors.white, type: 'wrap-component');
+          color: Colors.white, type: 'wrap-component', width: w, height: h);
 
       return GWidget(
         item.widget,
@@ -80,12 +100,14 @@ GWidget? getWidgetByMap(Json json, int level,
       var widget = (getChildrenByLayoutMode(json, level + 1));
       if (widget == null) return null;
 
-      debugPrintWidget("Container", level: level, name: json['name']);
+      debugPrintWidget("Container",
+          level: level, name: json['name'], json: json);
 
       return wrapContainer(widget, json, _name, type: 'rectangle');
 
     case 'VECTOR':
-      debugPrintWidget("SvgPicture", level: level, name: json['name']);
+      debugPrintWidget("SvgPicture",
+          level: level, name: json['name'], json: json);
       return GWidget(
         SvgPicture.string(
           json['svg'],
@@ -106,73 +128,21 @@ GWidget? getWidgetByMap(Json json, int level,
     case 'FRAME':
       GWidget widget = getChildrenByLayoutMode(json, level + 1);
 
-      double? height;
-      double? width;
-      bool isExpanded = false;
-
-      if (/*level == 0 || */json['layoutMode'] == 'NONE') {
-        height = toDouble(json['height']);
-        width = toDouble(json['width']);
-      } else if (isHorizontal(json)) {
-        if (isPrimaryAxisSizingModeFixed(json) && layoutGrow(json) == 0) {
-          // fixed h
-          height = toDouble(json['height']);
-        } else if (isPrimaryAxisSizingModeFixed(json) &&
-            layoutGrow(json) == 1) {
-          // fill h
-          height = double.infinity;
-        } else if (isPrimaryAxisSizingModeAuto(json)) {
-          // hug h
-        }
-
-        if (isStretch(json) && isCounterAxisSizingModeFixed(json)) {
-          //fill w
-          if (parent != null && parent['layoutMode'] != 'NONE') {
-            //Expanded
-            width = null;
-            isExpanded = true;
-          } else {
-            width = double.infinity;
-          }
-        }
+      if (parent != null && isExpanded(parent, json)) {
+        return widget;
       }
 
-      if (isPrimaryAxisSizingModeFixed(json)) {
-        if (parent != null && isHorizontal(parent)) {
-          //Expanded
-          width = null;
-          isExpanded = true;
-        } else if (parent != null && isVertical(parent)) {
-          //fill width
-          width = double.infinity;
-        } else {
-          // fixed w
-          width = toDouble(json['width']);
-        }
+      double? w;
+      double? h;
+
+      if (parent != null &&
+          (isExpandedWidth(parent, json) || isExpandedHeight(parent, json))) {
+        w = !isExpandedWidth(parent, json) ? toDouble(json['width']) : null;
+        h = !isExpandedHeight(parent, json) ? toDouble(json['height']) : null;
       }
 
-      if (isCounterAxisSizingModeFixed(json)) {
-        if (parent != null && isVertical(parent)) {
-          //Expanded
-          // width = null;
-          // isExpanded = true;
-        } else if (parent != null && isHorizontal(parent)) {
-          //fill h
-          height = double.infinity;
-        } else {
-          // fixed h
-          // height = toDouble(json['height']);
-        }
-      }
-
-      if (isExpanded) {
-        return wrapExpanded(widget, level: level + 1, json: json);
-        // return widget;
-      }
-
-      debugPrintWidget("Container", level: level, name: json['name']);
       GWidget container = wrapContainer(widget, json, _name,
-          type: 'frame', height: height, width: width);
+          type: 'frame', width: w, height: h);
 
       return container;
     case 'INSTANCE':
@@ -180,12 +150,13 @@ GWidget? getWidgetByMap(Json json, int level,
     case 'GROUP':
       final item = (getChildrenByLayoutMode(json, level + 1));
 
-      debugPrintWidget("Container", level: level, name: json['name']);
+      debugPrintWidget("Container",
+          level: level, name: json['name'], json: json);
 
       final widget = wrapContainer(item, json, _name, type: 'GROUP');
 
       if ((isPrimaryAxisSizingModeFixed(json) &&
-          isCounterAxisSizingModeFixed(json)) ||
+              isCounterAxisSizingModeFixed(json)) ||
           (json['primaryAxisSizingMode'] == null &&
               json['counterAxisSizingMode'] == null)) {
         return GWidget(
@@ -194,7 +165,7 @@ GWidget? getWidgetByMap(Json json, int level,
                 height: toDouble(json['height']),
                 width: toDouble(json['width'])),
             code:
-            '''SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
+                '''SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
             components: [
               GWidget(widget.widget,
                   code: widget.code,
@@ -214,7 +185,8 @@ GWidget? getWidgetByMap(Json json, int level,
           name: _name,
           type: 'expanded');
     case 'LINE':
-      debugPrintWidget("Container", level: level, name: json['name']);
+      debugPrintWidget("Container",
+          level: level, name: json['name'], json: json);
 
       if (json['rotation'] == 0 || json['rotation'] == 180) {
         return GWidget(
@@ -229,13 +201,22 @@ GWidget? getWidgetByMap(Json json, int level,
       if (json['rotation'] == 90 || json['rotation'] == 270) {
         return GWidget(VerticalDivider(color: getColorFromFills(json)),
             code:
-            '''VerticalDivider(color: ${getColorFromFillsString(json)})''',
+                '''VerticalDivider(color: ${getColorFromFillsString(json)})''',
             name: _name,
             components: [],
             type: 'line');
       }
 
       return null;
+    case 'ELLIPSE':
+      debugPrintWidget("Ellipse", level: level, name: json['name'], json: json);
+
+      return wrapContainer(
+          GWidget(SizedBox(), components: [], type: 'empty space sizedbox'),
+          json,
+          _name,
+          type: 'Circle',
+          shape: BoxShape.circle);
 
     default:
       return null;

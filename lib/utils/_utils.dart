@@ -8,7 +8,6 @@ export 'get_cross_axis_alignment.dart';
 export 'get_main_axis_alignment.dart';
 export 'get_value_key.dart';
 export 'get_flat_json.dart';
-export 'wrap_instance.dart';
 export 'get_instance_by_name.dart';
 export 'get_variable.dart';
 export 'get_box_shadow.dart';

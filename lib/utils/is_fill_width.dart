@@ -2,18 +2,6 @@ isFillWidthVertical(Map<String, dynamic> json) => (json['layoutMode'] == 'VERTIC
 
 isFillWidthHorizontal(Map<String, dynamic> json) => (json['layoutMode'] == 'HORIZONTAL' && json['layoutAlign'] == 'STRETCH');
 
-isVertical(Map<String, dynamic> json) {
-  return json['layoutMode'] == 'VERTICAL';
-}
-
-isHorizontal(Map<String, dynamic> json) {
-  return json['layoutMode'] == 'HORIZONTAL';
-}
-
-isStretch(Map<String, dynamic> json) {
-  return json['layoutAlign'] == 'STRETCH';
-}
-
 isPrimaryAxisSizingModeFixed(Map<String, dynamic> json) {
   return json['primaryAxisSizingMode'] == 'FIXED';
 }

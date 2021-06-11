@@ -30,16 +30,17 @@ String getValueKeyImageString(String data, {String? type, required String? name}
   return '''ValueKey('$name')''';
 }
 
-ValueKey getValueKeyComponent(Widget? value, {required String? name}) {
+ValueKey getValueKeyComponent(Widget? value, {required String? name, required String desc}) {
 
   if (value == null) {
     return ValueKey('WIDGET:$name');
   }
 
   final Map<String, dynamic> res = {
+    'name': '$name',
+    'desc': '$desc',
     'type': 'WIDGET',
     'value': value,
-    'name': '$name',
   };
 
   return ValueKey(res);

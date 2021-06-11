@@ -17,7 +17,7 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   String code = '';
 
-  debugPrintWidget("Text", level: level + 1, name: json['name']);
+  debugPrintWidget("Text", level: level + 1, name: json['name'], json: json);
 
   String text = (json['characters'] ?? '');
   String textSource = '"' + (json['characters'] ?? '') + '"';
@@ -83,7 +83,7 @@ GWidget getText(Map<String, dynamic> json, int level,
       json['textAlignVertical'] == 'CENTER') {
     // center
   } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
-    debugPrintWidget("SizedBox", level: level + 1, name: json['name']);
+    debugPrintWidget("SizedBox", level: level + 1, name: json['name'], json: json);
     res = SizedBox(child: res, height: toDouble(json['height']), width: toDouble(json['width']));
   } else if (json['textAutoResize'] == 'HEIGHT' &&
       json['layoutGrow'] != 1 &&

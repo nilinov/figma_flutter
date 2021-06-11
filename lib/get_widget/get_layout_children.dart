@@ -47,6 +47,11 @@ GWidgetList<GWidget> getLayoutChildren(
     }
 
     if (widget != null) {
+      if (isExpanded(json, itemJson) && !(widget.widget is Expanded)) {
+        print(itemJson['name']);
+        widget = wrapExpanded(widget, json: itemJson, level: level);
+      }
+
       res.add(widget);
     }
   }

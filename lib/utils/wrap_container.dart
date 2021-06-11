@@ -9,10 +9,11 @@ GWidget<Container> wrapContainer(
   String type = 'component',
   double? height,
   double? width,
+  BoxShape shape = BoxShape.rectangle,
 }) {
   return GWidget(
     Container(
-      key: getValueKeyComponent(widget.widget, name: json['name']),
+      key: getValueKeyComponent(widget.widget, name: json['name'], desc: type),
       width: width,
       height: height,
       decoration: BoxDecoration(
@@ -20,6 +21,7 @@ GWidget<Container> wrapContainer(
         border: getBorder(json).border,
         borderRadius: getBorderRadius(json),
         boxShadow: getBoxShadow(json),
+        shape: shape,
       ),
       padding: getPadding(json),
       child: widget.widget,
