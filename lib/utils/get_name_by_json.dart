@@ -8,6 +8,12 @@ String getNameByJson(Map<String, dynamic> json) {
   return name
       .split(' ')
       .join('_')
+      .split(',')
+      .join('_')
+      .split('%')
+      .join('_')
+      .split('.')
+      .join('_')
       .split('—')
       .join('_')
       .split('/')

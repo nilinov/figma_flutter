@@ -49,3 +49,9 @@ String getBoxShadowOne(Json json) {
           offset: ${Offset(toDouble(json['offset']['x']) ?? 0, toDouble(json['offset']['y']) ?? 0)},
         )''';
 }
+
+String getBoxShadowOneScss(Json json) {
+  return '''
+      box-shadow: ${toDouble(json['offset']['x']) ?? 0} ${toDouble(json['offset']['y']) ?? 0} ${json['radius']} ${json['spread']} ${getColor(json['color'])}
+  ''';
+}

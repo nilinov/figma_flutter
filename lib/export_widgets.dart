@@ -3,18 +3,18 @@ import 'dart:js' as js;
 import 'package:flutter_visible/get_data.dart';
 import 'package:flutter_visible/imports.dart';
 
-class DemoWidget extends StatefulWidget {
+class ExportWidgets extends StatefulWidget {
   final bool isSample;
 
-  const DemoWidget({Key? key, required this.isSample}) : super(key: key);
+  const ExportWidgets({Key? key, required this.isSample}) : super(key: key);
 
   @override
-  _DemoWidgetState createState() => _DemoWidgetState();
+  _ExportWidgetsState createState() => _ExportWidgetsState();
 }
 
 enum ImageExportEnum { inline, consts, file }
 
-class _DemoWidgetState extends State<DemoWidget> {
+class _ExportWidgetsState extends State<ExportWidgets> {
   Map<String, dynamic>? json;
 
   @override

@@ -1,3 +1,5 @@
+import 'package:flutter_visible/utils/get_text_style_scss.dart';
+
 import 'imports.dart';
 
 enum StyleType {
@@ -15,6 +17,11 @@ class StylePaint {
   String get toCode {
     if (values.length > 0) return '''${values.first}''';
     return 'Color(0x000000)';
+  }
+
+  String get toHex {
+    if (values.length > 0) return '#${values.first.value.toRadixString(16)}';
+    return 'black';
   }
 }
 
@@ -72,6 +79,35 @@ class Style {
     return '''
     ''';
   }
+
+  String get toScss {
+    if (type == StyleType.PAINT) {
+      final colors = (json['paints'] as List)
+          .where((e) => e['type'] == 'SOLID' && e['visible'] == true)
+          .map((e) => getColor(e['color']))
+          .toList();
+      return '''
+        \$$name: ${StylePaint(colors).toHex};
+      ''';
+    }
+    if (type == StyleType.TEXT) {
+      return '''
+        .$name { ${getTextStyleScss(json)} \n}\n
+      ''';
+    }
+    if (type == StyleType.EFFECT) {
+      final effects = (json['effects'] as List)
+          .where((e) => e['type'] == 'DROP_SHADOW' && e['visible'] == true)
+          .map((e) => getBoxShadowOneScss(e))
+          .toList();
+
+      return '''
+        \$$name: ${effects.join(', ')};
+      ''';
+    }
+    return '''
+    ''';
+  }
 }
 
 List<Style> getStyles(List<Json> json) {
@@ -123,6 +159,48 @@ List<GWidget> getStyleCode(List<Style> list) {
     prefixCodeLine: 'import "../_imports.dart";',
     name: 'StyledEffects',
     fileName: 'styled_effects.dart',
+    fullCode: fullCodeEffect,
+    components: [],
+  );
+
+  return [texts, paints, effects];
+}
+
+List<GWidget> getStyleScss(List<Style> list) {
+  final fullCodeTexts = '''
+      ${list.where((element) => element.type == StyleType.TEXT).map((e) => e.toScss).join('\n')}
+    
+  ''';
+  final texts = GWidget(
+    SizedBox(),
+    type: 'styled-text',
+    name: 'StyledText',
+    fileName: 'styled_text.scss',
+    fullCode: fullCodeTexts,
+    components: [],
+  );
+
+  final fullCodePaints = '''
+      ${list.where((element) => element.type == StyleType.PAINT).map((e) => e.toScss).join('\n')}
+  ''';
+  final paints = GWidget(
+    SizedBox(),
+    type: 'styled-paints',
+    name: 'StyledPaints',
+    fileName: 'styled_paints.scss',
+    fullCode: fullCodePaints,
+    components: [],
+  );
+
+  final fullCodeEffect = '''
+      ${list.where((element) => element.type == StyleType.EFFECT).map((e) => e.toScss).join('\n')}
+    
+  ''';
+  final effects = GWidget(
+    SizedBox(),
+    type: 'styled-paints',
+    name: 'StyledEffects',
+    fileName: 'styled_effects.scss',
     fullCode: fullCodeEffect,
     components: [],
   );

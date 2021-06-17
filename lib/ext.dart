@@ -284,19 +284,19 @@ getKeyValue(Widget item) {
   return value.split(':')[1] ?? value;
 }
 
-String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
+String wrapProp(String name, dynamic value, {dynamic excludeValue, String delimiter = ','}) {
   if (value != null && value != excludeValue) {
     if (value is String && value.isNotEmpty) {
-      return "$name: $value,";
+      return "$name: $value$delimiter";
     }
     if (value is double || value is num || value is int) {
       if (value == double.infinity) {
-        return "$name: double.infinity,";
+        return "$name: double.infinity$delimiter";
       }
-      return "$name: $value,";
+      return "$name: $value$delimiter";
     }
     if (value is Color) {
-      return "$name: $value,";
+      return "$name: $value$delimiter";
     }
     if (value is EdgeInsets) {
       if (value.top == 0 && value.bottom == 0 && value.left == 0 && value.right == 0) {
@@ -306,7 +306,7 @@ String wrapProp(String name, dynamic value, {dynamic excludeValue}) {
       return "const EdgeInsets.only(top: ${value.top}, bottom: ${value.bottom}, left: ${value.left}, right: ${value.right}),";
     }
     if (value is bool) {
-      return "$name: $value,";
+      return "$name: $value$delimiter";
     }
   }
 
