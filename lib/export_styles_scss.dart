@@ -40,20 +40,51 @@ class _ExportStylesScssState extends State<ExportStylesScss> {
     if (json != null) {
       StylesApp =
           getStyles((json!['styles'] as List).map((e) => e as Json).toList());
+      final res = getWidgetByMap(json!['json'] ?? {}, 0, name: 'screen');
       final styles = getStyleScss(StylesApp);
 
-      components = [
-        ...styles,
-      ];
+      if (res != null) {
+        final List<GWidget> list = getAllComponents(res, result: [])
+            // .where((element) => element.type.contains('App'))
+            .where((element) => element.type.contains('source'))
+            .toList();
+
+        list.sort((e1, e2) =>
+            e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
+        list.sort((e1, e2) =>
+            e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
+
+        final Map<String, GWidget> names = {};
+
+        Future.forEach(
+            list, (GWidget element) => names[element.name ?? ''] = element);
+
+        final assetsExport = getAssets(list, name: res.name ?? '');
+
+        components = [
+          ...names.values.where((e) {
+            if (e.type.contains('svg') ||
+                e.type.contains('png') ||
+                e.type.contains('import')) return true;
+
+            return false;
+          }).toList(),
+          assetsExport,
+          getImports([
+            ...list,
+            assetsExport,
+          ], name: res.name ?? ''),
+          ...styles,
+        ];
+      }
 
       // print(res.toWidget());
       return Row(
         children: [
           Expanded(
               child: Container(
-                  child: Column(
-            children: [
-              Column(
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
                   ...components.map((e) => Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -75,8 +106,8 @@ class _ExportStylesScssState extends State<ExportStylesScss> {
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
               ),
-            ],
-          ))),
+            ),
+          )),
         ],
       );
     }
@@ -88,4 +119,3 @@ class _ExportStylesScssState extends State<ExportStylesScss> {
     js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
   }
 }
-

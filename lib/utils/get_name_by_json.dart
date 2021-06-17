@@ -1,3 +1,5 @@
+import 'package:recase/recase.dart';
+
 String getNameByJson(Map<String, dynamic> json) {
   String name = json['name'] ?? '';
 
@@ -5,7 +7,7 @@ String getNameByJson(Map<String, dynamic> json) {
     name = 'num_' + name;
   }
 
-  return name
+   final _name = name
       .split(' ')
       .join('_')
       .split(',')
@@ -31,4 +33,6 @@ String getNameByJson(Map<String, dynamic> json) {
       .split('_')
       .where((e) => e != null && e != '')
       .join('_');
+
+  return _name.toLowerCase();
 }
