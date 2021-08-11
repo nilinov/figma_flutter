@@ -18,7 +18,7 @@ GBorder getBorder(Map<String, dynamic> json) {
   if (stroke != null) {
     return GBorder(Border.all(
       color: getColor(stroke['color']),
-      width: json['strokeWeight'] ?? 0,
+      width: (json['strokeWeight'] ?? 0).toDouble(),
     ), '''Border.all(
       color: ${getColor(stroke['color'])},
       width: ${json['strokeWeight'] ?? 0},

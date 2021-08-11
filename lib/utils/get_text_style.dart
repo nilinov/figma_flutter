@@ -45,7 +45,7 @@ GTextStyle getTextStyle(Map<String, dynamic> json) {
 
   if (json['letterSpacing'] != null &&
       json['letterSpacing']['unit'] == 'PIXELS') {
-    letterSpacing = json['letterSpacing']['value'];
+    letterSpacing = (json['letterSpacing']['value'] ?? 0).toDouble();
   }
 
   TextStyle textStyle = TextStyle(
