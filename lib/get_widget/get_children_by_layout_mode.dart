@@ -109,7 +109,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       variables: variables,
     );
 
-    return GWidget(
+    final item = GWidget(
       Column(
         mainAxisSize: getMainAxisSize(json),
         crossAxisAlignment: getCrossAxisAlignment(json),
@@ -127,6 +127,12 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       components: children.components,
       type: 'Column',
     );
+
+    if (!isStretch(json)) {
+      return wrapSizedBox(item, width: toDouble(json['width']));
+    }
+
+    return item;
   } else if (isHorizontal(json)) {
     debugPrintWidget("Row", level: level, name: json['name'], json: json);
 
