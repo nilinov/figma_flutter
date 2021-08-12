@@ -144,7 +144,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       variables: variables,
     );
 
-    return GWidget(
+    final item = GWidget(
       Row(
         crossAxisAlignment: getCrossAxisAlignment(json),
         mainAxisAlignment: getMainAxisAlignment(json),
@@ -160,6 +160,12 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       type: 'Row',
       components: children.components,
     );
+
+    if (json['overflowDirection'] != 'NONE') {
+      return wrapListView(children, json: json, level: level + 1);
+    }
+
+    return item;
   } else {
     final double baseX =
         (json['type'] == 'GROUP') ? toDouble(json['x']) ?? 0 : 0;

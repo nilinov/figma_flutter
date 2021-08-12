@@ -75,6 +75,8 @@ class _DemoWidgetState extends State<DemoWidget> {
         ];
       }
 
+      final widget = res?.widget ?? SizedBox();
+
       // print(res.toWidget());
       return Row(
         children: [
@@ -82,7 +84,7 @@ class _DemoWidgetState extends State<DemoWidget> {
               child: Padding(
             child: Container(
               child: SingleChildScrollView(
-                  child: Column(children: [res?.widget ?? SizedBox()])),
+                  child: Column(children: [widget])),
               constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.9,
                   maxWidth: MediaQuery.of(context).size.width / 2),
