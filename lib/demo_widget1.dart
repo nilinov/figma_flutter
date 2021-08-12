@@ -4,299 +4,100 @@ class frame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: ValueKey(
+          '{type: WIDGET, value: Align(alignment: Alignment.topLeft), name: FRAME:Frame 3 (0) 291:374}'),
+      width: 407,
+      height: 312,
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.all(Radius.circular(0)),
-        boxShadow: [],
       ),
-      padding: EdgeInsets.all(15),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            height: 108,
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.all(Radius.circular(0)),
-              boxShadow: [],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: SizedBox(
-                            child: Stack(children: [
-                              Positioned(
-                                child: Image.asset(AppImages.Image),
-                                left: 4,
-                                top: 4,
-                                right: 4,
-                                bottom: 4,
-                              ),
-                              Positioned(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffe30613),
-                                  ),
-                                  child: null,
-                                ),
-                                left: 0,
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                              )
-                            ]),
-                            width: 68,
-                            height: 68,
-                          ),
-                        ),
-                        height: 68,
-                        width: 68),
-                    SizedBox(height: 4),
-                    SizedBox(
-                      child: Text("Новинки недели",
-                          textAlign: TextAlign.center,
-                          style: AppStyledText.num_12_Regular
-                              .copyWith(color: AppStyledPaint.Primary_Black)),
-                      width: double.infinity,
-                    )
-                  ],
-                ),
-                SizedBox(width: 24),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: SizedBox(
-                            child: Stack(children: [
-                              Positioned(
-                                child: Image.asset(AppImages.Image),
-                                left: 4,
-                                top: 4,
-                                right: 4,
-                                bottom: 4,
-                              ),
-                              Positioned(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffe30613),
-                                  ),
-                                  child: null,
-                                ),
-                                left: 0,
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                              )
-                            ]),
-                            width: 68,
-                            height: 68,
-                          ),
-                        ),
-                        height: 68,
-                        width: 68),
-                    SizedBox(height: 4),
-                    SizedBox(
-                      child: Text("Новинки недели",
-                          textAlign: TextAlign.center,
-                          style: AppStyledText.num_12_Regular
-                              .copyWith(color: AppStyledPaint.Primary_Black)),
-                      width: double.infinity,
-                    )
-                  ],
-                ),
-                SizedBox(width: 24),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: SizedBox(
-                            child: Stack(children: [
-                              Positioned(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0x3d8a8884),
-                                  ),
-                                  child: null,
-                                ),
-                                left: 0,
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                              ),
-                              Positioned(
-                                child: Image.asset(AppImages.Image),
-                                left: 4,
-                                top: 4,
-                                right: 4,
-                                bottom: 4,
-                              )
-                            ]),
-                            width: 68,
-                            height: 68,
-                          ),
-                        ),
-                        height: 68,
-                        width: 68),
-                    SizedBox(height: 4),
-                    SizedBox(
-                      child: Text("Новинки месяца",
-                          textAlign: TextAlign.center,
-                          style: AppStyledText.num_12_Regular
-                              .copyWith(color: AppStyledPaint.Primary_Black)),
-                      width: double.infinity,
-                    )
-                  ],
-                ),
-                SizedBox(width: 24),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: SizedBox(
-                            child: Stack(children: [
-                              Positioned(
-                                child: Image.asset(AppImages.Image),
-                                left: 4,
-                                top: 4,
-                                right: 4,
-                                bottom: 4,
-                              ),
-                              Positioned(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffe30613),
-                                  ),
-                                  child: null,
-                                ),
-                                left: 0,
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                              )
-                            ]),
-                            width: 68,
-                            height: 68,
-                          ),
-                        ),
-                        height: 68,
-                        width: 68),
-                    SizedBox(height: 4),
-                    SizedBox(
-                      child: Text("Новинки недели",
-                          textAlign: TextAlign.center,
-                          style: AppStyledText.num_12_Regular
-                              .copyWith(color: AppStyledPaint.Primary_Black)),
-                      width: double.infinity,
-                    )
-                  ],
-                ),
-                SizedBox(width: 24),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: SizedBox(
-                            child: Stack(children: [
-                              Positioned(
-                                child: Image.asset(AppImages.Image),
-                                left: 4,
-                                top: 4,
-                                right: 4,
-                                bottom: 4,
-                              ),
-                              Positioned(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffe30613),
-                                  ),
-                                  child: null,
-                                ),
-                                left: 0,
-                                top: 0,
-                                right: 0,
-                                bottom: 0,
-                              )
-                            ]),
-                            width: 68,
-                            height: 68,
-                          ),
-                        ),
-                        height: 68,
-                        width: 68),
-                    SizedBox(height: 4),
-                    SizedBox(
-                      child: Text("Новинки недели",
-                          textAlign: TextAlign.center,
-                          style: AppStyledText.num_12_Regular
-                              .copyWith(color: AppStyledPaint.Primary_Black)),
-                      width: double.infinity,
-                    )
-                  ],
-                )
-              ],
-            ),
+      child: Align(
+        child: Container(
+          key: ValueKey(
+              '{type: WIDGET, value: Column(direction: vertical, mainAxisAlignment: center, crossAxisAlignment: start), name: Frame 1}'),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(0)),
           ),
-          SizedBox(height: 35),
-          Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(AppImages.Image),
-              SizedBox(height: 12),
               SizedBox(
-                child: Text("Супер сет «Крепкий иммунитет»",
+                child: Text("Поделиться купоном",
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xff414951),
+                        fontSize: 25,
+                        color: Color(0xff141e2e),
                         fontWeight: FontWeight.w700,
-                        fontFamily: "Open Sans-SemiBold",
+                        fontFamily: "Roboto-Bold",
                         fontStyle: FontStyle.normal,
-                        letterSpacing: 0)),
+                        letterSpacing: -0.23000000417232513)),
                 width: double.infinity,
+              ),
+              SizedBox(height: 27),
+              SizedBox(
+                child: Text(
+                    "Введите номер телефона друга, с которым вы хотите поделиться этим купоном",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff141e2e),
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Roboto-Regular",
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: -0.23000000417232513)),
+                width: double.infinity,
+              ),
+              SizedBox(height: 27),
+              Container(
+                key: ValueKey(
+                    '{type: WIDGET, value: Container-[<WIDGET:input>](padding: EdgeInsets.zero, bg: BoxDecoration(color: Color(0x00000000), border: Border.all(BorderSide(Color(0x00000000), 0.0, BorderStyle.solid)), borderRadius: BorderRadius.zero)), name: input}'),
+                decoration: BoxDecoration(
+                  color: Color(0x00000000),
+                  border: Border.all(width: 0, color: Colors.transparent),
+                  borderRadius: BorderRadius.zero,
+                  boxShadow: [],
+                ),
+                padding: EdgeInsets.zero,
+                child: AppInput(
+                  placeholder: "Номер телефона",
+                  label: "Номер телефона",
+                  borderDefaultColor: Color(0xff8a96a5),
+                  borderFocusColor: Color(0xffae0148),
+                  isAnimatedLabel: false,
+                  styleLabel: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xff8a96a5),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Roboto-Regular",
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: -0.07999999821186066),
+                ),
+                height: 40,
+              ),
+              SizedBox(height: 27),
+              AppButton(
+                title: Text("Поделиться купоном",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Color(0xffffffff),
+                        fontWeight: FontWeight.w900,
+                        fontFamily: "Roboto-Black",
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: -0.4099999964237213)),
+                bg: Color(0xffae0148),
+                bgTapped: Color(0x99ae0148),
+                height: 50,
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                onTap: () {},
               )
             ],
-          )
-        ],
+          ),
+        ),
+        alignment: Alignment.topLeft,
       ),
     );
   }
