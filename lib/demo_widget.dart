@@ -16,6 +16,7 @@ enum ImageExportEnum { inline, consts, file }
 
 class _DemoWidgetState extends State<DemoWidget> {
   Map<String, dynamic>? json;
+  String? name;
 
   @override
   Future<void> didChangeDependencies() async {
@@ -31,18 +32,28 @@ class _DemoWidgetState extends State<DemoWidget> {
   ImageExportEnum iconsExport = ImageExportEnum.inline;
   ImageExportEnum imagesExport = ImageExportEnum.inline;
 
-  List<GWidget> components = [];
+  List<GWidget> componentsFiles = [];
+  List<GWidget> stylesFiles = [];
+  List<GWidget> iconsFiles = [];
+  List<GWidget> imagesFiles = [];
+
+  GWidget rootFile = GWidget(SizedBox(), components: [], type: 'init');
+  GWidget importFile = GWidget(SizedBox(), components: [], type: 'init');
+  GWidget declareAssetsFile = GWidget(SizedBox(), components: [], type: 'init');
 
   @override
   Widget build(BuildContext context) {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
-      StylesApp = getStyles((json!['styles'] as List).map((e) => e as Json).toList());
-      final res = getWidgetByMap(json!['json'] ?? {}, 0, name: 'screen');
+      StylesApp =
+          getStyles((json!['styles'] as List).map((e) => e as Json).toList());
+      final res = getWidgetByMap(json!['json'] ?? {}, 0, name: name);
       final styles = getStyleCode(StylesApp);
 
       if (res != null) {
+        name = name ?? res.name ?? 'screen';
+
         final List<GWidget> list = getAllComponents(res, result: [])
             // .where((element) => element.type.contains('App'))
             .where((element) => element.type.contains('source'))
@@ -58,21 +69,35 @@ class _DemoWidgetState extends State<DemoWidget> {
         Future.forEach(
             list, (GWidget element) => names[element.name ?? ''] = element);
 
-        final assetsExport = getAssets(list, name: res.name ?? '');
+        final assetsExport = getAssets(list, name: name ?? '');
 
-        components = [
-          res.copyWith(prefixCodeLine: 'import "_${res.fileName}";'),
-          ...names.values.map((e) {
+        rootFile = res.copyWith(prefixCodeLine: 'import "_$name";', name: name);
+
+        importFile = getImports([
+          ...list,
+          assetsExport,
+        ], name: name ?? '');
+
+        declareAssetsFile = assetsExport;
+
+        componentsFiles = [
+          ...names.values
+              .where((e) => !(e.type.contains('svg') ||
+                  e.type.contains('png') ||
+                  e.type.contains('import')))
+              .map((e) {
             if (e.type.contains('svg') ||
                 e.type.contains('png') ||
                 e.type.contains('import')) return e;
 
-            return e.copyWith(prefixCodeLine: 'import "_${res.name}.dart";\n');
+            return e.copyWith(prefixCodeLine: 'import "_$name.dart";\n');
           }),
-          assetsExport,
-          getImports([...list, assetsExport,], name: res.name ?? ''),
-          ...styles,
         ];
+
+        iconsFiles = [...names.values.where((e) => (e.type.contains('svg')))];
+        imagesFiles = [...names.values.where((e) => (e.type.contains('png')))];
+
+        stylesFiles = styles;
       }
 
       final widget = res?.widget ?? SizedBox();
@@ -83,8 +108,7 @@ class _DemoWidgetState extends State<DemoWidget> {
           Expanded(
               child: Padding(
             child: Container(
-              child: SingleChildScrollView(
-                  child: Column(children: [widget])),
+              child: SingleChildScrollView(child: Column(children: [widget])),
               constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.9,
                   maxWidth: MediaQuery.of(context).size.width / 2),
@@ -127,22 +151,22 @@ class _DemoWidgetState extends State<DemoWidget> {
                       ],
                     ),
                     Divider(),
-                    ...components.map((e) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              downloadWidget(e);
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(Icons.save),
-                                SizedBox(width: 10),
-                                Text(getFileName("${e.name ?? e.type}")),
-                              ],
-                            ),
-                          ),
-                        )),
+                    TextFormField(
+                      initialValue: name,
+                      onChanged: (text) => setState(() => name = text),
+                      decoration: InputDecoration(hintText: 'Имя компонента'),
+                    ),
+                    Divider(),
+                    ...getDownloadItems([rootFile], label: 'Виджет'),
+                    ...getDownloadItems(componentsFiles,
+                        label: 'Вложенные компоненты'),
+                    ...getDownloadItems([declareAssetsFile],
+                        label: 'Файл объявления ресурсов'),
+                    ...getDownloadItems(iconsFiles, label: 'Файлы иконок'),
+                    ...getDownloadItems(imagesFiles, label: 'Файлы изображений'),
+                    ...getDownloadItems([importFile],
+                        label: 'Файл объявления импортов'),
+                    ...getDownloadItems(stylesFiles, label: 'Файлы стилей'),
                     Divider(),
                   ],
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,10 +192,10 @@ class _DemoWidgetState extends State<DemoWidget> {
 
     return Center(child: CircularProgressIndicator());
   }
+}
 
-  void downloadWidget(GWidget<Widget> e) {
-    js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
-  }
+void downloadWidget(GWidget<Widget> e) {
+  js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
 }
 
 class ExportSettingImage extends StatelessWidget {
@@ -228,4 +252,31 @@ String getTitleExportImage(ImageExportEnum iconsExport) {
     case ImageExportEnum.file:
       return 'Файл';
   }
+}
+
+List<Widget> getDownloadItems(List<GWidget> componentsFiles, {String? label}) {
+  if (componentsFiles.length == 0) return [];
+
+  return [
+    if (label != null) Text(label, style: TextStyle(fontSize: 15)),
+    ...componentsFiles
+        .map((e) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  downloadWidget(e);
+                },
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.save),
+                    SizedBox(width: 10),
+                    Text(getFileName("${e.name ?? e.type}")),
+                  ],
+                ),
+              ),
+            ))
+        .toList(),
+    SizedBox(height: 15),
+  ];
 }
