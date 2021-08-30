@@ -28,3 +28,13 @@ String getNameByJson(Map<String, dynamic> json) {
       .where((e) => e != null && e != '')
       .join('_');
 }
+
+String getFileName(String? name) {
+  if (name == null) return '';
+
+  return name
+      .split('String:')
+      .join('')
+      .split('Date:')
+      .join('');
+}

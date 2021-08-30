@@ -2,7 +2,7 @@ import 'package:flutter_visible/imports.dart';
 
 Variable? getNodeByVariable(Map<String, dynamic> json, String nameVariable,
     {required bool inCodeVariable, required String? template}) {
-  final name = json['name'] as String;
+  final name = getNameByJson(json);
   if (name.contains('$String:')) {
     final _name = name.split('$String:')[1];
 
@@ -12,6 +12,14 @@ Variable? getNodeByVariable(Map<String, dynamic> json, String nameVariable,
             defaultValue: json['characters'],
             name: _name,
             type: 'String',
+            inCodeVariable: inCodeVariable,
+            template: template);
+      }
+      if (json['type'] == 'RECTANGLE' || json['type'] == 'ELLIPSE') {
+        return Variable(
+            defaultValue: "AppImages.$_name",
+            name: _name,
+            type: 'Image',
             inCodeVariable: inCodeVariable,
             template: template);
       }
@@ -88,7 +96,12 @@ List<Variable> getAllVariables(Map<String, dynamic> json, {required bool inCodeV
 }
 
 String getParamsWithVariables(List<Variable> variables) {
-  return variables.map((e) => '${e.name}: "${e.value ?? e.defaultValue}"').join(', ');
+  return variables.map((e) {
+    if (e.type == "String")
+    return '${e.name}: "${e.value ?? e.defaultValue}"';
+
+    return '${e.name}: ${e.value ?? e.defaultValue}';
+  }).join(', ');
 }
 
 String getDeclareWithVariables(List<Variable> variables) {

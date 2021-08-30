@@ -138,7 +138,7 @@ class _DemoWidgetState extends State<DemoWidget> {
                               children: [
                                 Icon(Icons.save),
                                 SizedBox(width: 10),
-                                Text("${e.name ?? e.type}"),
+                                Text(getFileName("${e.name ?? e.type}")),
                               ],
                             ),
                           ),

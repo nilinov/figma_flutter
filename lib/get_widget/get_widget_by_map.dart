@@ -14,28 +14,7 @@ GWidget? getWidgetByMap(Json json, int level,
         level: level, name: json['name'], json: json);
     return getSvg(json);
   } else if (json['png'] != null) {
-    debugPrintWidget("Image", level: level, name: json['name'], json: json);
-
-    final pngImage = Image.memory(
-      base64Decode(json['png']),
-      key: getValueKeyImage(json['png'], type: 'PNG', name: json['name']),
-      height: toDouble(json['height']),
-      width: toDouble(json['width']),
-    );
-    final name = getNameByJson(json);
-
-    return GWidget(pngImage,
-        code: '''Image.asset(AppImages.${name})''',
-        type: 'png-image',
-        name: name,
-        components: [
-          GWidget(pngImage,
-              type: 'png-source',
-              fullCode: base64Decode(json['png']),
-              name: name,
-              components: [],
-              fileName: "${name}.png")
-        ]);
+    return getImage(json, level + 1);
   }
 
   String _name = json['name'] ?? name ?? '';

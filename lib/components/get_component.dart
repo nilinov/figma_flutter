@@ -23,14 +23,18 @@ class GetComponentRunTime extends StatelessWidget {
 
 GWidget getComponent(Json json, int level) {
   final List<GWidget> gIcons = [];
+  final List<GWidget> gImages = [];
 
-  Future.forEach(<Json>[
-    ...getJsonIcon(json),
-  ], (Json element) {
-    gIcons .addAll(getJsonIcon(element).map((e) => getSvg(e)).toList());
+  Future.forEach(<Json>[...getJsonIcon(json)], (Json element) {
+    gIcons.addAll(getJsonIcon(element).map((e) => getSvg(e)).toList());
   });
 
-  var variables = getAllVariables(json,  inCodeVariable: true, template: "widget.\$variable");
+  Future.forEach(<Json>[...getJsonImage(json)], (Json element) {
+    gImages.addAll(getJsonImage(element).map((e) => getImage(e, level + 1)).toList());
+  });
+
+  var variables = getAllVariables(json,
+      inCodeVariable: true, template: "widget.\$variable");
 
   final name = getNameByJson(json);
 
@@ -50,10 +54,10 @@ GWidget getComponent(Json json, int level) {
           type: 'AppComponent($name)-source',
           fullCode: getComponentCode(componentResult, name, variables),
           name: name,
-          // TODO проверить экспорт нужных картинок
-          components: [],
+          components: [...gImages, ...gIcons],
         ),
-        ...gIcons ,
+        ...gIcons,
+        ...gImages,
       ]);
 }
 
