@@ -75,7 +75,8 @@ Variable? getVariable(Map<String, dynamic> json, String nameVariable,
       inCodeVariable: inCodeVariable, template: template);
 }
 
-List<Variable> getAllVariables(Map<String, dynamic> json, {required bool inCodeVariable, String? template}) {
+List<Variable> getAllVariables(Map<String, dynamic> json,
+    {required bool inCodeVariable, String? template}) {
   final flatJson = getFlatJson(json, result: []);
 
   final listNodeWithVariables = flatJson
@@ -90,29 +91,34 @@ List<Variable> getAllVariables(Map<String, dynamic> json, {required bool inCodeV
 
   var res = <Variable>[];
 
-  Future.forEach(res1.where((e) => e is Variable).toList(), (element) => res.add(element as Variable));
+  Future.forEach(res1.where((e) => e is Variable).toList(),
+      (element) => res.add(element as Variable));
 
   return res;
 }
 
 String getParamsWithVariables(List<Variable> variables) {
   return variables.map((e) {
-    if (e.type == "String")
-    return '${e.name}: "${e.value ?? e.defaultValue}"';
+    if (e.type == "String") return '${e.name}: "${e.value ?? e.defaultValue}"';
 
     return '${e.name}: ${e.value ?? e.defaultValue}';
   }).join(', ');
 }
 
 String getParamsWithVariablesConstructor(List<Variable> variables) {
-  return '{' + variables.map((e) {
-    if (e.type == "String")
-    return 'required this.${e.name}';
+  return '{' +
+      variables.map((e) {
+        if (e.type == "String") return 'required this.${e.name}';
 
-    return 'required this.${e.name}';
-  }).join(', ') + '}';
+        return 'required this.${e.name}';
+      }).join(', ') +
+      '}';
 }
 
 String getDeclareWithVariables(List<Variable> variables) {
-  return variables.map((e) => "final ${e.type} ${e.name};").join('\n');
+  return variables.map((e) {
+    if (e.type == "Image") return 'final String ${e.name};';
+
+    return "final ${e.type} ${e.name};";
+  }).join('\n');
 }

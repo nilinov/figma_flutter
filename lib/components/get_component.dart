@@ -30,11 +30,12 @@ GWidget getComponent(Json json, int level) {
   });
 
   Future.forEach(<Json>[...getJsonImage(json)], (Json element) {
-    gImages.addAll(getJsonImage(element).map((e) => getImage(e, level + 1)).toList());
+    gImages.addAll(
+        getJsonImage(element).map((e) => getImage(e, level + 1)).toList());
   });
 
-  var variables = getAllVariables(json,
-      inCodeVariable: true, template: "widget.\$variable");
+  var variables =
+      getAllVariables(json, inCodeVariable: true, template: "\$variable");
 
   final name = getNameByJson(json);
 

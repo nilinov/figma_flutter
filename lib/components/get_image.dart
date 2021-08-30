@@ -17,7 +17,7 @@ GWidget getImage(Json json, int level) {
   print(variables);
 
   return GWidget(pngImage,
-      code: '''Image.asset(AppImages.$name)''',
+      code: '''Image.asset(AppImages.${getFileName(name)})''',
       type: 'png-image',
       name: name,
       components: [
@@ -26,6 +26,6 @@ GWidget getImage(Json json, int level) {
             fullCode: base64Decode(json['png']),
             name: name,
             components: [],
-            fileName: "$name.png")
+            fileName: "${getFileName(name)}.png")
       ]);
 }

@@ -71,7 +71,7 @@ class _DemoWidgetState extends State<DemoWidget> {
 
         final assetsExport = getAssets(list, name: name ?? '');
 
-        rootFile = res.copyWith(prefixCodeLine: 'import "_$name";', name: name);
+        rootFile = res.copyWith(prefixCodeLine: 'import "_$name.dart";', name: name);
 
         importFile = getImports([
           ...list,
