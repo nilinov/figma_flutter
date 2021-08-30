@@ -22,6 +22,10 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
 
   widget = getChildrenByLayoutMode(json, level);
 
+  if (getColorFromFills(json) != null) {
+    return wrapContainer(widget, json, '{$name}_color', type: 'Container');
+  }
+
   return widget;
   // return wrapContainer(widget, json, 'wrap-component');
 }
