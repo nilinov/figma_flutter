@@ -67,8 +67,7 @@ Variable? getVariable(Map<String, dynamic> json, String nameVariable,
       inCodeVariable: inCodeVariable, template: template);
 }
 
-List<Variable> getAllVariables(Map<String, dynamic> json,
-    {required bool inCodeVariable, String? template}) {
+List<Variable> getAllVariables(Map<String, dynamic> json, {required bool inCodeVariable, String? template}) {
   final flatJson = getFlatJson(json, result: []);
 
   final listNodeWithVariables = flatJson
@@ -86,4 +85,12 @@ List<Variable> getAllVariables(Map<String, dynamic> json,
   Future.forEach(res1.where((e) => e is Variable).toList(), (element) => res.add(element as Variable));
 
   return res;
+}
+
+String getParamsWithVariables(List<Variable> variables) {
+  return variables.map((e) => "${e.name}: ${e.value}").join(', ');
+}
+
+String getDeclareWithVariables(List<Variable> variables) {
+  return variables.map((e) => "final ${e.type} ${e.name}").join(';\n');
 }
