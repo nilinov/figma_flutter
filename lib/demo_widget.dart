@@ -71,7 +71,8 @@ class _DemoWidgetState extends State<DemoWidget> {
 
         final assetsExport = getAssets(list, name: name ?? '');
 
-        rootFile = res.copyWith(prefixCodeLine: 'import "_$name.dart";', name: name);
+        rootFile =
+            res.copyWith(prefixCodeLine: 'import "_$name.dart";', name: name);
 
         importFile = getImports([
           ...list,
@@ -100,7 +101,7 @@ class _DemoWidgetState extends State<DemoWidget> {
         stylesFiles = styles;
       }
 
-      final widget = res?.widget ?? SizedBox();
+      Widget widget = res?.widget ?? SizedBox();
 
       // print(res.toWidget());
       return Row(
@@ -117,75 +118,64 @@ class _DemoWidgetState extends State<DemoWidget> {
           )),
           if (MediaQuery.of(context).size.width > 800)
             Expanded(
-                child: Container(
-                    child: Column(
+                child: Column(
               children: [
-                Column(
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            js.context.callMethod(
-                                'fallbackCopyTextToClipboard', [res?.code]);
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content: Text("Copy")));
-                          },
-                          child: Container(
-                            color: Colors.white,
-                            padding: EdgeInsets.all(10),
-                            child: Text('Click to clipboard text'),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            js.context.callMethod('fallbackDownloadWidget',
-                                [res?.code, 'demo_widget_1.dart']);
-                          },
-                          child: Container(
-                            color: Colors.white,
-                            padding: EdgeInsets.all(10),
-                            child: Text('Click to download widget'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Divider(),
-                    TextFormField(
-                      initialValue: name,
-                      onChanged: (text) => setState(() => name = text),
-                      decoration: InputDecoration(hintText: 'Имя компонента'),
-                    ),
-                    Divider(),
-                    ...getDownloadItems([rootFile], label: 'Виджет'),
-                    ...getDownloadItems(componentsFiles,
-                        label: 'Вложенные компоненты'),
-                    ...getDownloadItems([declareAssetsFile],
-                        label: 'Файл объявления ресурсов'),
-                    ...getDownloadItems(iconsFiles, label: 'Файлы иконок'),
-                    ...getDownloadItems(imagesFiles, label: 'Файлы изображений'),
-                    ...getDownloadItems([importFile],
-                        label: 'Файл объявления импортов'),
-                    ...getDownloadItems(stylesFiles, label: 'Файлы стилей'),
-                    Divider(),
-                  ],
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: GestureDetector(
+                    GestureDetector(
                       onTap: () {
                         js.context.callMethod(
                             'fallbackCopyTextToClipboard', [res?.code]);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text("Copy")));
                       },
-                      child: Text(res?.fullCode?.toString() ?? ''),
+                      child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.all(10),
+                        child: Text('Click to clipboard text'),
+                      ),
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        js.context.callMethod('fallbackDownloadWidget',
+                            [res?.code, 'demo_widget_1.dart']);
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.all(10),
+                        child: Text('Click to download widget'),
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(),
+                TextFormField(
+                  initialValue: name,
+                  onChanged: (text) => setState(() => name = text),
+                  decoration: InputDecoration(hintText: 'Имя компонента'),
+                ),
+                Divider(),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      ...getDownloadItems([rootFile], label: 'Виджет'),
+                      ...getDownloadItems(componentsFiles,
+                          label: 'Вложенные компоненты'),
+                      ...getDownloadItems([declareAssetsFile],
+                          label: 'Файл объявления ресурсов'),
+                      ...getDownloadItems(iconsFiles, label: 'Файлы иконок'),
+                      ...getDownloadItems(imagesFiles,
+                          label: 'Файлы изображений'),
+                      ...getDownloadItems([importFile],
+                          label: 'Файл объявления импортов'),
+                      ...getDownloadItems(stylesFiles, label: 'Файлы стилей'),
+                    ],
                   ),
                 ),
+                Divider(),
               ],
-            ))),
+              crossAxisAlignment: CrossAxisAlignment.start,
+            )),
         ],
       );
     }

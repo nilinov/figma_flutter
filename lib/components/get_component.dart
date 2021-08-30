@@ -22,6 +22,8 @@ class GetComponentRunTime extends StatelessWidget {
 }
 
 GWidget getComponent(Json json, int level) {
+  debugPrintWidget("getComponent", level: level, name: json['name'], json: json);
+
   final List<GWidget> gIcons = [];
   final List<GWidget> gImages = [];
 

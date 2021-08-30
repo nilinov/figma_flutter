@@ -59,7 +59,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
               .length ==
           0) return gWidgetSizedBox('empty-list');
 
-  if ((json['children'] as List)
+/*  if ((json['children'] as List)
               .where((element) => element['visible'] == true)
               .length ==
           1 &&
@@ -96,7 +96,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     }
 
     return child;
-  }
+  }*/
 
   if (isVertical(json)) {
     debugPrintWidget("Column", level: level, name: json['name'], json: json);
