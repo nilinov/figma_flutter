@@ -104,6 +104,15 @@ String getParamsWithVariables(List<Variable> variables) {
   }).join(', ');
 }
 
+String getParamsWithVariablesConstructor(List<Variable> variables) {
+  return '{' + variables.map((e) {
+    if (e.type == "String")
+    return 'required this.${e.name}';
+
+    return 'required this.${e.name}';
+  }).join(', ') + '}';
+}
+
 String getDeclareWithVariables(List<Variable> variables) {
   return variables.map((e) => "final ${e.type} ${e.name};").join('\n');
 }

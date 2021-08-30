@@ -65,7 +65,7 @@ getComponentCode(GWidget variants, String name, List<Variable> variables) => '''
 class $name extends StatelessWidget {
   ${getDeclareWithVariables(variables)}
   
-  $name(${getParamsWithVariables(variables)});
+  $name(${getParamsWithVariablesConstructor(variables)});
 
   @override
   Widget build(BuildContext context) {
