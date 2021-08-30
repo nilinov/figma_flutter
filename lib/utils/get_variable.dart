@@ -88,9 +88,9 @@ List<Variable> getAllVariables(Map<String, dynamic> json, {required bool inCodeV
 }
 
 String getParamsWithVariables(List<Variable> variables) {
-  return variables.map((e) => "${e.name}: ${e.value}").join(', ');
+  return variables.map((e) => '${e.name}: "${e.value ?? e.defaultValue}"').join(', ');
 }
 
 String getDeclareWithVariables(List<Variable> variables) {
-  return variables.map((e) => "final ${e.type} ${e.name}").join(';\n');
+  return variables.map((e) => "final ${e.type} ${e.name};").join('\n');
 }
