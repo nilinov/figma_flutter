@@ -22,7 +22,7 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
 
   widget = getChildrenByLayoutMode(json, level);
 
-  if (getColorFromFills(json) != null) {
+  if (getColorFromFills(json) != Colors.transparent) {
     return wrapContainer(widget, json, '{$name}_color', type: 'Container');
   }
 
