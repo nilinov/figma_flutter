@@ -16,7 +16,7 @@ List<Json> getJsonIcon(Json json) {
 List<Json> getJsonImage(Json json) {
   print(json['name']);
   final res = <Json>[];
-  if ((json['name'] as String?)?.toUpperCase().contains('IMAGE') == true) {
+  if ((json['name'] as String?)?.toUpperCase().contains('IMAGE') == true && (json['name'] as String?)?.toUpperCase().contains('WRAPIMAGE') != true) {
     if (json['png'] != null) {
       res.add({...json});
     }
