@@ -32,7 +32,7 @@ class PluginPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Text('Version: 1'),
+          // Text('Version: 1'),
           Expanded(child: Container(child: DemoWidget(isSample: isSample))),
           // Expanded(child: Container(child: Widget1())),
         ],
