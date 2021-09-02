@@ -12,3 +12,5 @@ git reset --hard origin/main
 flutter pub get
 
 flutter build web
+
+cp build/web build/v002
