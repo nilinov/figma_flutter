@@ -13,4 +13,4 @@ flutter pub get
 
 flutter build web
 
-cp build/web build/v002
+#cp build/web build/v002
