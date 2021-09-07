@@ -67,11 +67,26 @@ class _DemoWidgetListState extends State<DemoWidgetList> {
                       gWidget: res,
                       onTap: (item) => setState(() => selectedChild = item)),
                 Divider(),
-                Expanded(child: SingleChildScrollView(
+                Expanded(
+                    child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(selectedChild?.widgetType ?? 'No select', style: TextStyle(fontSize: 18)),
+                      Text(selectedChild?.widgetType ?? 'No select',
+                          style: TextStyle(fontSize: 18)),
+                      SizedBox(height: 10),
+                      if (selectedChild != null)
+                        ...?selectedChild?.props?.keys
+                            .map((e) => Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(e),
+                                    Text(" : "),
+                                    Text(selectedChild?.props![e] ?? ''),
+                                  ],
+                                ))
+                            .toList(),
+                      SizedBox(height: 10),
                       if (selectedChild != null)
                         Text(selectedChild?.code ?? ''),
                     ],

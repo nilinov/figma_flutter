@@ -103,6 +103,15 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   //TODO vertical align
 
-  return GWidget(res,
-      code: code, type: 'wrap-text', components: [], widgetType: "Text");
+  return GWidget(
+    res,
+    code: code,
+    type: 'wrap-text',
+    components: [],
+    widgetType: "Text",
+    props: {
+      'Text': text,
+      'TextAlign': textAlign.toString(),
+    },
+  );
 }

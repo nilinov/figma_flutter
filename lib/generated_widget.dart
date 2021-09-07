@@ -9,6 +9,7 @@ class GWidget<T extends Widget> {
   final dynamic _fullCode;
   final List<GWidget> components;
   final List<Variable> variables;
+  final Map<String, String>? props;
   final String prefixCodeLine;
   final String widgetType;
 
@@ -23,6 +24,7 @@ class GWidget<T extends Widget> {
     this.variables = const [],
     this.prefixCodeLine = '',
     required this.widgetType,
+    this.props,
   })  : _fileName = fileName,
         _fullCode = fullCode,
         _code = code;
@@ -77,7 +79,8 @@ class $_name extends StatelessWidget {
     List<GWidget>? components,
     List<Variable>? variables,
     String? prefixCodeLine,
-    required String widgetType,
+    String? widgetType,
+    final Map<String, String>? props,
   }) {
     if ((widget == null || identical(widget, this.widget)) &&
         (code == null || identical(code, this._code)) &&
@@ -102,7 +105,8 @@ class $_name extends StatelessWidget {
       components: components ?? this.components,
       variables: variables ?? this.variables,
       prefixCodeLine: prefixCodeLine ?? this.prefixCodeLine,
-      widgetType: widgetType,
+      widgetType: widgetType ?? this.widgetType,
+      props: props ?? this.props,
     );
   }
 }

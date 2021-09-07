@@ -109,7 +109,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       variables: variables,
     );
 
-    final item = GWidget(
+    GWidget item = GWidget(
       Column(
         mainAxisSize: getMainAxisSize(json),
         crossAxisAlignment: getCrossAxisAlignment(json),
@@ -129,6 +129,12 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       widgetType: 'Column',
     );
 
+    final color = getColor(json);
+
+    if (color != Colors.transparent) {
+      item = wrapContainer(item, json, 'wrap-color');
+    }
+
     if (!isStretch(json)) {
       return wrapSizedBox(item, width: toDouble(json['width']));
     }
@@ -145,7 +151,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       variables: variables,
     );
 
-    final item = GWidget(
+    GWidget item = GWidget(
       Row(
         crossAxisAlignment: getCrossAxisAlignment(json),
         mainAxisAlignment: getMainAxisAlignment(json),
@@ -162,6 +168,12 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       widgetType: 'Row',
       components: children.components,
     );
+
+    final color = getColor(json);
+
+    if (color != Colors.transparent) {
+      item = wrapContainer(item, json, 'wrap-color');
+    }
 
     if (json['overflowDirection'] != 'NONE') {
       return wrapListView(children, json: json, level: level + 1);
@@ -228,7 +240,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
 
     debugPrintWidget("Stack", level: level, name: json['name'], json: json);
 
-    final widget = GWidget(
+    GWidget widget = GWidget(
       Stack(children: children.map((e) => e.widget).toList()),
       code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
       type: 'Stack',
@@ -245,6 +257,12 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
 
     if (!isGrow(json)) {
       h = toDouble(json['height']);
+    }
+
+    final color = getColor(json);
+
+    if (color != Colors.transparent) {
+      widget = wrapContainer(widget, json, 'wrap-color');
     }
 
     return wrapSizedBox(widget, height: h, width: w);
