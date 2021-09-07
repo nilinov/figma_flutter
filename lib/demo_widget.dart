@@ -37,9 +37,12 @@ class _DemoWidgetState extends State<DemoWidget> {
   List<GWidget> iconsFiles = [];
   List<GWidget> imagesFiles = [];
 
-  GWidget rootFile = GWidget(SizedBox(), components: [], type: 'init');
-  GWidget importFile = GWidget(SizedBox(), components: [], type: 'init');
-  GWidget declareAssetsFile = GWidget(SizedBox(), components: [], type: 'init');
+  GWidget rootFile =
+      GWidget(SizedBox(), components: [], type: 'init', widgetType: "SizedBox");
+  GWidget importFile =
+      GWidget(SizedBox(), components: [], type: 'init', widgetType: "SizedBox");
+  GWidget declareAssetsFile =
+      GWidget(SizedBox(), components: [], type: 'init', widgetType: "SizedBox");
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +74,11 @@ class _DemoWidgetState extends State<DemoWidget> {
 
         final assetsExport = getAssets(list, name: name ?? '');
 
-        rootFile =
-            res.copyWith(prefixCodeLine: 'import "_$name.dart";', name: name);
+        rootFile = res.copyWith(
+          prefixCodeLine: 'import "_$name.dart";',
+          name: name,
+          widgetType: 'SizedBox',
+        );
 
         importFile = getImports([
           ...list,
@@ -91,7 +97,10 @@ class _DemoWidgetState extends State<DemoWidget> {
                 e.type.contains('png') ||
                 e.type.contains('import')) return e;
 
-            return e.copyWith(prefixCodeLine: 'import "_$name.dart";\n');
+            return e.copyWith(
+              prefixCodeLine: 'import "_$name.dart";\n',
+              widgetType: 'SizedBox',
+            );
           }),
         ];
 

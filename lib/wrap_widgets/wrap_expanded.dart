@@ -6,8 +6,9 @@ GWidget wrapExpanded(GWidget widget, {required int level, required Json json}) {
 
   return GWidget(
     Expanded(child: widget.widget),
-      code: '''Expanded(child: ${widget.code})''',
+    code: '''Expanded(child: ${widget.code})''',
     components: [widget],
-    type: 'Expanded'
+    type: 'Expanded',
+    widgetType: 'Expanded',
   );
 }

@@ -37,10 +37,12 @@ GWidget getImage(Json json, int level) {
   return GWidget(pngImage,
       code: '''Image.asset(AppImages.${getFileName(name)}, fit: $fitted)''',
       type: 'png-image',
+      widgetType: 'Image',
       name: name,
       components: [
         GWidget(pngImage,
             type: 'png-source',
+            widgetType: 'Image',
             fullCode: base64Decode(json['png']),
             name: name,
             components: [],

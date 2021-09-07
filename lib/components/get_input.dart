@@ -7,10 +7,14 @@ GWidget getInput(Map<String, dynamic> json, int level) {
 
   final children = getFlatJson(json, result: []);
 
-  final childBorderDefault = children.firstWhereOrNull((element) => element['name'] == 'border');
-  final childBorderFocus = children.firstWhereOrNull((element) => element['name'] == 'borderFocus');
-  final childPlaceholder = children.firstWhereOrNull((element) => element['name'] == 'placeholder')!;
-  final childLabel = children.firstWhereOrNull((element) => element['name'] == 'label');
+  final childBorderDefault =
+      children.firstWhereOrNull((element) => element['name'] == 'border');
+  final childBorderFocus =
+      children.firstWhereOrNull((element) => element['name'] == 'borderFocus');
+  final childPlaceholder =
+      children.firstWhereOrNull((element) => element['name'] == 'placeholder')!;
+  final childLabel =
+      children.firstWhereOrNull((element) => element['name'] == 'label');
 
   final styleLabel = getTextStyle(childLabel ?? childPlaceholder);
   final stylePlaceholder = getTextStyle(childPlaceholder);
@@ -61,18 +65,20 @@ GWidget getInput(Map<String, dynamic> json, int level) {
           ''';
 
   return GWidget(
-      input,
+    input,
+    widgetType: 'AppInput',
     code: code,
-      components: [
-        GWidget(
-          input,
-          code: appInputString(name),
-          type: 'AppInput-source',
-          fullCode: appInputString(name),
-          name: name,
-          components: [],
-        )
-      ],
+    components: [
+      GWidget(
+        input,
+        code: appInputString(name),
+        type: 'AppInput-source',
+        widgetType: 'AppInput-source',
+        fullCode: appInputString(name),
+        name: name,
+        components: [],
+      )
+    ],
     type: 'AppInput',
   );
 }
@@ -118,7 +124,6 @@ class AppInput extends StatelessWidget {
     );
   }
 }
-
 
 String appInputString(String name) => '''class $name extends StatelessWidget {
   final bool isAnimatedLabel;

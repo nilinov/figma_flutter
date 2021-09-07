@@ -14,10 +14,12 @@ GWidget getSvg(Json json) {
     svgImage,
     code: '''SvgPicture.asset(AppIcons.${getFileName(name)})''',
     type: 'svg-image',
+    widgetType: 'SvgPicture',
     components: [
       GWidget(
         svgImage,
         type: 'svg-source',
+        widgetType: 'svg-source',
         fullCode: json['svg'],
         fileName: "${getFileName(name)}.svg",
         name: name,

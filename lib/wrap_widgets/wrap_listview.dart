@@ -21,5 +21,6 @@ GWidget wrapListView(GWidgetList<GWidget> widget,
     '''Container(child: ListView(children: ${widget.code}, scrollDirection: $axis))''',
     components: widget.components,
     type: 'ListView',
+    widgetType: 'ListView',
   );
 }

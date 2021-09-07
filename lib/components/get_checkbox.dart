@@ -93,6 +93,7 @@ GWidget getCheckbox(Json json, int level) {
   return GWidget(GetCheckboxRunTime(json: json, level: level + 1),
       code: '$name("${variable?.defaultValue}")',
       type: 'AppCheckbox',
+      widgetType: 'AppCheckbox',
       name: name,
       components: [
         GWidget(
@@ -102,6 +103,7 @@ GWidget getCheckbox(Json json, int level) {
           name: name,
           // TODO проверить экспорт нужных картинок
           components: [],
+          widgetType: 'AppCheckbox-source',
         ),
         ...GIcons,
       ]);

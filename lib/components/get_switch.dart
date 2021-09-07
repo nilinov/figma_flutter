@@ -85,11 +85,13 @@ GWidget getSwitch(Json json, int level) {
       code: '$name("${variable?.defaultValue}")',
       fullCode: getSwitchCode(childUnChecked, childChecked, name),
       type: 'AppSwitch',
+      widgetType: 'AppSwitch',
       name: name,
       components: [
         GWidget(
           GetSwitchRuntime(json: json, level: level + 1),
           type: 'AppSwitch-source',
+          widgetType: 'AppSwitch-source',
           fullCode: getSwitchCode(childUnChecked, childChecked, name),
           name: name,
           // TODO проверить экспорт нужных картинок

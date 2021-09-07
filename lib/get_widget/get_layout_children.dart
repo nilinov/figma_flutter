@@ -18,6 +18,7 @@ GWidgetList<GWidget> getLayoutChildren(
             SizedBox(width: space),
             code: '''SizedBox(width: $space)''',
             type: 'space-width',
+            widgetType: 'SizedBox',
             components: [],
           ),
         );
@@ -27,6 +28,7 @@ GWidgetList<GWidget> getLayoutChildren(
             SizedBox(height: space),
             code: '''SizedBox(height: $space)''',
             type: 'space-height',
+            widgetType: 'SizedBox',
             components: [],
           ),
         );

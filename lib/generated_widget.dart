@@ -10,6 +10,7 @@ class GWidget<T extends Widget> {
   final List<GWidget> components;
   final List<Variable> variables;
   final String prefixCodeLine;
+  final String widgetType;
 
   const GWidget(
     this.widget, {
@@ -21,6 +22,7 @@ class GWidget<T extends Widget> {
     String? fileName,
     this.variables = const [],
     this.prefixCodeLine = '',
+    required this.widgetType,
   })  : _fileName = fileName,
         _fullCode = fullCode,
         _code = code;
@@ -35,10 +37,12 @@ class GWidget<T extends Widget> {
   String get fileName => _fileName ?? "${name}.dart";
 
   get fullCode {
-    if (_fullCode != null && prefixCodeLine.isNotEmpty) return '''
+    if (_fullCode != null && prefixCodeLine.isNotEmpty)
+      return '''
     $prefixCodeLine
     $_fullCode
-    '''; else if (_fullCode != null) {
+    ''';
+    else if (_fullCode != null) {
       return _fullCode;
     }
 
@@ -63,10 +67,9 @@ class $_name extends StatelessWidget {
   ''';
   }
 
-  GWidget copyWith(
-     {
-       T? widget,
-       String? code,
+  GWidget copyWith({
+    T? widget,
+    String? code,
     String? type,
     String? name,
     String? fileName,
@@ -74,6 +77,7 @@ class $_name extends StatelessWidget {
     List<GWidget>? components,
     List<Variable>? variables,
     String? prefixCodeLine,
+    required String widgetType,
   }) {
     if ((widget == null || identical(widget, this.widget)) &&
         (code == null || identical(code, this._code)) &&
@@ -98,6 +102,7 @@ class $_name extends StatelessWidget {
       components: components ?? this.components,
       variables: variables ?? this.variables,
       prefixCodeLine: prefixCodeLine ?? this.prefixCodeLine,
+      widgetType: widgetType,
     );
   }
 }
@@ -120,6 +125,7 @@ gWidgetSizedBox(String type) => GWidget(
       code: "SizedBox()",
       components: [],
       type: type,
+      widgetType: "SizedBox",
     );
 
 gWidgetExpanded(GWidget widget, String type) => GWidget(
@@ -127,6 +133,7 @@ gWidgetExpanded(GWidget widget, String type) => GWidget(
       code: "Expanded(child: ${widget.code})",
       components: [widget],
       type: type,
+      widgetType: "Expanded",
     );
 
 List<GWidget> getAllComponents(GWidget item, {required List<GWidget> result}) {

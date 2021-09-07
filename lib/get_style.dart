@@ -90,6 +90,7 @@ List<GWidget> getStyleCode(List<Style> list) {
   final texts = GWidget(
     SizedBox(),
     type: 'styled-text',
+    widgetType: 'SizedBox',
     prefixCodeLine: 'import "../_imports.dart";',
     name: 'StyledText',
     fileName: 'styled_text.dart',
@@ -105,6 +106,7 @@ List<GWidget> getStyleCode(List<Style> list) {
   final paints = GWidget(
     SizedBox(),
     type: 'styled-paints',
+    widgetType: 'SizedBox',
     prefixCodeLine: 'import "../_imports.dart";',
     name: 'StyledPaints',
     fileName: 'styled_paints.dart',
@@ -120,6 +122,7 @@ List<GWidget> getStyleCode(List<Style> list) {
   final effects = GWidget(
     SizedBox(),
     type: 'styled-paints',
+    widgetType: 'SizedBox',
     prefixCodeLine: 'import "../_imports.dart";',
     name: 'StyledEffects',
     fileName: 'styled_effects.dart',

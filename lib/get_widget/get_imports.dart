@@ -24,6 +24,7 @@ export "../_imports.dart";
   return GWidget(
     SizedBox(),
     type: 'imports-code',
+    widgetType: 'SizedBox',
     fileName: '_$name.dart',
     fullCode: filesCode,
     name: 'Imports file',

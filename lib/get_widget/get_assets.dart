@@ -43,6 +43,7 @@ $iconsCode
   return GWidget(
     SizedBox(),
     type: 'assets-code',
+    widgetType: 'SizedBox',
     fileName: 'assets.dart',
     fullCode: fullCode,
     name: 'Assets file',

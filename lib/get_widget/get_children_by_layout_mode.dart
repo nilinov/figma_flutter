@@ -126,6 +126,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     ''',
       components: children.components,
       type: 'Column',
+      widgetType: 'Column',
     );
 
     if (!isStretch(json)) {
@@ -158,6 +159,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       children: ${children.widget.map((e) => e.code).toList()},
     )''',
       type: 'Row',
+      widgetType: 'Row',
       components: children.components,
     );
 
@@ -214,6 +216,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         )
         ''',
           type: 'Positioned',
+          widgetType: 'Positioned',
           components: [widget!]);
     }).toList();
 
@@ -228,7 +231,8 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     final widget = GWidget(
       Stack(children: children.map((e) => e.widget).toList()),
       code: '''Stack(children: ${children.map((e) => e.code).toList()})''',
-      type: 'stack',
+      type: 'Stack',
+      widgetType: 'Stack',
       components: children,
     );
 

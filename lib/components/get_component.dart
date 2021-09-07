@@ -50,6 +50,7 @@ GWidget getComponent(Json json, int level) {
   return GWidget(GetComponentRunTime(json: json, level: level + 1),
       code: '$name(${getParamsWithVariables(variables)})',
       type: 'AppComponent($name)',
+      widgetType: 'AppComponent',
       name: name,
       components: [
         GWidget(
@@ -58,6 +59,7 @@ GWidget getComponent(Json json, int level) {
           fullCode: getComponentCode(componentResult, name, variables),
           name: name,
           components: [...gImages, ...gIcons],
+          widgetType: 'AppComponent-source',
         ),
         ...gIcons,
         ...gImages,

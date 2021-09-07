@@ -38,7 +38,8 @@ GWidget? getWidgetByMap(Json json, int level,
         return wrapExpanded(widget, level: level, json: json);
       }
 
-      SizeWidget size = parent != null ? getSize(parent, json) : SizeWidget.empty();
+      SizeWidget size =
+          parent != null ? getSize(parent, json) : SizeWidget.empty();
 
       // if (level == 0) {
       //   w = toDouble(json['width']);
@@ -46,9 +47,15 @@ GWidget? getWidgetByMap(Json json, int level,
       // }
       //
       final item = wrapContainer(widget, json, nameComponent,
-          color: Colors.white, type: 'wrap-component', width: size.w, height: size.h);
+          color: Colors.white,
+          type: 'wrap-component',
+          width: size.w,
+          height: size.h);
       final itemSource = wrapContainer(widgetSource, json, nameSource,
-          color: Colors.white, type: 'wrap-component', width: size.w, height: size.h);
+          color: Colors.white,
+          type: 'wrap-component',
+          width: size.w,
+          height: size.h);
 
       return GWidget(
         item.widget,
@@ -56,10 +63,12 @@ GWidget? getWidgetByMap(Json json, int level,
         code: '''
           $nameSource(${variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
         ''',
+        widgetType: nameSource,
         components: [
           GWidget(
             itemSource.widget,
             type: "${itemSource.type}-source",
+            widgetType: "${itemSource.type}-source",
             code: itemSource.code,
             components: [itemSource],
             name: nameSource,
@@ -93,6 +102,7 @@ GWidget? getWidgetByMap(Json json, int level,
             height: ${toDouble(json['height'])},
       )''',
         type: 'svg-image',
+        widgetType: 'SvgPicture',
         components: [],
       );
     case 'TEXT':
@@ -131,7 +141,6 @@ GWidget? getWidgetByMap(Json json, int level,
               isCounterAxisSizingModeFixed(json)) ||
           (json['primaryAxisSizingMode'] == null &&
               json['counterAxisSizingMode'] == null)) {
-
         double? w;
         double? h;
 
@@ -144,30 +153,38 @@ GWidget? getWidgetByMap(Json json, int level,
         }
 
         return GWidget(
-            SizedBox(
-                child: widget.widget,
-                height: h,
-                width: w),
-            code:
-                '''SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
-            components: [
-              GWidget(widget.widget,
-                  code: widget.code,
-                  type: 'wrap-stack-sizedbox',
-                  components: [widget])
-            ],
-            name: _name,
-            type: 'wrap-stack-sizedbox');
-      }
-
-      return GWidget(Expanded(child: widget.widget),
-          code: ''' Expanded(child: ${widget.code})''',
+          SizedBox(child: widget.widget, height: h, width: w),
+          code:
+              '''SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
           components: [
             GWidget(widget.widget,
-                code: widget.code, type: 'expanded', components: [widget])
+                code: widget.code,
+                type: 'wrap-stack-sizedbox',
+                widgetType: 'SizedBox-source',
+                components: [widget])
           ],
           name: _name,
-          type: 'expanded');
+          type: 'wrap-stack-sizedbox',
+          widgetType: 'SizedBox',
+        );
+      }
+
+      return GWidget(
+        Expanded(child: widget.widget),
+        code: ''' Expanded(child: ${widget.code})''',
+        components: [
+          GWidget(
+            widget.widget,
+            code: widget.code,
+            type: 'expanded',
+            widgetType: 'Expanded-source',
+            components: [widget],
+          )
+        ],
+        name: _name,
+        type: 'expanded',
+        widgetType: 'Expanded',
+      );
     case 'LINE':
       debugPrintWidget("Container",
           level: level, name: json['name'], json: json);
@@ -178,17 +195,20 @@ GWidget? getWidgetByMap(Json json, int level,
           code: '''Divider(color: ${getColorFromFillsString(json)})''',
           name: _name,
           type: 'line',
+          widgetType: 'Divider',
           components: [],
         );
       }
 
       if (json['rotation'] == 90 || json['rotation'] == 270) {
-        return GWidget(VerticalDivider(color: getColorFromFills(json)),
-            code:
-                '''VerticalDivider(color: ${getColorFromFillsString(json)})''',
-            name: _name,
-            components: [],
-            type: 'line');
+        return GWidget(
+          VerticalDivider(color: getColorFromFills(json)),
+          code: '''VerticalDivider(color: ${getColorFromFillsString(json)})''',
+          name: _name,
+          components: [],
+          type: 'line',
+          widgetType: 'VerticalDivider',
+        );
       }
 
       return null;
@@ -196,7 +216,12 @@ GWidget? getWidgetByMap(Json json, int level,
       debugPrintWidget("Ellipse", level: level, name: json['name'], json: json);
 
       return wrapContainer(
-          GWidget(SizedBox(), components: [], type: 'empty space sizedbox'),
+          GWidget(
+            SizedBox(),
+            components: [],
+            type: 'empty space sizedbox',
+            widgetType: "SizedBox",
+          ),
           json,
           _name,
           type: 'Circle',

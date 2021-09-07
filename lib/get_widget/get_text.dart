@@ -35,7 +35,9 @@ GWidget getText(Map<String, dynamic> json, int level,
         textSource = '"$text"';
       } else {
         if (variable.template != null) {
-          text = variable.template?.replaceAll('\$variable', variable.name ?? '') ?? 'variable';
+          text = variable.template
+                  ?.replaceAll('\$variable', variable.name ?? '') ??
+              'variable';
         } else {
           text = variable.name ?? 'variable';
         }
@@ -45,8 +47,8 @@ GWidget getText(Map<String, dynamic> json, int level,
     }
   }
 
-  final style  = getTextStyle(json);
-  Widget res = Text(text,textAlign: textAlign, style: style.textStyle);
+  final style = getTextStyle(json);
+  Widget res = Text(text, textAlign: textAlign, style: style.textStyle);
 
   code =
       '''Text($textSource, textAlign: $textAlign, style: ${getTextStyle(json)})''';
@@ -58,14 +60,13 @@ GWidget getText(Map<String, dynamic> json, int level,
               text: (e['text'] as String).replaceAll('\\n', '\n'),
               style: getTextStyle(e).textStyle);
         }).toList(),
-      (json['styledText'] as List).map((e) {
-        return '''TextSpan(
+        (json['styledText'] as List).map((e) {
+          return '''TextSpan(
             text: "${(e['text'] as String).replaceAll('\\n', '\n')}", 
             style: ${getTextStyle(e).code})''';
-      }).toList(),
-      components: [],
-      type: 'list-of-textspan'
-    );
+        }).toList(),
+        components: [],
+        type: 'list-of-textspan');
     res = RichText(
       textAlign: textAlign,
       text: TextSpan(children: children.widget),
@@ -83,8 +84,12 @@ GWidget getText(Map<String, dynamic> json, int level,
       json['textAlignVertical'] == 'CENTER') {
     // center
   } else if (json['textAutoResize'] == 'WIDTH_AND_HEIGHT') {
-    debugPrintWidget("SizedBox", level: level + 1, name: json['name'], json: json);
-    res = SizedBox(child: res, height: toDouble(json['height']), width: toDouble(json['width']));
+    debugPrintWidget("SizedBox",
+        level: level + 1, name: json['name'], json: json);
+    res = SizedBox(
+        child: res,
+        height: toDouble(json['height']),
+        width: toDouble(json['width']));
   } else if (json['textAutoResize'] == 'HEIGHT' &&
       json['layoutGrow'] != 1 &&
       json['layoutAlign'] != "STRETCH") {
@@ -98,5 +103,6 @@ GWidget getText(Map<String, dynamic> json, int level,
 
   //TODO vertical align
 
-  return GWidget(res, code: code, type: 'wrap-text', components: []);
+  return GWidget(res,
+      code: code, type: 'wrap-text', components: [], widgetType: "Text");
 }

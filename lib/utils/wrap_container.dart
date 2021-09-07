@@ -41,5 +41,6 @@ GWidget<Container> wrapContainer(
     components: [widget],
     name: _name,
     type: type,
+    widgetType: "Container",
   );
 }
