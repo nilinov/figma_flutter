@@ -123,6 +123,12 @@ GWidget? getWidgetByMap(Json json, int level,
         h = !isExpandedHeight(parent, json) ? toDouble(json['height']) : null;
       }
 
+      if (isAutoLayout(json) && isVertical(json)) {
+        if (!isPrimaryAxisSizingModeAuto(json)) {
+          h = toDouble(json['height']);
+        }
+      }
+
       GWidget container = wrapContainer(widget, json, _name,
           type: 'frame', width: w, height: h);
 

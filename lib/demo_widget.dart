@@ -112,6 +112,12 @@ class _DemoWidgetState extends State<DemoWidget> {
 
       Widget widget = res?.widget ?? SizedBox();
 
+      if (res?.widgetType == 'Column') {
+        widget = Container(child: widget, height: MediaQuery.of(context).size.height * 0.9);
+      }
+
+      print(res?.code);
+
       // print(res.toWidget());
       return Row(
         children: [

@@ -127,6 +127,11 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       components: children.components,
       type: 'Column',
       widgetType: 'Column',
+      props: {
+        'mainAxisSize': getMainAxisSize(json).toString(),
+        'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
+        'mainAxisAlignment': getMainAxisAlignment(json).toString(),
+      }
     );
 
     final color = getColor(json);
@@ -167,6 +172,11 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       type: 'Row',
       widgetType: 'Row',
       components: children.components,
+      props: {
+        'mainAxisSize': getMainAxisSize(json).toString(),
+        'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
+        'mainAxisAlignment': getMainAxisAlignment(json).toString(),
+      }
     );
 
     final color = getColor(json);
