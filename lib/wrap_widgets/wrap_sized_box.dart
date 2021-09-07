@@ -8,5 +8,9 @@ GWidget wrapSizedBox(GWidget widget, {double? width, double? height}) {
     components: [widget],
     type: 'sizedbox-fill-width',
     widgetType: 'SizedBox',
+    props: {
+      'width': width?.toString() ?? '',
+      'height': height?.toString() ?? '',
+    }
   );
 }
