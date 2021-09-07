@@ -129,34 +129,6 @@ class _DemoWidgetState extends State<DemoWidget> {
             Expanded(
                 child: Column(
               children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        js.context.callMethod(
-                            'fallbackCopyTextToClipboard', [res?.code]);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text("Copy")));
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.all(10),
-                        child: Text('Click to clipboard text'),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        js.context.callMethod('fallbackDownloadWidget',
-                            [res?.code, 'demo_widget_1.dart']);
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        padding: EdgeInsets.all(10),
-                        child: Text('Click to download widget'),
-                      ),
-                    ),
-                  ],
-                ),
                 Divider(),
                 TextFormField(
                   initialValue: name,
