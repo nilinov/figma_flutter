@@ -37,12 +37,27 @@ class _DemoWidgetState extends State<DemoWidget> {
   List<GWidget> iconsFiles = [];
   List<GWidget> imagesFiles = [];
 
-  GWidget rootFile =
-      GWidget(SizedBox(), components: [], type: 'init', widgetType: "SizedBox");
-  GWidget importFile =
-      GWidget(SizedBox(), components: [], type: 'init', widgetType: "SizedBox");
-  GWidget declareAssetsFile =
-      GWidget(SizedBox(), components: [], type: 'init', widgetType: "SizedBox");
+  GWidget rootFile = GWidget(
+    SizedBox(),
+    components: [],
+    type: 'init',
+    widgetType: "SizedBox",
+    children: [],
+  );
+  GWidget importFile = GWidget(
+    SizedBox(),
+    components: [],
+    type: 'init',
+    widgetType: "SizedBox",
+    children: [],
+  );
+  GWidget declareAssetsFile = GWidget(
+    SizedBox(),
+    components: [],
+    type: 'init',
+    widgetType: "SizedBox",
+    children: [],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +128,8 @@ class _DemoWidgetState extends State<DemoWidget> {
       Widget widget = res?.widget ?? SizedBox();
 
       if (res?.widgetType == 'Column') {
-        widget = Container(child: widget, height: MediaQuery.of(context).size.height * 0.9);
+        widget = Container(
+            child: widget, height: MediaQuery.of(context).size.height * 0.9);
       }
 
       print(res?.code);

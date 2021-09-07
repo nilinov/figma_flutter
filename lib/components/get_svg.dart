@@ -24,6 +24,19 @@ GWidget getSvg(Json json) {
         fileName: "${getFileName(name)}.svg",
         name: name,
         components: [],
+        children: [],
+      )
+    ],
+    children: [
+      GWidget(
+        svgImage,
+        type: 'svg-source',
+        widgetType: 'svg-source',
+        fullCode: json['svg'],
+        fileName: "${getFileName(name)}.svg",
+        name: name,
+        components: [],
+        children: [],
       )
     ],
   );

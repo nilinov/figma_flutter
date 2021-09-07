@@ -108,6 +108,7 @@ GWidget getText(Map<String, dynamic> json, int level,
     code: code,
     type: 'wrap-text',
     components: [],
+    children: [],
     widgetType: "Text",
     props: {
       'Text': text,

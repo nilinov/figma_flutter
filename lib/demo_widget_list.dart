@@ -63,10 +63,17 @@ class _DemoWidgetListState extends State<DemoWidgetList> {
                 Text('Tree widgets', style: TextStyle(fontSize: 20)),
                 Divider(),
                 if (res != null)
-                  TreeWidgets(
-                      gWidget: res,
-                      onTap: (item) => setState(() => selectedChild = item)),
-                Divider(),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: TreeWidgets(
+                          gWidget: res,
+                          onTap: (item) => setState(() => selectedChild = item)),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Container(height: 2, color: Colors.grey),
+                ),
                 Expanded(
                     child: SingleChildScrollView(
                   child: Column(
@@ -125,7 +132,7 @@ class TreeWidgets extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...gWidget.components
+              ...gWidget.children
                   .map((e) => TreeWidgets(gWidget: e, onTap: this.onTap))
                   .toList()
             ],

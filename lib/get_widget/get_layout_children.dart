@@ -20,6 +20,7 @@ GWidgetList<GWidget> getLayoutChildren(
             type: 'space-width',
             widgetType: 'SizedBox',
             components: [],
+            children: [],
           ),
         );
       } else {
@@ -30,6 +31,7 @@ GWidgetList<GWidget> getLayoutChildren(
             type: 'space-height',
             widgetType: 'SizedBox',
             components: [],
+            children: [],
           ),
         );
       }

@@ -46,6 +46,17 @@ GWidget getImage(Json json, int level) {
             fullCode: base64Decode(json['png']),
             name: name,
             components: [],
+            children: [],
+            fileName: "${getFileName(name)}.png")
+      ],
+      children: [
+        GWidget(pngImage,
+            type: 'png-source',
+            widgetType: 'Image',
+            fullCode: base64Decode(json['png']),
+            name: name,
+            components: [],
+            children: [],
             fileName: "${getFileName(name)}.png")
       ]);
 }

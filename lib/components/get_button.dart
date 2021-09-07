@@ -53,9 +53,11 @@ GWidget getGButton(
         name: getNameByJson(json),
         fullCode: AppButtonCode,
         components: [],
+        children: [],
         widgetType: "AppButton-source",
       )
     ],
+    children: [if (title != null) title],
     type: 'AppButton',
     widgetType: "AppButton",
   );

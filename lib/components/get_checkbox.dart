@@ -90,23 +90,27 @@ GWidget getCheckbox(Json json, int level) {
 
   final name = getNameByJson(json);
 
-  return GWidget(GetCheckboxRunTime(json: json, level: level + 1),
-      code: '$name("${variable?.defaultValue}")',
-      type: 'AppCheckbox',
-      widgetType: 'AppCheckbox',
-      name: name,
-      components: [
-        GWidget(
-          GetCheckboxRunTime(json: json, level: level + 1),
-          type: 'AppCheckbox-source',
-          fullCode: getCheckboxCode(childUnChecked, childChecked, name),
-          name: name,
-          // TODO проверить экспорт нужных картинок
-          components: [],
-          widgetType: 'AppCheckbox-source',
-        ),
-        ...GIcons,
-      ]);
+  return GWidget(
+    GetCheckboxRunTime(json: json, level: level + 1),
+    code: '$name("${variable?.defaultValue}")',
+    type: 'AppCheckbox',
+    widgetType: 'AppCheckbox',
+    name: name,
+    components: [
+      GWidget(
+        GetCheckboxRunTime(json: json, level: level + 1),
+        type: 'AppCheckbox-source',
+        fullCode: getCheckboxCode(childUnChecked, childChecked, name),
+        name: name,
+        // TODO проверить экспорт нужных картинок
+        components: [],
+        children: [],
+        widgetType: 'AppCheckbox-source',
+      ),
+      ...GIcons,
+    ],
+    children: [childChecked, childUnChecked],
+  );
 }
 
 getCheckboxCode(GWidget unchecked, GWidget checked, String name) => '''

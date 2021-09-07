@@ -48,5 +48,6 @@ $iconsCode
     fullCode: fullCode,
     name: 'Assets file',
     components: [],
+    children: [],
   );
 }

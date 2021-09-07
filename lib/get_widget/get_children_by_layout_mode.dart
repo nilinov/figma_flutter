@@ -125,6 +125,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     )
     ''',
       components: children.components,
+      children: children.components,
       type: 'Column',
       widgetType: 'Column',
       props: {
@@ -172,6 +173,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       type: 'Row',
       widgetType: 'Row',
       components: children.components,
+      children: children.components,
       props: {
         'mainAxisSize': getMainAxisSize(json).toString(),
         'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
@@ -239,7 +241,9 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         ''',
           type: 'Positioned',
           widgetType: 'Positioned',
-          components: [widget!]);
+          components: [widget!],
+          children: [widget],
+      );
     }).toList();
 
     if (viewDebugProps) {
@@ -256,6 +260,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       type: 'Stack',
       widgetType: 'Stack',
       components: children,
+      children: children,
     );
 
     double? w;

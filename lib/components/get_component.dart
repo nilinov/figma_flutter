@@ -59,11 +59,14 @@ GWidget getComponent(Json json, int level) {
           fullCode: getComponentCode(componentResult, name, variables),
           name: name,
           components: [...gImages, ...gIcons],
+          children: [...gImages, ...gIcons],
           widgetType: 'AppComponent-source',
         ),
         ...gIcons,
         ...gImages,
-      ]);
+      ],
+    children: [componentResult]
+  );
 }
 
 getComponentCode(GWidget variants, String name, List<Variable> variables) => '''

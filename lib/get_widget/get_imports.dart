@@ -29,5 +29,6 @@ export "../_imports.dart";
     fullCode: filesCode,
     name: 'Imports file',
     components: [],
+    children: [],
   );
 }

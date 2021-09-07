@@ -8,6 +8,7 @@ class GWidget<T extends Widget> {
   final String? _fileName;
   final dynamic _fullCode;
   final List<GWidget> components;
+  final List<GWidget> children;
   final List<Variable> variables;
   final Map<String, String>? props;
   final String prefixCodeLine;
@@ -17,6 +18,7 @@ class GWidget<T extends Widget> {
     this.widget, {
     String? code,
     required this.components,
+    required this.children,
     required this.type,
     this.name,
     dynamic fullCode,
@@ -77,6 +79,7 @@ class $_name extends StatelessWidget {
     String? fileName,
     dynamic fullCode,
     List<GWidget>? components,
+    List<GWidget>? children,
     List<Variable>? variables,
     String? prefixCodeLine,
     String? widgetType,
@@ -103,6 +106,7 @@ class $_name extends StatelessWidget {
       fileName: fileName ?? this._fileName,
       fullCode: fullCode ?? this._fullCode,
       components: components ?? this.components,
+      children: children ?? this.children,
       variables: variables ?? this.variables,
       prefixCodeLine: prefixCodeLine ?? this.prefixCodeLine,
       widgetType: widgetType ?? this.widgetType,
@@ -128,6 +132,7 @@ gWidgetSizedBox(String type) => GWidget(
       SizedBox(),
       code: "SizedBox()",
       components: [],
+      children: [],
       type: type,
       widgetType: "SizedBox",
     );
@@ -136,6 +141,7 @@ gWidgetExpanded(GWidget widget, String type) => GWidget(
       Expanded(child: widget.widget),
       code: "Expanded(child: ${widget.code})",
       components: [widget],
+      children: [widget],
       type: type,
       widgetType: "Expanded",
     );

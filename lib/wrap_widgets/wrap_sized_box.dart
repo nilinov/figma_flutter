@@ -6,6 +6,7 @@ GWidget wrapSizedBox(GWidget widget, {double? width, double? height}) {
     SizedBox(child: widget.widget, width: width, height: height),
     code: '''SizedBox(child: ${widget.code}, ${wrapProp('width', width)} ${wrapProp('height', height)})''',
     components: [widget],
+    children: [widget],
     type: 'sizedbox-fill-width',
     widgetType: 'SizedBox',
     props: {

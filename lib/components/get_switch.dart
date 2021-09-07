@@ -96,9 +96,24 @@ GWidget getSwitch(Json json, int level) {
           name: name,
           // TODO проверить экспорт нужных картинок
           components: [],
+          children: [],
         ),
         ...GIcons,
-      ]);
+      ],
+      children: [
+        GWidget(
+          GetSwitchRuntime(json: json, level: level + 1),
+          type: 'AppSwitch-source',
+          widgetType: 'AppSwitch-source',
+          fullCode: getSwitchCode(childUnChecked, childChecked, name),
+          name: name,
+          // TODO проверить экспорт нужных картинок
+          components: [],
+          children: [],
+        ),
+        ...GIcons,
+      ],
+  );
 }
 
 getSwitchCode(GWidget unchecked, GWidget checked, String name) => '''

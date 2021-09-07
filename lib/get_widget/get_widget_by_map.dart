@@ -71,6 +71,19 @@ GWidget? getWidgetByMap(Json json, int level,
             widgetType: "${itemSource.type}-source",
             code: itemSource.code,
             components: [itemSource],
+            children: [itemSource],
+            name: nameSource,
+            variables: variablesSource,
+          ),
+        ],
+        children: [
+          GWidget(
+            itemSource.widget,
+            type: "${itemSource.type}-source",
+            widgetType: "${itemSource.type}-source",
+            code: itemSource.code,
+            components: [itemSource],
+            children: [itemSource],
             name: nameSource,
             variables: variablesSource,
           ),
@@ -104,6 +117,7 @@ GWidget? getWidgetByMap(Json json, int level,
         type: 'svg-image',
         widgetType: 'SvgPicture',
         components: [],
+        children: [],
       );
     case 'TEXT':
       return getText(json, level + 1, variables: variables);
@@ -167,7 +181,18 @@ GWidget? getWidgetByMap(Json json, int level,
                 code: widget.code,
                 type: 'wrap-stack-sizedbox',
                 widgetType: 'SizedBox-source',
-                components: [widget])
+                components: [widget],
+                children: [widget],
+            )
+          ],
+          children: [
+            GWidget(widget.widget,
+                code: widget.code,
+                type: 'wrap-stack-sizedbox',
+                widgetType: 'SizedBox-source',
+                components: [widget],
+                children: [widget],
+            )
           ],
           name: _name,
           type: 'wrap-stack-sizedbox',
@@ -185,6 +210,17 @@ GWidget? getWidgetByMap(Json json, int level,
             type: 'expanded',
             widgetType: 'Expanded-source',
             components: [widget],
+            children: [widget],
+          )
+        ],
+        children: [
+          GWidget(
+            widget.widget,
+            code: widget.code,
+            type: 'expanded',
+            widgetType: 'Expanded-source',
+            components: [widget],
+            children: [widget],
           )
         ],
         name: _name,
@@ -203,6 +239,7 @@ GWidget? getWidgetByMap(Json json, int level,
           type: 'line',
           widgetType: 'Divider',
           components: [],
+          children: [],
         );
       }
 
@@ -212,6 +249,7 @@ GWidget? getWidgetByMap(Json json, int level,
           code: '''VerticalDivider(color: ${getColorFromFillsString(json)})''',
           name: _name,
           components: [],
+          children: [],
           type: 'line',
           widgetType: 'VerticalDivider',
         );
@@ -225,6 +263,7 @@ GWidget? getWidgetByMap(Json json, int level,
           GWidget(
             SizedBox(),
             components: [],
+            children: [],
             type: 'empty space sizedbox',
             widgetType: "SizedBox",
           ),

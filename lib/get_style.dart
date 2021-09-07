@@ -96,6 +96,7 @@ List<GWidget> getStyleCode(List<Style> list) {
     fileName: 'styled_text.dart',
     fullCode: fullCodeTexts,
     components: [],
+    children: [],
   );
 
   final fullCodePaints = '''
@@ -112,6 +113,7 @@ List<GWidget> getStyleCode(List<Style> list) {
     fileName: 'styled_paints.dart',
     fullCode: fullCodePaints,
     components: [],
+    children: [],
   );
 
   final fullCodeEffect = '''
@@ -128,6 +130,7 @@ List<GWidget> getStyleCode(List<Style> list) {
     fileName: 'styled_effects.dart',
     fullCode: fullCodeEffect,
     components: [],
+    children: [],
   );
 
   return [texts, paints, effects];

@@ -45,6 +45,7 @@ GWidget<Container> wrapContainer(
       child: ${widget.code},
     )''',
       components: [widget],
+      children: [widget],
       name: _name,
       type: type,
       widgetType: "Container",
