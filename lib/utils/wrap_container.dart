@@ -11,15 +11,7 @@ GWidget<Container> wrapContainer(
   double? width,
   BoxShape shape = BoxShape.rectangle,
 }) {
-
-  final decorationString = '''
-        decoration: BoxDecoration(
-        ${wrapProp('color', color ?? getColorFromFillsString(json))}
-        ${wrapProp('border', getBorder(json))}
-        ${wrapProp('borderRadius', getBorderRadiusString(json))}
-        ${wrapProp('boxShadow', getBoxShadowString(json))}
-      )
-''';
+  String decorationString = getDecorationString(color, json);
 
   return GWidget(
       Container(
@@ -40,7 +32,7 @@ GWidget<Container> wrapContainer(
       code: '''Container(
       ${wrapProp('width', toDouble(width))}
       ${wrapProp('height', toDouble(height))}
-      decoration: $decorationString,
+      ${wrapProp('decoration', decorationString)}
       ${wrapProp('padding', getPaddingString(json))}
       child: ${widget.code},
     )''',
@@ -52,7 +44,33 @@ GWidget<Container> wrapContainer(
       props: {
         if (width != null) 'width': width.toString(),
         if (height != null) 'height': height.toString(),
-        if (getPaddingString(json) != null) 'padding': getPaddingString(json),
+        if (getPaddingString(json) != '') 'padding': getPaddingString(json),
         'decoration': decorationString,
       });
+}
+
+String getDecorationString(Color? color, Map<String, dynamic> json) {
+  var flag = false;
+
+  final _color = color?.toString() ?? getColorFromFillsString(json);
+  final border = getBorder(json);
+  final borderRadiusString = getBorderRadiusString(json);
+  final boxShadowString = getBoxShadowString(json);
+
+  if (_color != 'Colors.transparent') flag = true;
+  if (!border.isEmpty) flag = true;
+  if (borderRadiusString != null) flag = true;
+  if (boxShadowString != null) flag = true;
+
+  if (!flag) return "";
+
+  final decorationString = '''
+        BoxDecoration(
+        ${wrapProp('color', _color)}
+        ${wrapProp('border', border)}
+        ${wrapProp('borderRadius', borderRadiusString)}
+        ${wrapProp('boxShadow', boxShadowString)}
+      )
+  ''';
+  return decorationString;
 }

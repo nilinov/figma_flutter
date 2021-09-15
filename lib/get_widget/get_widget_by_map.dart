@@ -3,6 +3,7 @@ import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
 GWidget? getWidgetByMap(Json json, int level,
     {List<Variable?>? variables, String? name, Json? parent}) {
+
   if (json['visible'] == false ||
       json['isMask'] == true ||
       json['visible'] == false) {
@@ -18,6 +19,10 @@ GWidget? getWidgetByMap(Json json, int level,
   }
 
   String _name = json['name'] ?? name ?? '';
+
+  if (_name.contains('status bar')) {
+    return null;
+  }
 
   switch (json['type']) {
     case 'COMPONENT':

@@ -21,10 +21,17 @@ String? getBorderRadiusString(Map<String, dynamic> json) {
   final double bottomLeftRadius = toDouble(json['bottomLeftRadius']) ?? 0;
   final double bottomRightRadius = toDouble(json['bottomRightRadius']) ?? 0;
 
-  final double? left = topLeftRadius == bottomLeftRadius ? topLeftRadius : null;
-  final double? right = topRightRadius == bottomRightRadius ? topRightRadius : null;
+  if (topLeftRadius == 0 &&
+      topRightRadius == 0 &&
+      bottomLeftRadius == 0 &&
+      bottomRightRadius == 0) return null;
 
-  if (left != null && right == left) return "BorderRadius.all(Radius.circular(${toDouble(left)}))";
+  final double? left = topLeftRadius == bottomLeftRadius ? topLeftRadius : null;
+  final double? right =
+      topRightRadius == bottomRightRadius ? topRightRadius : null;
+
+  if (left != null && right == left)
+    return "BorderRadius.all(Radius.circular(${toDouble(left)}))";
 
   return '''BorderRadius.only(
     topLeft: Radius.circular(${toDouble(topLeftRadius)}),

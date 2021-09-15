@@ -6,6 +6,8 @@ class GBorder {
 
   GBorder(this.border, this.code);
 
+  get isEmpty => code == '''Border.all(width: 0, color: Colors.transparent)''';
+
   @override
   String toString() => code;
 }

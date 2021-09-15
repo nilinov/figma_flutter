@@ -12,7 +12,8 @@ List<BoxShadow>? getBoxShadow(Map<String, dynamic> json) {
           color: getColor(e['color']),
           blurRadius: toDouble(e['radius']) ?? 0,
           spreadRadius: toDouble(e['spread']) ?? 0,
-          offset: Offset(toDouble(e['offset']['x']) ?? 0, toDouble(e['offset']['y']) ?? 0),
+          offset: Offset(
+              toDouble(e['offset']['x']) ?? 0, toDouble(e['offset']['y']) ?? 0),
         ),
       )
       .toList();
@@ -23,22 +24,23 @@ String? getBoxShadowString(Map<String, dynamic> json) {
   if (json['topLeftRadius'] == null) return null;
 
   if (json['effectStyleId'] != null && json['effectStyleId'] != '') {
-    final style = StylesApp.firstWhere((element) => element.id == json['effectStyleId'], orElse: () => Style(json: {}));
+    final style = StylesApp.firstWhere(
+        (element) => element.id == json['effectStyleId'],
+        orElse: () => Style(json: {}));
     if (style.type == StyleType.EFFECT) {
       return "AppStyledEffects.${style.name}";
     }
   }
 
-
-    final code = (json['effects'] as List)
+  final code = (json['effects'] as List)
       .where((element) =>
           element['type'] == 'DROP_SHADOW' && element['visible'] == true)
-      .map(
-        (e) => getBoxShadowOne(e),
-      )
-      .join('\n');
+      .map((e) => getBoxShadowOne(e))
+      .toList();
 
-  return "[$code]";
+  if (code.length == 0) return null;
+
+  return "[${code.join('\n')}]";
 }
 
 String getBoxShadowOne(Json json) {
