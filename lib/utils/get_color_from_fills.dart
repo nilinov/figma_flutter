@@ -20,7 +20,7 @@ String getColorFromFillsString(Map<String, dynamic> json, { String defaultColor:
   if (json['fillStyleId'] != null && json['fillStyleId'] != '') {
     final style = StylesApp.firstWhere((element) => element.id == json['fillStyleId'], orElse: () => Style(json: {}));
     if (style.type == StyleType.PAINT) {
-      return "AppStyledPaint.${style.name}";
+      return "AppStyledPaint.${style.name.camelCase}";
     }
   }
 

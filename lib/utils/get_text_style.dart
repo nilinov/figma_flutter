@@ -80,7 +80,7 @@ GTextStyle getTextStyle(Map<String, dynamic> json, { String? color }) {
 
         if (styleFill.type != StyleType.INVALID) {
           final name = (style.name + '_Color').camelCase;
-          source = "AppStyledText.$name(AppStyledPaint.${styleFill.name})";
+          source = "AppStyledText.$name(AppStyledPaint.${styleFill.name.camelCase})";
         }
       }
     }
