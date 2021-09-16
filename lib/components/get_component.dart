@@ -32,16 +32,11 @@ GWidget getComponent(Json json, int level) {
         getJsonImage(element).map((e) => getImage(e, level + 1)).toList());
   });
 
-  var variables =
-      getAllVariables(json, inCodeVariable: true, template: "\$variable");
+  var variables = getAllVariables(json, inCodeVariable: true, template: "\$variable");
 
   final name = getNameByJson(json);
 
-  final componentResult = wrapContainer(
-    getChildrenByLayoutMode(json, level, variables: variables),
-    json,
-    'Component: $name',
-  );
+  final componentResult = getChildrenByLayoutMode(json, level, variables: variables);
 
   return GWidget(GetComponentRunTime(json: json, level: level + 1),
       code: '${name.pascalCase}(${getParamsWithVariables(variables)})',
@@ -61,7 +56,9 @@ GWidget getComponent(Json json, int level) {
         ...gIcons,
         ...gImages,
       ],
-    children: [componentResult],
+    children: [
+      componentResult
+    ],
     props: {
       'name': name,
     },

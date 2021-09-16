@@ -1,7 +1,7 @@
 import 'package:flutter_visible/ext.dart';
 import 'package:flutter_visible/imports.dart';
 
-GWidget<Container> wrapContainer(
+GWidget<Widget> wrapContainer(
   GWidget<Widget> widget,
   Map<String, dynamic> json,
   String _name, {
@@ -12,6 +12,11 @@ GWidget<Container> wrapContainer(
   BoxShape shape = BoxShape.rectangle,
 }) {
   String decorationString = getDecorationString(color, json);
+  String paddingString = getPaddingString(json);
+
+  if (decorationString.isEmpty && paddingString.isEmpty && width == null && height == null) {
+    return widget;
+  }
 
   return GWidget(
       Container(
@@ -33,7 +38,7 @@ GWidget<Container> wrapContainer(
       ${wrapProp('width', toDouble(width))}
       ${wrapProp('height', toDouble(height))}
       ${wrapProp('decoration', decorationString)}
-      ${wrapProp('padding', getPaddingString(json))}
+      ${wrapProp('padding', paddingString)}
       child: ${widget.code},
     )''',
       components: [widget],
@@ -44,8 +49,8 @@ GWidget<Container> wrapContainer(
       props: {
         if (width != null) 'width': width.toString(),
         if (height != null) 'height': height.toString(),
-        if (getPaddingString(json) != '') 'padding': getPaddingString(json),
-        'decoration': decorationString,
+        if (paddingString.isNotEmpty) 'padding': paddingString,
+        if (decorationString.isNotEmpty) 'decoration': decorationString,
       });
 }
 
