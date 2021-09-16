@@ -180,7 +180,7 @@ GWidget? getWidgetByMap(Json json, int level,
         return GWidget(
           SizedBox(child: widget.widget, height: h, width: w),
           code:
-              '''SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
+              '''const SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
           components: [
             GWidget(widget.widget,
                 code: widget.code,
