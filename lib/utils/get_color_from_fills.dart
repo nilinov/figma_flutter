@@ -13,7 +13,7 @@ Color getColorFromFills(Map<String, dynamic> json) {
   return Colors.transparent;
 }
 
-String getColorFromFillsString(Map<String, dynamic> json) {
+String getColorFromFillsString(Map<String, dynamic> json, { String defaultColor: 'Colors.transparent' }) {
 
   if (viewDebugProps) print('getColorFromFills');
 
@@ -31,5 +31,5 @@ String getColorFromFillsString(Map<String, dynamic> json) {
     return getColor(color1['color'] ?? color1, opacity: color1['opacity'] ?? color1['color']['opacity']).toString();
   }
 
-  return '''Colors.transparent''';
+  return defaultColor;
 }

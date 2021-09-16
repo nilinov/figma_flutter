@@ -47,4 +47,4 @@ app.*.map.json
 
 /lib/env.dart
 
-#/lib/demo_widget.dart
+#/lib/export_widgets.dart
