@@ -64,7 +64,7 @@ class Style {
     if (type == StyleType.TEXT) {
       return '''
         static const ${name.camelCase} = const ${getTextStyle(json)};
-        static ${(name + 'Color').camelCase}(Color color) => const ${getTextStyle(json, color: 'color')};
+        static ${(name + 'Color').camelCase}(Color color) => ${getTextStyle(json, color: 'color')};
       ''';
     }
     if (type == StyleType.EFFECT) {
