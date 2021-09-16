@@ -58,13 +58,13 @@ class Style {
           .map((e) => getColor(e['color']))
           .toList();
       return '''
-        static var ${name.constantCase} = ${StylePaint(colors).toCode};
+        static var ${name.camelCase} = ${StylePaint(colors).toCode};
       ''';
     }
     if (type == StyleType.TEXT) {
       return '''
-        static const ${name.constantCase} = ${getTextStyle(json)};
-        static ${(name + 'Color').constantCase}(Color color) => ${getTextStyle(json)}.copyWith(color: color);
+        static const ${name.camelCase} = ${getTextStyle(json)};
+        static ${(name + 'Color').camelCase}(Color color) => ${getTextStyle(json)}.copyWith(color: color);
       ''';
     }
     if (type == StyleType.EFFECT) {
@@ -74,7 +74,7 @@ class Style {
           .toList();
 
       return '''
-        static const ${name.constantCase} = [${effects.join(', ')}];
+        static const ${name.camelCase} = [${effects.join(', ')}];
       ''';
     }
     return '''

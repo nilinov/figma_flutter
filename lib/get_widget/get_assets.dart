@@ -13,7 +13,7 @@ GWidget getAssets(List<GWidget> items, { required String name}) {
 
     imagesCode = '''
 class AppImages {
-  ${imageNames.values.map((e) => "static const ${getFileName(e.name).constantCase} = 'assets/images/${getFileName(e.fileName)}';").join('\n')}
+  ${imageNames.values.map((e) => "static const ${getFileName(e.name).camelCase} = 'assets/images/${getFileName(e.fileName)}';").join('\n')}
 }
 ''';
   }
@@ -28,7 +28,7 @@ class AppImages {
 
     iconsCode = '''
 class AppIcons {
-  ${iconsNames.values.map((e) => "static SvgPicture ${getFileName(e.name).constantCase} = SvgPicture.asset('assets/icons/${getFileName(e.fileName)}');").join('\n')}
+  ${iconsNames.values.map((e) => "static SvgPicture ${getFileName(e.name).camelCase} = SvgPicture.asset('assets/icons/${getFileName(e.fileName)}');").join('\n')}
 }
 ''';
   }
