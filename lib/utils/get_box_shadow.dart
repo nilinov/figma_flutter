@@ -28,7 +28,7 @@ String? getBoxShadowString(Map<String, dynamic> json) {
         (element) => element.id == json['effectStyleId'],
         orElse: () => Style(json: {}));
     if (style.type == StyleType.EFFECT) {
-      return "AppStyledEffects.${style.name}";
+      return "AppStyledEffects.${style.name.camelCase}";
     }
   }
 
