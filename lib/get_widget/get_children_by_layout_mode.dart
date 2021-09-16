@@ -233,7 +233,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         ),
         code: '''
         Positioned(
-          child: ${widget?.code ?? 'SizedBox()'},
+          child: ${widget?.code ?? 'const SizedBox()'},
           left: $left,
           top: $top,
           right: $right,

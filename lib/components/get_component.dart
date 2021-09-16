@@ -88,8 +88,7 @@ GWidget getComponent(Json json, int level) {
       'children': childComponents.map((e) => e.name ?? '').join(', '),
       'type': componentResult.type,
       'widgetType': componentResult.widgetType,
-      'props':
-          componentResult.props != null ? componentResult.props.toString() : '',
+      'variables': componentResult.variables.join(', '),
     },
   );
 }

@@ -3,8 +3,8 @@ import 'package:flutter_visible/imports.dart';
 Variable? getNodeByVariable(Map<String, dynamic> json, String nameVariable,
     {required bool inCodeVariable, required String? template}) {
   final name = getNameByJson(json);
-  if (name.contains('$String:')) {
-    final _name = name.split('$String:')[1];
+  if (name.contains('\$string:')) {
+    final _name = name.split('\$string:')[1];
 
     if (_name == nameVariable) {
       if (json['type'] == 'TEXT') {
@@ -85,8 +85,10 @@ List<Variable> getAllVariables(Map<String, dynamic> json,
       .toList();
 
   var res1 = listNodeWithVariables
-      .map((List element) => getNodeByVariable(element[1], element[0],
-          inCodeVariable: inCodeVariable, template: template))
+      .map((List element) {
+        return getNodeByVariable(element[1], element[0],
+          inCodeVariable: inCodeVariable, template: template);
+      })
       .toList();
 
   var res = <Variable>[];

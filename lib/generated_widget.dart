@@ -131,7 +131,7 @@ class GWidgetList<T> {
 
 gWidgetSizedBox(String type) => GWidget(
       SizedBox(),
-      code: "SizedBox()",
+      code: "const SizedBox()",
       components: [],
       children: [],
       type: type,
