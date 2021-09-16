@@ -55,9 +55,8 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
   if (json == null ||
       json['children'] == null ||
       (json['children'] as List)
-              .where((element) => element['visible'] == true)
-              .length ==
-          0) return gWidgetSizedBox('empty-list');
+          .where((element) => element['visible'] == true)
+          .isEmpty) return gWidgetSizedBox('empty-list');
 
 /*  if ((json['children'] as List)
               .where((element) => element['visible'] == true)
@@ -110,13 +109,13 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     );
 
     GWidget item = GWidget(
-      Column(
-        mainAxisSize: getMainAxisSize(json),
-        crossAxisAlignment: getCrossAxisAlignment(json),
-        mainAxisAlignment: getMainAxisAlignment(json),
-        children: children.widget.map((e) => e.widget).toList(),
-      ),
-      code: '''
+        Column(
+          mainAxisSize: getMainAxisSize(json),
+          crossAxisAlignment: getCrossAxisAlignment(json),
+          mainAxisAlignment: getMainAxisAlignment(json),
+          children: children.widget.map((e) => e.widget).toList(),
+        ),
+        code: '''
     Column(
       mainAxisSize: ${getMainAxisSize(json)},
       crossAxisAlignment: ${getCrossAxisAlignment(json)},
@@ -124,16 +123,15 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       children: ${children.widget.map((e) => e.code).toList()},
     )
     ''',
-      components: children.components,
-      children: children.components,
-      type: 'Column',
-      widgetType: 'Column',
-      props: {
-        'mainAxisSize': getMainAxisSize(json).toString(),
-        'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
-        'mainAxisAlignment': getMainAxisAlignment(json).toString(),
-      }
-    );
+        components: children.components,
+        children: children.components,
+        type: 'Column',
+        widgetType: 'Column',
+        props: {
+          'mainAxisSize': getMainAxisSize(json).toString(),
+          'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
+          'mainAxisAlignment': getMainAxisAlignment(json).toString(),
+        });
 
     final color = getColor(json);
 
@@ -158,28 +156,27 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     );
 
     GWidget item = GWidget(
-      Row(
-        crossAxisAlignment: getCrossAxisAlignment(json),
-        mainAxisAlignment: getMainAxisAlignment(json),
-        mainAxisSize: getMainAxisSize(json),
-        children: children.widget.map((e) => e.widget).toList(),
-      ),
-      code: '''Row(
+        Row(
+          crossAxisAlignment: getCrossAxisAlignment(json),
+          mainAxisAlignment: getMainAxisAlignment(json),
+          mainAxisSize: getMainAxisSize(json),
+          children: children.widget.map((e) => e.widget).toList(),
+        ),
+        code: '''Row(
       mainAxisSize: ${getMainAxisSize(json)},
       crossAxisAlignment: ${getCrossAxisAlignment(json)},
       mainAxisAlignment: ${getMainAxisAlignment(json)},
       children: ${children.widget.map((e) => e.code).toList()},
     )''',
-      type: 'Row',
-      widgetType: 'Row',
-      components: children.components,
-      children: children.components,
-      props: {
-        'mainAxisSize': getMainAxisSize(json).toString(),
-        'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
-        'mainAxisAlignment': getMainAxisAlignment(json).toString(),
-      }
-    );
+        type: 'Row',
+        widgetType: 'Row',
+        components: children.components,
+        children: children.components,
+        props: {
+          'mainAxisSize': getMainAxisSize(json).toString(),
+          'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
+          'mainAxisAlignment': getMainAxisAlignment(json).toString(),
+        });
 
     final color = getColor(json);
 
@@ -221,16 +218,16 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       final double bottom = baseH - top - (toDouble(e['height']) ?? 0);
 
       return GWidget<Widget>(
-          Positioned(
-            child: widget?.widget ?? SizedBox(),
-            left: left,
-            top: top,
-            right: right,
-            bottom: bottom,
-            // width: e['width'],
-            // height: e['height'],
-          ),
-          code: '''
+        Positioned(
+          child: widget?.widget ?? SizedBox(),
+          left: left,
+          top: top,
+          right: right,
+          bottom: bottom,
+          // width: e['width'],
+          // height: e['height'],
+        ),
+        code: '''
         Positioned(
           child: ${widget?.code ?? 'SizedBox()'},
           left: $left,
@@ -239,10 +236,10 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
           bottom: $bottom,
         )
         ''',
-          type: 'Positioned',
-          widgetType: 'Positioned',
-          components: [widget!],
-          children: [widget],
+        type: 'Positioned',
+        widgetType: 'Positioned',
+        components: [widget!],
+        children: [widget],
       );
     }).toList();
 

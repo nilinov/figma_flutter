@@ -11,11 +11,7 @@ class GetComponentRunTime extends StatelessWidget {
   Widget build(BuildContext context) {
     var variables = getAllVariables(json, inCodeVariable: false);
 
-    final componentResult = wrapContainer(
-      getChildrenByLayoutMode(json, level, variables: variables),
-      json,
-      'Component: ${getNameByJson(json)}',
-    );
+    final componentResult = getChildrenByLayoutMode(json, level, variables: variables);
 
     return componentResult.widget;
   }
@@ -50,7 +46,7 @@ GWidget getComponent(Json json, int level) {
   return GWidget(GetComponentRunTime(json: json, level: level + 1),
       code: '${name.pascalCase}(${getParamsWithVariables(variables)})',
       type: 'AppComponent($name)',
-      widgetType: 'AppComponent',
+      widgetType: 'AppComponent($name)',
       name: name,
       components: [
         GWidget(
@@ -65,7 +61,10 @@ GWidget getComponent(Json json, int level) {
         ...gIcons,
         ...gImages,
       ],
-    children: [componentResult]
+    children: [componentResult],
+    props: {
+      'name': name,
+    },
   );
 }
 
