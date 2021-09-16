@@ -1,6 +1,7 @@
 import 'package:flutter_visible/utils/get_text_style_scss.dart';
 
 import 'imports.dart';
+import 'package:recase/recase.dart';
 
 enum StyleType {
   PAINT,
@@ -184,6 +185,8 @@ List<GWidget> getStyleScss(List<Style> list) {
     fileName: 'styled_text.scss',
     fullCode: fullCodeTexts,
     components: [],
+    children: [],
+    widgetType: 'styled-text',
   );
 
   final fullCodePaints = '''
@@ -196,6 +199,8 @@ List<GWidget> getStyleScss(List<Style> list) {
     fileName: 'styled_paints.scss',
     fullCode: fullCodePaints,
     components: [],
+    widgetType: 'styled-paints',
+    children: [],
   );
 
   final fullCodeEffect = '''
@@ -209,6 +214,8 @@ List<GWidget> getStyleScss(List<Style> list) {
     fileName: 'styled_effects.scss',
     fullCode: fullCodeEffect,
     components: [],
+    children: [],
+    widgetType: 'styled-paints',
   );
 
   return [texts, paints, effects];
