@@ -11,7 +11,7 @@ class GTextStyle {
   String toString() => code;
 }
 
-GTextStyle getTextStyle(Map<String, dynamic> json) {
+GTextStyle getTextStyle(Map<String, dynamic> json, { String? color }) {
   FontStyle fontStyle = FontStyle.normal;
   FontWeight fontWeight = FontWeight.normal;
   String? fontFamily = 'Roboto';
@@ -62,7 +62,7 @@ GTextStyle getTextStyle(Map<String, dynamic> json) {
   var source = '''
   TextStyle(
       ${wrapProp('fontSize', toDouble(json['fontSize']))}
-      ${wrapProp('color', getColorFromFillsString(json))}
+      ${wrapProp('color', color ?? getColorFromFillsString(json))}
       fontWeight: $fontWeight,
       fontFamily: "$fontFamily",
       fontStyle: $fontStyle,
