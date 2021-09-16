@@ -3,6 +3,7 @@ import 'package:flutter_visible/imports.dart';
 GWidgetList<GWidget> getLayoutChildren(
   Map<String, dynamic> json, {
   double? space,
+  String? name,
   Axis axis = Axis.horizontal,
   required int level,
   List<Variable?>? variables,
@@ -65,5 +66,6 @@ GWidgetList<GWidget> getLayoutChildren(
     res.map((e) => e.code ?? '').toList(),
     components: res,
     type: 'wrap-layout',
+    name: name,
   );
 }

@@ -11,14 +11,30 @@ class GetComponentRunTime extends StatelessWidget {
   Widget build(BuildContext context) {
     var variables = getAllVariables(json, inCodeVariable: false);
 
-    final componentResult = getChildrenByLayoutMode(json, level, variables: variables);
+    final componentResult =
+        getChildrenByLayoutMode(json, level, variables: variables);
 
     return componentResult.widget;
   }
 }
 
+Map<String, dynamic> getComponentChild(GWidget gWidget) {
+  final Map<String, dynamic> names = {};
+
+  if (gWidget.name != null && gWidget.name!.isNotEmpty && gWidget.type == 'component')
+    names.addAll({gWidget.name ?? '': gWidget});
+
+  if (gWidget.components.isNotEmpty)
+    gWidget.components.forEach((element) {
+      names.addAll(getComponentChild(element));
+    });
+
+  return names;
+}
+
 GWidget getComponent(Json json, int level) {
-  debugPrintWidget("getComponent", level: level, name: json['name'], json: json);
+  debugPrintWidget("getComponent",
+      level: level, name: json['name'], json: json);
 
   final List<GWidget> gIcons = [];
   final List<GWidget> gImages = [];
@@ -32,35 +48,48 @@ GWidget getComponent(Json json, int level) {
         getJsonImage(element).map((e) => getImage(e, level + 1)).toList());
   });
 
-  var variables = getAllVariables(json, inCodeVariable: true, template: "\$variable");
+  var variables =
+      getAllVariables(json, inCodeVariable: true, template: "\$variable");
 
   final name = getNameByJson(json);
 
-  final componentResult = getChildrenByLayoutMode(json, level, variables: variables);
+  final componentResult =
+      getChildrenByLayoutMode(json, level, variables: variables, name: name);
 
-  return GWidget(GetComponentRunTime(json: json, level: level + 1),
-      code: '${name.pascalCase}(${getParamsWithVariables(variables)})',
-      type: 'AppComponent($name)',
-      widgetType: 'AppComponent($name)',
-      name: name,
-      components: [
-        GWidget(
-          GetComponentRunTime(json: json, level: level + 1),
-          type: 'AppComponent($name)-source',
-          fullCode: getComponentCode(componentResult, name, variables),
-          name: name,
-          components: [...gImages, ...gIcons],
-          children: [...gImages, ...gIcons],
-          widgetType: 'AppComponent-source',
-        ),
-        ...gIcons,
-        ...gImages,
-      ],
+  final childComponents = getComponentChild(componentResult).values/*.where((element) {
+    return element.name != name;
+  })*/.toList();
+
+  return GWidget(
+    GetComponentRunTime(json: json, level: level + 1),
+    code: '${name.pascalCase}(${getParamsWithVariables(variables)})',
+    type: 'AppComponent($name)',
+    widgetType: 'AppComponent($name)',
+    name: name,
+    components: [
+      GWidget(
+        GetComponentRunTime(json: json, level: level + 1),
+        type: 'AppComponent($name)-source',
+        fullCode: getComponentCode(componentResult, name, variables),
+        name: name,
+        components: [...gImages, ...gIcons],
+        children: [...gImages, ...gIcons],
+        widgetType: 'AppComponent-source',
+      ),
+      ...gIcons,
+      ...gImages,
+      ...childComponents,
+    ],
     children: [
-      componentResult
+      componentResult,
     ],
     props: {
       'name': name,
+      'children': childComponents.map((e) => e.name ?? '').join(', '),
+      'type': componentResult.type,
+      'widgetType': componentResult.widgetType,
+      'props':
+          componentResult.props != null ? componentResult.props.toString() : '',
     },
   );
 }

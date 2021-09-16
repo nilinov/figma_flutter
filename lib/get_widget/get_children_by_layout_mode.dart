@@ -49,7 +49,7 @@ Alignment getAlign(Map<String, dynamic> json) {
 }
 
 GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
-    {List<Variable?>? variables}) {
+    {List<Variable?>? variables, String? name}) {
   if (viewDebugProps) print('getChildrenByLayoutMode');
 
   if (json == null ||
@@ -106,6 +106,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       axis: Axis.vertical,
       level: level,
       variables: variables,
+      name: name,
     );
 
     GWidget item = GWidget(
@@ -127,6 +128,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         children: children.components,
         type: 'Column',
         widgetType: 'Column',
+        name: name,
         props: {
           'mainAxisSize': getMainAxisSize(json).toString(),
           'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
@@ -136,7 +138,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     final color = getColor(json);
 
     if (color != Colors.transparent) {
-      item = wrapContainer(item, json, 'wrap-color');
+      item = wrapContainer(item, json, getNameByJson(json));
     }
 
     if (!isStretch(json)) {
@@ -153,6 +155,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       axis: Axis.horizontal,
       level: level,
       variables: variables,
+      name: name,
     );
 
     GWidget item = GWidget(
@@ -172,6 +175,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
         widgetType: 'Row',
         components: children.components,
         children: children.components,
+        name: name,
         props: {
           'mainAxisSize': getMainAxisSize(json).toString(),
           'crossAxisAlignment': getCrossAxisAlignment(json).toString(),
@@ -181,7 +185,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     final color = getColor(json);
 
     if (color != Colors.transparent) {
-      item = wrapContainer(item, json, 'wrap-color');
+      item = wrapContainer(item, json, getNameByJson(json));
     }
 
     if (json['overflowDirection'] != 'NONE') {
@@ -258,6 +262,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
       widgetType: 'Stack',
       components: children,
       children: children,
+      name: name,
     );
 
     double? w;
@@ -274,7 +279,7 @@ GWidget getChildrenByLayoutMode(Map<String, dynamic>? json, int level,
     final color = getColor(json);
 
     if (color != Colors.transparent) {
-      widget = wrapContainer(widget, json, 'wrap-color');
+      widget = wrapContainer(widget, json, getNameByJson(json));
     }
 
     return wrapSizedBox(widget, height: h, width: w);

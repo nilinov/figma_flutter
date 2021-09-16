@@ -119,10 +119,11 @@ class GWidgetList<T> {
   final List<T> widget;
   final List<String> code;
   final String type;
+  final String? name;
   final List<GWidget> components;
 
   const GWidgetList(this.widget, this.code,
-      {required this.components, required this.type});
+      {required this.components, required this.type, this.name});
 
   @override
   String toString() => this.code.join('\n');
