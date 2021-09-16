@@ -48,7 +48,7 @@ GWidget getComponent(Json json, int level) {
   );
 
   return GWidget(GetComponentRunTime(json: json, level: level + 1),
-      code: '$name(${getParamsWithVariables(variables)})',
+      code: '${name.pascalCase}(${getParamsWithVariables(variables)})',
       type: 'AppComponent($name)',
       widgetType: 'AppComponent',
       name: name,
@@ -70,10 +70,10 @@ GWidget getComponent(Json json, int level) {
 }
 
 getComponentCode(GWidget variants, String name, List<Variable> variables) => '''
-class $name extends StatelessWidget {
+class ${name.pascalCase} extends StatelessWidget {
   ${getDeclareWithVariables(variables)}
   
-  $name(${getParamsWithVariablesConstructor(variables)});
+  ${name.pascalCase}(${getParamsWithVariablesConstructor(variables)});
 
   @override
   Widget build(BuildContext context) {

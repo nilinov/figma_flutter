@@ -19,7 +19,7 @@ class _ExportStylesScssState extends State<ExportStyles> {
 
   @override
   Future<void> didChangeDependencies() async {
-    json = jsonDecode(await getData(widget.isSample));
+    json = jsonDecode(await getData(false));
     setState(() {});
     super.didChangeDependencies();
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
@@ -86,7 +86,7 @@ class _ExportStylesScssState extends State<ExportStyles> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  ...components.map((e) => Padding(
+                  ...styles.map((e) => Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {

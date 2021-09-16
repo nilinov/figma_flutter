@@ -64,7 +64,14 @@ class PluginPage extends StatelessWidget {
                 child: Container(child: ExportStylesScss(isSample: isSample)))
           else if (exportType == ExportType.only_files)
             Expanded(
-                child: Container(child: ExportStyles(isSample: isSample)))
+              child: Column(
+                children: [
+                  Text('Export only files'),
+                  Expanded(
+                      child: Container(child: ExportStyles(isSample: isSample))),
+                ],
+              ),
+            )
           else if (exportType == ExportType.properties)
             GestureDetector(
               onTap: () => Navigator.of(context).pop(),

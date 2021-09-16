@@ -1,7 +1,6 @@
 import 'package:flutter_visible/utils/get_text_style_scss.dart';
 
 import 'imports.dart';
-import 'package:recase/recase.dart';
 
 enum StyleType {
   PAINT,
@@ -59,12 +58,13 @@ class Style {
           .map((e) => getColor(e['color']))
           .toList();
       return '''
-        static var $name = ${StylePaint(colors).toCode};
+        static var ${name.constantCase} = ${StylePaint(colors).toCode};
       ''';
     }
     if (type == StyleType.TEXT) {
       return '''
-        static const $name = ${getTextStyle(json)};
+        static const ${name.constantCase} = ${getTextStyle(json)};
+        static ${(name + 'Color').constantCase}(Color color) => ${getTextStyle(json)}.copyWith(color: color);
       ''';
     }
     if (type == StyleType.EFFECT) {
@@ -74,7 +74,7 @@ class Style {
           .toList();
 
       return '''
-        static const $name = [${effects.join(', ')}];
+        static const ${name.constantCase} = [${effects.join(', ')}];
       ''';
     }
     return '''

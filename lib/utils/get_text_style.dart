@@ -72,13 +72,15 @@ GTextStyle getTextStyle(Map<String, dynamic> json) {
   if (json['textStyleId'] != null && json['textStyleId'] != '') {
     final style = StylesApp.firstWhere((element) => element.id == json['textStyleId'], orElse: () => Style(json: {}));
     if (style.type == StyleType.TEXT) {
-      source = "AppStyledText.${style.name}.copyWith(color: ${getColorFromFillsString(json)})";
+      final name = (style.name + '_Color').constantCase;
+      source = "AppStyledText.$name(${getColorFromFillsString(json)})";
 
       if (json['fillStyleId'] != null && json['fillStyleId'] != '') {
         final styleFill = StylesApp.firstWhere((element) => element.id == json['fillStyleId'], orElse: () => Style(json: {}));
 
         if (styleFill.type != StyleType.INVALID) {
-          source = "AppStyledText.${style.name}.copyWith(color: AppStyledPaint.${styleFill.name})";
+          final name = (style.name + '_Color').constantCase;
+          source = "AppStyledText.$name(AppStyledPaint.${styleFill.name})";
         }
       }
     }

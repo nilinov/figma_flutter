@@ -106,6 +106,8 @@ String getParamsWithVariables(List<Variable> variables) {
 }
 
 String getParamsWithVariablesConstructor(List<Variable> variables) {
+  if (variables.isEmpty) return '';
+
   return '{' +
       variables.map((e) {
         if (e.type == "String") return 'required this.${e.name}';

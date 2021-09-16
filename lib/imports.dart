@@ -6,6 +6,7 @@ export 'package:flutter/services.dart';
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:flutter_visible/env.dart';
 export 'package:flutter_visible/get_widget/get_children_by_layout_mode.dart';
+export 'package:recase/recase.dart';
 
 export 'utils/_utils.dart';
 export 'layout/_layout.dart';

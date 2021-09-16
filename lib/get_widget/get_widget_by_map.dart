@@ -36,8 +36,8 @@ GWidget? getWidgetByMap(Json json, int level,
       debugPrintWidget("Container",
           level: level, name: json['name'], json: json);
 
-      String nameComponent = name ?? json['name'] ?? '';
-      String nameSource = json['name'] ?? name ?? '';
+      String nameComponent = ((name ?? json['name'] ?? '') as String).pascalCase;
+      String nameSource = ((json['name'] ?? name ?? '') as String).pascalCase;
 
       if (parent != null && isExpanded(parent, json)) {
         return wrapExpanded(widget, level: level, json: json);
@@ -66,7 +66,7 @@ GWidget? getWidgetByMap(Json json, int level,
         item.widget,
         type: item.type,
         code: '''
-          $nameSource(${variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
+          ${nameSource}(${variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
         ''',
         widgetType: nameSource,
         components: [

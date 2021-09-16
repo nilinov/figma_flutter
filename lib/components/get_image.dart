@@ -3,12 +3,12 @@ import 'package:flutter_visible/imports.dart';
 GWidget getImage(Json json, int level) {
   debugPrintWidget("Image", level: level, name: json['name'], json: json);
 
-  final imageJson =  [...(json['strokes'] ?? []), ...(json['fills'] ?? [])]
+  final imageJson = [...(json['strokes'] ?? []), ...(json['fills'] ?? [])]
       .firstWhere((element) => element['type'] == 'IMAGE', orElse: () => null);
 
   BoxFit fitted = BoxFit.fill;
 
-  switch(imageJson['scaleMode']) {
+  switch (imageJson['scaleMode']) {
     case 'FILL':
       fitted = BoxFit.cover;
       break;

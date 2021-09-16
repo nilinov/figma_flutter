@@ -21,6 +21,13 @@ class _ExportWidgetsState extends State<ExportWidgets> {
   @override
   Future<void> didChangeDependencies() async {
     json = jsonDecode(await getData(widget.isSample));
+
+    if (json != null && json!['json'] == null) {
+      if (json!['styles'] != null) {
+        Navigator.pushNamed(context, '/export_styles');
+      }
+    }
+
     setState(() {});
     super.didChangeDependencies();
     // Future.delayed(Duration(seconds: 1)).then((value) => debugDumpApp());
