@@ -70,7 +70,7 @@ String getDecorationString(Color? color, Map<String, dynamic> json) {
   if (!flag) return "";
 
   final decorationString = '''
-        BoxDecoration(
+        const BoxDecoration(
         ${wrapProp('color', _color)}
         ${wrapProp('border', border)}
         ${wrapProp('borderRadius', borderRadiusString)}
