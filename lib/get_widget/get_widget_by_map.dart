@@ -3,7 +3,6 @@ import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
 GWidget? getWidgetByMap(Json json, int level,
     {List<Variable?>? variables, String? name, Json? parent}) {
-
   if (json['visible'] == false ||
       json['isMask'] == true ||
       json['visible'] == false) {
@@ -26,17 +25,26 @@ GWidget? getWidgetByMap(Json json, int level,
 
   switch (json['type']) {
     case 'COMPONENT':
-      var variables = getAllVariables(json, inCodeVariable: false);
-      var variablesSource = getAllVariables(json, inCodeVariable: true);
+      var _variables = getAllVariables(json, inCodeVariable: false);
+      var _variablesSource = getAllVariables(json, inCodeVariable: true);
+
+      if (variables != null)
+        variables.forEach((element) {
+          if (element != null) {
+            _variables.add(element);
+            _variablesSource.add(element);
+          }
+        });
 
       var widget =
-          getChildrenByLayoutMode(json, level + 1, variables: variables);
+          getChildrenByLayoutMode(json, level + 1, variables: _variables);
       var widgetSource =
-          getChildrenByLayoutMode(json, level + 1, variables: variablesSource);
+          getChildrenByLayoutMode(json, level + 1, variables: _variablesSource);
       debugPrintWidget("Container",
           level: level, name: json['name'], json: json);
 
-      String nameComponent = ((name ?? json['name'] ?? '') as String).pascalCase;
+      String nameComponent =
+          ((name ?? json['name'] ?? '') as String).pascalCase;
       String nameSource = ((json['name'] ?? name ?? '') as String).pascalCase;
 
       if (parent != null && isExpanded(parent, json)) {
@@ -66,7 +74,7 @@ GWidget? getWidgetByMap(Json json, int level,
         item.widget,
         type: item.type,
         code: '''
-          ${nameSource}(${variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
+          ${nameSource}(${_variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
         ''',
         widgetType: nameSource,
         components: [
@@ -78,7 +86,7 @@ GWidget? getWidgetByMap(Json json, int level,
             components: [itemSource],
             children: [itemSource],
             name: nameSource,
-            variables: variablesSource,
+            variables: _variablesSource,
           ),
         ],
         children: [
@@ -90,7 +98,7 @@ GWidget? getWidgetByMap(Json json, int level,
             components: [itemSource],
             children: [itemSource],
             name: nameSource,
-            variables: variablesSource,
+            variables: _variablesSource,
           ),
         ],
         name: "${nameComponent}",
@@ -182,21 +190,23 @@ GWidget? getWidgetByMap(Json json, int level,
           code:
               '''const SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
           components: [
-            GWidget(widget.widget,
-                code: widget.code,
-                type: 'wrap-stack-sizedbox',
-                widgetType: 'SizedBox-source',
-                components: [widget],
-                children: [widget],
+            GWidget(
+              widget.widget,
+              code: widget.code,
+              type: 'wrap-stack-sizedbox',
+              widgetType: 'SizedBox-source',
+              components: [widget],
+              children: [widget],
             )
           ],
           children: [
-            GWidget(widget.widget,
-                code: widget.code,
-                type: 'wrap-stack-sizedbox',
-                widgetType: 'SizedBox-source',
-                components: [widget],
-                children: [widget],
+            GWidget(
+              widget.widget,
+              code: widget.code,
+              type: 'wrap-stack-sizedbox',
+              widgetType: 'SizedBox-source',
+              components: [widget],
+              children: [widget],
             )
           ],
           name: _name,

@@ -1,6 +1,6 @@
 import 'package:recase/recase.dart';
 
-String getNameByJson(Map<String, dynamic> json) {
+String getNameByJson(Map<String, dynamic> json, { bool? isNotLowerCase }) {
   String name = json['name'] ?? '';
 
   if (List.generate(9, (index) => "$index").contains(name[0])) {
@@ -38,7 +38,7 @@ String getNameByJson(Map<String, dynamic> json) {
       .where((e) => e != null && e != '')
       .join('_');
 
-  return _name.toLowerCase();
+  return isNotLowerCase == true ? _name : _name.toLowerCase();
 }
 
 String getFileName(String? name) {

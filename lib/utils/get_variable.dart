@@ -2,9 +2,9 @@ import 'package:flutter_visible/imports.dart';
 
 Variable? getNodeByVariable(Map<String, dynamic> json, String nameVariable,
     {required bool inCodeVariable, required String? template}) {
-  final name = getNameByJson(json);
-  if (name.contains('\$string:')) {
-    final _name = name.split('\$string:')[1];
+  final name = getNameByJson(json, isNotLowerCase: true);
+  if (name.contains('\$String:')) {
+    final _name = name.split('\$String:')[1];
 
     if (_name == nameVariable) {
       if (json['type'] == 'TEXT') {
