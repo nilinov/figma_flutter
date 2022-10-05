@@ -1,7 +1,12 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'package:flutter/foundation.dart';
 import 'package:flutter_visible/get_data.dart';
 import 'package:flutter_visible/imports.dart';
+
+import 'package:flutter_visible/utils/download_io.dart';
+
+import 'package:flutter_visible/utils/download.dart'
+    if (dart.library.io) 'package:flutter_visible/utils/download_io.dart'
+    if (dart.library.js) 'package:flutter_visible/utils/download_web.dart';
 
 class ExportStyles extends StatefulWidget {
   final bool isSample;
@@ -38,8 +43,7 @@ class _ExportStylesScssState extends State<ExportStyles> {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
-      StylesApp =
-          getStyles((json!['styles'] as List).map((e) => e as Json).toList());
+      StylesApp = getStyles((json!['styles'] as List).map((e) => e as Json).toList());
       final res = getWidgetByMap(json!['json'] ?? {}, 0, name: 'screen');
       final styles = getStyleCode(StylesApp);
 
@@ -49,23 +53,18 @@ class _ExportStylesScssState extends State<ExportStyles> {
             .where((element) => element.type.contains('source'))
             .toList();
 
-        list.sort((e1, e2) =>
-            e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
-        list.sort((e1, e2) =>
-            e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
+        list.sort((e1, e2) => e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
+        list.sort((e1, e2) => e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
 
         final Map<String, GWidget> names = {};
 
-        Future.forEach(
-            list, (GWidget element) => names[element.name ?? ''] = element);
+        Future.forEach(list, (GWidget element) => names[element.name ?? ''] = element);
 
         final assetsExport = getAssets(list, name: res.name ?? '');
 
         components = [
           ...names.values.where((e) {
-            if (e.type.contains('svg') ||
-                e.type.contains('png') ||
-                e.type.contains('import')) return true;
+            if (e.type.contains('svg') || e.type.contains('png') || e.type.contains('import')) return true;
 
             return false;
           }).toList(),
@@ -90,7 +89,7 @@ class _ExportStylesScssState extends State<ExportStyles> {
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            downloadWidget(e);
+                            Downloaded1.downloadWidget(e);
                           },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,9 +112,5 @@ class _ExportStylesScssState extends State<ExportStyles> {
     }
 
     return Center(child: CircularProgressIndicator());
-  }
-
-  void downloadWidget(GWidget<Widget> e) {
-    js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
   }
 }

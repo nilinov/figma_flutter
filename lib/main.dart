@@ -57,52 +57,54 @@ class PluginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          if (exportType == ExportType.scss_styles)
-            Expanded(
-                child: Container(child: ExportStylesScss(isSample: isSample)))
-          else if (exportType == ExportType.only_files)
-            Expanded(
-              child: Column(
-                children: [
-                  Text('Export only files'),
-                  Expanded(
-                      child: Container(child: ExportStyles(isSample: isSample))),
-                ],
-              ),
-            )
-          else if (exportType == ExportType.properties)
-            GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Back to download',
-                  style: TextStyle(fontSize: 18),
+      body: SafeArea(
+        child: Column(
+          children: [
+            if (exportType == ExportType.scss_styles)
+              Expanded(
+                  child: Container(child: ExportStylesScss(isSample: isSample)))
+            else if (exportType == ExportType.only_files)
+              Expanded(
+                child: Column(
+                  children: [
+                    Text('Export only files'),
+                    Expanded(
+                        child: Container(child: ExportStyles(isSample: isSample))),
+                  ],
+                ),
+              )
+            else if (exportType == ExportType.properties)
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Back to download',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              )
+            else
+              GestureDetector(
+                onTap: () => Navigator.of(context).pushNamed('/view_properties'),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Open properties',
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
-            )
-          else
-            GestureDetector(
-              onTap: () => Navigator.of(context).pushNamed('/view_properties'),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Open properties',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-            ),
-          if (exportType == ExportType.properties || exportType == ExportType.all)
-            Expanded(
-                child: Container(
-              child: exportType == ExportType.properties
-                  ? DemoWidgetList(isSample: isSample)
-                  : ExportWidgets(isSample: isSample),
-            ))
-          // Expanded(child: Container(child: Widget1())),
-        ],
+            if (exportType == ExportType.properties || exportType == ExportType.all)
+              Expanded(
+                  child: Container(
+                child: exportType == ExportType.properties
+                    ? DemoWidgetList(isSample: isSample)
+                    : ExportWidgets(isSample: isSample),
+              ))
+            // Expanded(child: Container(child: Widget1())),
+          ],
+        ),
       ),
     );
   }

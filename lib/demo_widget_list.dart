@@ -1,6 +1,3 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
-import 'dart:math';
 import 'package:flutter_visible/get_data.dart';
 import 'package:flutter_visible/imports.dart';
 

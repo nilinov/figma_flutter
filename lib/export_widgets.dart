@@ -1,7 +1,12 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'package:flutter/foundation.dart';
 import 'package:flutter_visible/get_data.dart';
 import 'package:flutter_visible/imports.dart';
+
+import 'package:flutter_visible/utils/download_io.dart';
+
+import 'package:flutter_visible/utils/download.dart'
+if (dart.library.io) 'package:flutter_visible/utils/download_io.dart'
+if (dart.library.js) 'package:flutter_visible/utils/download_web.dart';
 
 class ExportWidgets extends StatefulWidget {
   final bool isSample;
@@ -194,10 +199,6 @@ class _ExportWidgetsState extends State<ExportWidgets> {
   }
 }
 
-void downloadWidget(GWidget<Widget> e) {
-  js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
-}
-
 class ExportSettingImage extends StatelessWidget {
   final String title;
   final ImageExportEnum iconsExport;
@@ -264,7 +265,7 @@ List<Widget> getDownloadItems(List<GWidget> componentsFiles, {String? label}) {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  downloadWidget(e);
+                  Downloaded1.downloadWidget(e);
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
