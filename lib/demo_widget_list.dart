@@ -40,17 +40,19 @@ class _DemoWidgetListState extends State<DemoWidgetList> {
       Widget widget = res?.widget ?? SizedBox();
 
       // print(res.toWidget());
-      return Row(
-        children: [
-          Expanded(
-              child: Padding(
-            child: Container(
-              child: SingleChildScrollView(child: Column(children: [widget])),
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9, maxWidth: MediaQuery.of(context).size.width / 2),
-            ),
-            padding: EdgeInsets.all(20),
-          )),
-          if (MediaQuery.of(context).size.width > 800)
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            if (MediaQuery.of(context).size.width > 800)
+              Expanded(
+                  child: Padding(
+                child: Container(
+                  child: SingleChildScrollView(child: Column(children: [widget])),
+                  constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9, maxWidth: MediaQuery.of(context).size.width / 2),
+                ),
+                padding: EdgeInsets.all(20),
+              )),
             Expanded(
                 child: Column(
               children: [
@@ -94,7 +96,8 @@ class _DemoWidgetListState extends State<DemoWidgetList> {
               ],
               crossAxisAlignment: CrossAxisAlignment.stretch,
             )),
-        ],
+          ],
+        ),
       );
     }
 

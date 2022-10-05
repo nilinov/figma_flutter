@@ -1,8 +1,6 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
-import 'package:flutter/widgets.dart';
-import 'package:flutter_visible/generated_widget.dart';
 import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/download_abs.dart';
 
