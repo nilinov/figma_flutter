@@ -2,6 +2,14 @@ function getData() {
     return window.figma_json ?? window.localStorage.figma_json ?? '';
 }
 
+console.log('test11')
+
+
+window.addEventListener('load', function(event) {
+    window.postMessage('flutter loaded');
+
+}, false);
+
 window.addEventListener('message', receiver, false);
 
 function receiver(e) {

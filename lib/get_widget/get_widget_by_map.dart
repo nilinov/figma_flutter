@@ -159,6 +159,10 @@ GWidget? getWidgetByMap(Json json, int level,
       GWidget container = wrapContainer(widget, json, _name,
           type: 'frame', width: w, height: h);
 
+      if (level == 0) {
+        return container.children[0];
+      }
+
       return container;
     case 'INSTANCE':
       return getInstanceByName(json, level);

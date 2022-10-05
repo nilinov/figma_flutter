@@ -34,13 +34,13 @@ GWidget<Widget> wrapContainer(
         padding: getPadding(json),
         child: widget.widget,
       ),
-      code: '''Container(
+      code: clearCode('''Container(
       ${wrapProp('width', toDouble(width))}
       ${wrapProp('height', toDouble(height))}
       ${wrapProp('decoration', decorationString)}
       ${wrapProp('padding', paddingString)}
       child: ${widget.code},
-    )''',
+    )'''),
       components: [widget],
       children: [widget],
       name: _name,
@@ -77,5 +77,9 @@ String getDecorationString(Color? color, Map<String, dynamic> json) {
         ${wrapProp('boxShadow', boxShadowString)}
       )
   ''';
-  return decorationString;
+  return clearCode(decorationString);
+}
+
+clearCode(String text) {
+  return text.replaceAll('\n\n', '\n').replaceAll('\n        \n', '\n').replaceAll('\n          \n', '\n').replaceAll('\n            \n', '\n').replaceAll('\n           \n', '\n').replaceAll('\n         \n', '\n');
 }

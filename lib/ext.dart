@@ -21,14 +21,14 @@ extension WidgetExt on Widget? {
 
       final valDecoration = (item.decoration as BoxDecoration).toCode();
 
-      return '''
+      return clearCode('''
       Container(
         ${getKey(item)}
         ${valDecoration != '' ? "decoration: $valDecoration," : ""}
         ${padding != null ? "padding: ${(item.padding as EdgeInsets?).toCode()}," : ""}
         child: ${item.child.toCode(extractComponents: extractComponents)},
       )
-      ''';
+      ''');
     } else if (this is Row) {
       final Row item = this as Row;
       return '''
@@ -174,14 +174,14 @@ extension EdgeInsetsExt on EdgeInsets? {
     if (this!.top == this!.left && this!.left == this!.right && this!.right == this!.bottom)
       return 'EdgeInsets.all($this!.left)';
 
-    return '''
+    return clearCode('''
     EdgeInsets.only(
       ${wrapProp('top', this!.top)}
       ${wrapProp('left', this!.left)}
       ${wrapProp('right', this!.right)}
       ${wrapProp('bottom', this!.bottom)}
     )
-    ''';
+    ''');
   }
 }
 
@@ -203,11 +203,11 @@ extension BoxDecorationExt on BoxDecoration {
 
     final val = [valColor, valBorder, valBorderRadius].where((element) => element.isNotEmpty).join('\n');
 
-    return '''
+    return clearCode( '''
         BoxDecoration(
           $val
         )
-        ''';
+        ''');
   }
 }
 
@@ -215,23 +215,23 @@ extension BorderExt on Border {
   toCode() {
     if (bottom.width == 0) return null;
 
-    return '''
+    return clearCode('''
       Border.all(
         ${wrapProp('color', bottom.color)}
         ${wrapProp('width', toDouble(bottom.width))}
       )
-    ''';
+    ''');
   }
 }
 
 extension TextStyleExt on TextStyle {
   toCode() {
-    return '''
+    return clearCode('''
       TextStyle(
         fontSize: ${this.fontSize},
         color: ${this.color},
       )
-    ''';
+    ''');
   }
 }
 
@@ -287,26 +287,26 @@ getKeyValue(Widget item) {
 String wrapProp(String name, dynamic value, {dynamic excludeValue, String delimiter = ','}) {
   if (value != null && value != excludeValue) {
     if (value is String && value.isNotEmpty) {
-      return "$name: $value$delimiter";
+      return clearCode("$name: $value$delimiter");
     }
     if (value is double || value is num || value is int) {
       if (value == double.infinity) {
-        return "$name: double.infinity$delimiter";
+        return clearCode("$name: double.infinity$delimiter");
       }
-      return "$name: $value$delimiter";
+      return clearCode("$name: $value$delimiter");
     }
     if (value is Color) {
-      return "$name: $value$delimiter";
+      return clearCode("$name: $value$delimiter");
     }
     if (value is EdgeInsets) {
       if (value.top == 0 && value.bottom == 0 && value.left == 0 && value.right == 0) {
-        return '';
+        return clearCode('');
       }
 
-      return "const EdgeInsets.only(top: ${value.top}, bottom: ${value.bottom}, left: ${value.left}, right: ${value.right}),";
+      return clearCode("const EdgeInsets.only(top: ${value.top}, bottom: ${value.bottom}, left: ${value.left}, right: ${value.right}),");
     }
     if (value is bool) {
-      return "$name: $value$delimiter";
+      return clearCode("$name: $value$delimiter");
     }
   }
 

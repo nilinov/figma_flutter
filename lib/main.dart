@@ -24,19 +24,19 @@ class MyApp extends StatelessWidget {
               exportType: AppEnv.exportType,
             ),
         '/plugin': (context) => PluginPage(
-              isSample: false,
+              isSample: AppEnv.fromAssets,
               exportType: ExportType.all,
             ),
         '/view_properties': (context) => PluginPage(
-              isSample: false,
+              isSample: AppEnv.fromAssets,
               exportType: ExportType.properties,
             ),
         '/export_styles': (context) => PluginPage(
-              isSample: true,
+              isSample: AppEnv.fromAssets,
               exportType: ExportType.only_files,
             ),
         '/export_styles_scss': (context) => PluginPage(
-              isSample: true,
+              isSample: AppEnv.fromAssets,
               exportType: ExportType.scss_styles,
             ),
       },

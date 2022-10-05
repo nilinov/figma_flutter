@@ -49,9 +49,7 @@ class _DemoWidgetListState extends State<DemoWidgetList> {
               child: Padding(
             child: Container(
               child: SingleChildScrollView(child: Column(children: [widget])),
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9,
-                  maxWidth: MediaQuery.of(context).size.width / 2),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9, maxWidth: MediaQuery.of(context).size.width / 2),
             ),
             padding: EdgeInsets.all(20),
           )),
@@ -65,9 +63,7 @@ class _DemoWidgetListState extends State<DemoWidgetList> {
                 if (res != null)
                   Expanded(
                     child: SingleChildScrollView(
-                      child: TreeWidgets(
-                          gWidget: res,
-                          onTap: (item) => setState(() => selectedChild = item)),
+                      child: TreeWidgets(gWidget: res, onTap: (item) => setState(() => selectedChild = item)),
                     ),
                   ),
                 Padding(
@@ -79,23 +75,21 @@ class _DemoWidgetListState extends State<DemoWidgetList> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(selectedChild?.widgetType ?? 'No select',
-                          style: TextStyle(fontSize: 18)),
+                      Text(selectedChild?.widgetType ?? 'No select', style: TextStyle(fontSize: 18)),
                       SizedBox(height: 10),
                       if (selectedChild != null)
                         ...?selectedChild?.props?.keys
                             .map((e) => Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(e),
                                     Text(" : "),
-                                    Text(selectedChild?.props![e] ?? ''),
+                                    Text(clearCode(selectedChild?.props![e] ?? '')),
                                   ],
                                 ))
                             .toList(),
                       SizedBox(height: 10),
-                      if (selectedChild != null)
-                        Text(selectedChild?.code ?? ''),
+                      if (selectedChild != null) Text(selectedChild?.code ?? ''),
                     ],
                   ),
                 )),
@@ -115,8 +109,7 @@ class TreeWidgets extends StatelessWidget {
   final GWidget gWidget;
   final Function(GWidget) onTap;
 
-  const TreeWidgets({Key? key, required this.gWidget, required this.onTap})
-      : super(key: key);
+  const TreeWidgets({Key? key, required this.gWidget, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -124,18 +117,13 @@ class TreeWidgets extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-            child: Text(gWidget.widgetType), onTap: () => this.onTap(gWidget)),
+        GestureDetector(child: Text(gWidget.widgetType), onTap: () => this.onTap(gWidget)),
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ...gWidget.children
-                  .map((e) => TreeWidgets(gWidget: e, onTap: this.onTap))
-                  .toList()
-            ],
+            children: [...gWidget.children.map((e) => TreeWidgets(gWidget: e, onTap: this.onTap)).toList()],
           ),
         )
       ],
