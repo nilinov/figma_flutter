@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_visible/get_data.dart';
 import 'package:flutter_visible/imports.dart';
 
-import 'package:flutter_visible/utils/download_io.dart';
-
 import 'package:flutter_visible/utils/download.dart'
     if (dart.library.io) 'package:flutter_visible/utils/download_io.dart'
     if (dart.library.js) 'package:flutter_visible/utils/download_web.dart';
@@ -89,7 +87,7 @@ class _ExportStylesScssState extends State<ExportStyles> {
                         padding: const EdgeInsets.all(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            Downloaded1.downloadWidget(e);
+                            Downloaded.downloadWidget(e);
                           },
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,

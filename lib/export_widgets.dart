@@ -2,11 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_visible/get_data.dart';
 import 'package:flutter_visible/imports.dart';
 
-import 'package:flutter_visible/utils/download_io.dart';
-
 import 'package:flutter_visible/utils/download.dart'
-if (dart.library.io) 'package:flutter_visible/utils/download_io.dart'
-if (dart.library.js) 'package:flutter_visible/utils/download_web.dart';
+    if (dart.library.io) 'package:flutter_visible/utils/download_io.dart'
+    if (dart.library.js) 'package:flutter_visible/utils/download_web.dart';
 
 class ExportWidgets extends StatefulWidget {
   final bool isSample;
@@ -76,8 +74,7 @@ class _ExportWidgetsState extends State<ExportWidgets> {
     // return Container(child: Widget1(), width: MediaQuery.of(context).size.width * 0.5, height: MediaQuery.of(context).size.height * 0.5);
 
     if (json != null) {
-      StylesApp =
-          getStyles((json!['styles'] as List).map((e) => e as Json).toList());
+      StylesApp = getStyles((json!['styles'] as List).map((e) => e as Json).toList());
       final res = getWidgetByMap(json!['json'] ?? {}, 0, name: name);
       final styles = getStyleCode(StylesApp);
 
@@ -89,15 +86,12 @@ class _ExportWidgetsState extends State<ExportWidgets> {
             .where((element) => element.type.contains('source'))
             .toList();
 
-        list.sort((e1, e2) =>
-            e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
-        list.sort((e1, e2) =>
-            e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
+        list.sort((e1, e2) => e1.type.contains('svg') && !e2.type.contains('svg') ? 1 : -1);
+        list.sort((e1, e2) => e1.type.contains('png') && !e2.type.contains('png') ? -1 : 1);
 
         final Map<String, GWidget> names = {};
 
-        Future.forEach(
-            list, (GWidget element) => names[element.name ?? ''] = element);
+        Future.forEach(list, (GWidget element) => names[element.name ?? ''] = element);
 
         final assetsExport = getAssets(list, name: name ?? '');
 
@@ -115,14 +109,8 @@ class _ExportWidgetsState extends State<ExportWidgets> {
         declareAssetsFile = assetsExport;
 
         componentsFiles = [
-          ...names.values
-              .where((e) => !(e.type.contains('svg') ||
-                  e.type.contains('png') ||
-                  e.type.contains('import')))
-              .map((e) {
-            if (e.type.contains('svg') ||
-                e.type.contains('png') ||
-                e.type.contains('import')) return e;
+          ...names.values.where((e) => !(e.type.contains('svg') || e.type.contains('png') || e.type.contains('import'))).map((e) {
+            if (e.type.contains('svg') || e.type.contains('png') || e.type.contains('import')) return e;
 
             return e.copyWith(
               prefixCodeLine: 'import "_$name.dart";\n',
@@ -140,8 +128,7 @@ class _ExportWidgetsState extends State<ExportWidgets> {
       Widget widget = res?.widget ?? SizedBox();
 
       if (res?.widgetType == 'Column') {
-        widget = Container(
-            child: widget, height: MediaQuery.of(context).size.height * 0.9);
+        widget = Container(child: widget, height: MediaQuery.of(context).size.height * 0.9);
       }
 
       print(res?.code);
@@ -153,9 +140,7 @@ class _ExportWidgetsState extends State<ExportWidgets> {
               child: Padding(
             child: Container(
               child: SingleChildScrollView(child: Column(children: [widget])),
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9,
-                  maxWidth: MediaQuery.of(context).size.width / 2),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9, maxWidth: MediaQuery.of(context).size.width / 2),
             ),
             padding: EdgeInsets.all(20),
           )),
@@ -174,15 +159,11 @@ class _ExportWidgetsState extends State<ExportWidgets> {
                   child: ListView(
                     children: [
                       ...getDownloadItems([rootFile], label: 'Виджет'),
-                      ...getDownloadItems(componentsFiles,
-                          label: 'Вложенные компоненты'),
-                      ...getDownloadItems([declareAssetsFile],
-                          label: 'Файл объявления ресурсов'),
+                      ...getDownloadItems(componentsFiles, label: 'Вложенные компоненты'),
+                      ...getDownloadItems([declareAssetsFile], label: 'Файл объявления ресурсов'),
                       ...getDownloadItems(iconsFiles, label: 'Файлы иконок'),
-                      ...getDownloadItems(imagesFiles,
-                          label: 'Файлы изображений'),
-                      ...getDownloadItems([importFile],
-                          label: 'Файл объявления импортов'),
+                      ...getDownloadItems(imagesFiles, label: 'Файлы изображений'),
+                      ...getDownloadItems([importFile], label: 'Файл объявления импортов'),
                       ...getDownloadItems(stylesFiles, label: 'Файлы стилей'),
                     ],
                   ),
@@ -206,13 +187,7 @@ class ExportSettingImage extends StatelessWidget {
 
   final bool expand;
 
-  const ExportSettingImage(
-      {Key? key,
-      required this.iconsExport,
-      required this.onChange,
-      required this.title,
-      required this.expand})
-      : super(key: key);
+  const ExportSettingImage({Key? key, required this.iconsExport, required this.onChange, required this.title, required this.expand}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -265,7 +240,7 @@ List<Widget> getDownloadItems(List<GWidget> componentsFiles, {String? label}) {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  Downloaded1.downloadWidget(e);
+                  Downloaded.downloadWidget(e);
                 },
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

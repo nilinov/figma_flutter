@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_visible/generated_widget.dart';
-import 'package:flutter_visible/utils/download_abs.dart';
 
-class Downloaded implements DownloadedAbs {
+abstract class DownloadedAbs {
   static downloadWidget(GWidget<Widget> e) {}
-  static getData(bool isAssets) async {}
+  static Future<String> getData(bool isAssets) async {
+    return '';
+  }
 }

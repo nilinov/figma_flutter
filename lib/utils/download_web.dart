@@ -4,17 +4,14 @@ import 'dart:js' as js;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_visible/generated_widget.dart';
 import 'package:flutter_visible/imports.dart';
-import 'package:flutter_visible/utils/download.dart';
+import 'package:flutter_visible/utils/download_abs.dart';
 
-import 'package:flutter/foundation.dart';
-
-
-class Downloaded1 implements Downloaded {
+class Downloaded implements DownloadedAbs {
   static downloadWidget(GWidget<Widget> e) {
     js.context.callMethod('fallbackDownloadWidget', [e.fullCode, e.fileName]);
   }
 
-  static getData(bool isAssets) async {
+  static Future<String> getData(bool isAssets) async {
     if (isAssets) {
       return await rootBundle.loadString('assets/data.json');
     }
@@ -31,7 +28,5 @@ class Downloaded1 implements Downloaded {
     }
     // print({res});
     return res as String;
-
   }
-
 }
