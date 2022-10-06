@@ -1,0 +1,1 @@
+ flutter build web; dart .\lib\prepare.dart; git push deploy
