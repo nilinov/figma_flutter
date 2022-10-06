@@ -2,7 +2,7 @@ function getData() {
     return window.figma_json ?? window.localStorage.figma_json ?? '';
 }
 
-console.log('test11')
+console.log('test14')
 
 
 window.addEventListener('load', function(event) {

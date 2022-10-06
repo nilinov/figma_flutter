@@ -117,7 +117,12 @@ class TreeWidgets extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(child: Text(gWidget.widgetType), onTap: () => this.onTap(gWidget)),
+        GestureDetector(child: Text((() {
+          if (gWidget.widgetType == 'Text') {
+            return "${gWidget.widgetType} (${gWidget.props?['Text']})";
+          }
+          return gWidget.widgetType;
+        })()), onTap: () => this.onTap(gWidget)),
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Column(

@@ -1,17 +1,13 @@
 import 'package:flutter_visible/imports.dart';
 import 'package:flutter_visible/utils/get_instance_by_name.dart';
 
-GWidget? getWidgetByMap(Json json, int level,
-    {List<Variable?>? variables, String? name, Json? parent}) {
-  if (json['visible'] == false ||
-      json['isMask'] == true ||
-      json['visible'] == false) {
+GWidget? getWidgetByMap(Json json, int level, {List<Variable?>? variables, String? name, Json? parent}) {
+  if (json['visible'] == false || json['isMask'] == true || json['visible'] == false) {
     return null;
   }
 
   if (json['svg'] != null) {
-    debugPrintWidget("SvgPicture",
-        level: level, name: json['name'], json: json);
+    debugPrintWidget("SvgPicture", level: level, name: json['name'], json: json);
     return getSvg(json);
   } else if (json['png'] != null) {
     return getImage(json, level + 1);
@@ -36,45 +32,50 @@ GWidget? getWidgetByMap(Json json, int level,
           }
         });
 
-      var widget =
-          getChildrenByLayoutMode(json, level + 1, variables: _variables);
-      var widgetSource =
-          getChildrenByLayoutMode(json, level + 1, variables: _variablesSource);
-      debugPrintWidget("Container",
-          level: level, name: json['name'], json: json);
+      var widget = getChildrenByLayoutMode(json, level + 1, variables: _variables);
+      var widgetSource = getChildrenByLayoutMode(json, level + 1, variables: _variablesSource);
+      debugPrintWidget("Container", level: level, name: json['name'], json: json);
 
-      String nameComponent =
-          ((name ?? json['name'] ?? '') as String).pascalCase;
+      String nameComponent = ((name ?? json['name'] ?? '') as String).pascalCase;
       String nameSource = ((json['name'] ?? name ?? '') as String).pascalCase;
 
       if (parent != null && isExpanded(parent, json)) {
         return wrapExpanded(widget, level: level, json: json);
       }
 
-      SizeWidget size =
-          parent != null ? getSize(parent, json) : SizeWidget.empty();
+      SizeWidget size = parent != null ? getSize(parent, json) : SizeWidget.empty();
 
       // if (level == 0) {
       //   w = toDouble(json['width']);
       //   h = toDouble(json['width']);
       // }
       //
-      final item = wrapContainer(widget, json, nameComponent,
-          color: Colors.white,
-          type: 'wrap-component',
-          width: size.w,
-          height: size.h);
-      final itemSource = wrapContainer(widgetSource, json, nameSource,
-          color: Colors.white,
-          type: 'wrap-component',
-          width: size.w,
-          height: size.h);
+      final item = wrapContainer(
+        widget,
+        json,
+        nameComponent,
+        color: Colors.white,
+        type: 'wrap-component',
+        width: size.w,
+        height: size.h,
+        level: level,
+      );
+      final itemSource = wrapContainer(
+        widgetSource,
+        json,
+        nameSource,
+        color: Colors.white,
+        type: 'wrap-component',
+        width: size.w,
+        height: size.h,
+        level: level,
+      );
 
       return GWidget(
         item.widget,
         type: item.type,
         code: '''
-          ${nameSource}(${_variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
+          $nameSource(${_variablesSource.map((e) => e.defaultValue != null ? "${e.name}: \"${e.defaultValue}\"" : "${e.name}").join(', ')})
         ''',
         widgetType: nameSource,
         components: [
@@ -107,14 +108,12 @@ GWidget? getWidgetByMap(Json json, int level,
       var widget = (getChildrenByLayoutMode(json, level + 1));
       if (widget == null) return null;
 
-      debugPrintWidget("Container",
-          level: level, name: json['name'], json: json);
+      debugPrintWidget("Container", level: level, name: json['name'], json: json);
 
-      return wrapContainer(widget, json, _name, type: 'rectangle');
+      return wrapContainer(widget, json, _name, type: 'rectangle', level: level);
 
     case 'VECTOR':
-      debugPrintWidget("SvgPicture",
-          level: level, name: json['name'], json: json);
+      debugPrintWidget("SvgPicture", level: level, name: json['name'], json: json);
       return GWidget(
         SvgPicture.string(
           json['svg'],
@@ -144,8 +143,7 @@ GWidget? getWidgetByMap(Json json, int level,
       double? w;
       double? h;
 
-      if (parent != null &&
-          (isExpandedWidth(parent, json) || isExpandedHeight(parent, json))) {
+      if (parent != null && (isExpandedWidth(parent, json) || isExpandedHeight(parent, json))) {
         w = !isExpandedWidth(parent, json) ? toDouble(json['width']) : null;
         h = !isExpandedHeight(parent, json) ? toDouble(json['height']) : null;
       }
@@ -156,8 +154,7 @@ GWidget? getWidgetByMap(Json json, int level,
         }
       }
 
-      GWidget container = wrapContainer(widget, json, _name,
-          type: 'frame', width: w, height: h);
+      GWidget container = wrapContainer(widget, json, _name, type: 'frame', width: w, height: h, level: level);
 
       if (level == 0) {
         return container.children[0];
@@ -169,15 +166,12 @@ GWidget? getWidgetByMap(Json json, int level,
     case 'GROUP':
       final item = (getChildrenByLayoutMode(json, level + 1));
 
-      debugPrintWidget("Container",
-          level: level, name: json['name'], json: json);
+      debugPrintWidget("Container", level: level, name: json['name'], json: json);
 
-      final widget = wrapContainer(item, json, _name, type: 'GROUP');
+      final widget = wrapContainer(item, json, _name, type: 'GROUP', level: level);
 
-      if ((isPrimaryAxisSizingModeFixed(json) &&
-              isCounterAxisSizingModeFixed(json)) ||
-          (json['primaryAxisSizingMode'] == null &&
-              json['counterAxisSizingMode'] == null)) {
+      if ((isPrimaryAxisSizingModeFixed(json) && isCounterAxisSizingModeFixed(json)) ||
+          (json['primaryAxisSizingMode'] == null && json['counterAxisSizingMode'] == null)) {
         double? w;
         double? h;
 
@@ -191,8 +185,7 @@ GWidget? getWidgetByMap(Json json, int level,
 
         return GWidget(
           SizedBox(child: widget.widget, height: h, width: w),
-          code:
-              '''const SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
+          code: '''const SizedBox(child: ${widget.code}, height: ${toDouble(json['height'])}, width: ${toDouble(json['width'])})''',
           components: [
             GWidget(
               widget.widget,
@@ -247,8 +240,7 @@ GWidget? getWidgetByMap(Json json, int level,
         widgetType: 'Expanded',
       );
     case 'LINE':
-      debugPrintWidget("Container",
-          level: level, name: json['name'], json: json);
+      debugPrintWidget("Container", level: level, name: json['name'], json: json);
 
       if (json['rotation'] == 0 || json['rotation'] == 180) {
         return GWidget(
@@ -289,7 +281,9 @@ GWidget? getWidgetByMap(Json json, int level,
           json,
           _name,
           type: 'Circle',
-          shape: BoxShape.circle);
+          shape: BoxShape.circle,
+          level: level,
+      );
 
     default:
       return null;

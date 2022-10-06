@@ -10,7 +10,12 @@ GWidget<Widget> wrapContainer(
   double? height,
   double? width,
   BoxShape shape = BoxShape.rectangle,
+  required int level,
 }) {
+  if (level == 0) {
+    return widget;
+  }
+
   String decorationString = getDecorationString(color, json);
   String paddingString = getPaddingString(json);
 
@@ -18,10 +23,11 @@ GWidget<Widget> wrapContainer(
     return widget;
   }
 
+  final key = getValueKeyComponent(widget.widget, name: json['name'], desc: type);
+
   return GWidget(
       Container(
-        key:
-            getValueKeyComponent(widget.widget, name: json['name'], desc: type),
+        key: key,
         width: width,
         height: height,
         decoration: BoxDecoration(
@@ -47,10 +53,12 @@ GWidget<Widget> wrapContainer(
       type: type,
       widgetType: "Container",
       props: {
+        "level": "$level",
         if (width != null) 'width': width.toString(),
         if (height != null) 'height': height.toString(),
         if (paddingString.isNotEmpty) 'padding': paddingString,
         if (decorationString.isNotEmpty) 'decoration': decorationString,
+        'key::name': _name,
       });
 }
 
@@ -81,5 +89,11 @@ String getDecorationString(Color? color, Map<String, dynamic> json) {
 }
 
 clearCode(String text) {
-  return text.replaceAll('\n\n', '\n').replaceAll('\n        \n', '\n').replaceAll('\n          \n', '\n').replaceAll('\n            \n', '\n').replaceAll('\n           \n', '\n').replaceAll('\n         \n', '\n');
+  return text
+      .replaceAll('\n\n', '\n')
+      .replaceAll('\n        \n', '\n')
+      .replaceAll('\n          \n', '\n')
+      .replaceAll('\n            \n', '\n')
+      .replaceAll('\n           \n', '\n')
+      .replaceAll('\n         \n', '\n');
 }

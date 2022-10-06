@@ -4,8 +4,7 @@ class GetCheckboxRunTime extends StatefulWidget {
   final Json json;
   final int level;
 
-  const GetCheckboxRunTime({Key? key, required this.json, required this.level})
-      : super(key: key);
+  const GetCheckboxRunTime({Key? key, required this.json, required this.level}) : super(key: key);
 
   @override
   _GetCheckboxRunTimeState createState() => _GetCheckboxRunTimeState();
@@ -24,14 +23,10 @@ class _GetCheckboxRunTimeState extends State<GetCheckboxRunTime> {
   Widget build(BuildContext context) {
     Json _json = widget.json;
 
-    final _jsonChecked = (widget.json['variants']['children'] as List?)
-        ?.firstWhere(
-            (element) => (element['name'] as String).contains('checked=true'),
-            orElse: () => null)!;
-    final _jsonUnChecked = (widget.json['variants']['children'] as List?)
-        ?.firstWhere(
-            (element) => (element['name'] as String).contains('checked=false'),
-            orElse: () => null);
+    final _jsonChecked =
+        (widget.json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=true'), orElse: () => null)!;
+    final _jsonUnChecked =
+        (widget.json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=false'), orElse: () => null);
 
     final GIcons = [
       ...getJsonIcon(_jsonChecked),
@@ -46,9 +41,8 @@ class _GetCheckboxRunTimeState extends State<GetCheckboxRunTime> {
 
     var variable = getVariable(widget.json, 'title', inCodeVariable: false);
 
-    final children =
-        getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
-    final child = wrapContainer(children, _json, 'Checkbox: child');
+    final children = getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
+    final child = wrapContainer(children, _json, 'Checkbox: child', level: widget.level);
 
     return GestureDetector(
       onTap: () => setState(() => checked = !checked),
@@ -58,12 +52,10 @@ class _GetCheckboxRunTimeState extends State<GetCheckboxRunTime> {
 }
 
 GWidget getCheckbox(Json json, int level) {
-  final _jsonChecked = (json['variants']['children'] as List?)?.firstWhere(
-      (element) => (element['name'] as String).contains('checked=true'),
-      orElse: () => null)!;
-  final _jsonUnChecked = (json['variants']['children'] as List?)?.firstWhere(
-      (element) => (element['name'] as String).contains('checked=false'),
-      orElse: () => null);
+  final _jsonChecked =
+      (json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=true'), orElse: () => null)!;
+  final _jsonUnChecked =
+      (json['variants']['children'] as List?)?.firstWhere((element) => (element['name'] as String).contains('checked=false'), orElse: () => null);
 
   final List<GWidget> GIcons = [];
 
@@ -74,18 +66,19 @@ GWidget getCheckbox(Json json, int level) {
     GIcons.addAll(getJsonIcon(element).map((e) => getSvg(e)).toList());
   });
 
-  var variable = getVariable(json, 'title',
-      inCodeVariable: true, template: "widget.\$variable");
+  var variable = getVariable(json, 'title', inCodeVariable: true, template: "widget.\$variable");
 
   final childUnChecked = wrapContainer(
     getChildrenByLayoutMode(_jsonUnChecked, level, variables: [variable]),
     _jsonUnChecked,
     'Checkbox: childUnChecked',
+    level: level,
   );
   final childChecked = wrapContainer(
     getChildrenByLayoutMode(_jsonChecked, level, variables: [variable]),
     _jsonChecked,
     'Checkbox: childChecked',
+    level: level,
   );
 
   final name = getNameByJson(json);

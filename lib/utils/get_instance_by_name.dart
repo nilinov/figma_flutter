@@ -8,7 +8,7 @@ GWidget getInstanceByName(Map<String, dynamic> json, int level) {
 
   if (name.contains('INPUT')) {
     widget = getInput(json, level);
-    return wrapContainer(widget, json, 'wrap-input');
+    return wrapContainer(widget, json, 'wrap-input', level: level);
   }
   if (name.contains('BUTTON')) {
     return getGButton(json, level);

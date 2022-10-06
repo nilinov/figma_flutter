@@ -40,7 +40,7 @@ class _GetSwitchRuntimeState extends State<GetSwitchRuntime> {
 
     final children =
         getChildrenByLayoutMode(_json, widget.level, variables: [variable]);
-    final res = wrapContainer(children, _json, 'Switch: child');
+    final res = wrapContainer(children, _json, 'Switch: child', level: widget.level);
 
     return GestureDetector(
       onTap: () => setState(() => checked = !checked),
@@ -72,11 +72,11 @@ GWidget getSwitch(Json json, int level) {
   final childUnChecked = wrapContainer(
       getChildrenByLayoutMode(_jsonUnChecked, level, variables: [variable]),
       _jsonUnChecked,
-      'Switch: childUnChecked');
+      'Switch: childUnChecked', level: level);
   final childChecked = wrapContainer(
     getChildrenByLayoutMode(_jsonChecked, level, variables: [variable]),
     _jsonChecked,
-    'Switch: childChecked',
+    'Switch: childChecked', level: level
   );
 
   final name = getNameByJson(json);

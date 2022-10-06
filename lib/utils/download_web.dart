@@ -16,7 +16,7 @@ class Downloaded implements DownloadedAbs {
 
     var res = js.context.callMethod('getData');
     while (res.isEmpty) {
-      print('read data...');
+      print('read data 2...');
       try {
         res = js.context.callMethod('getData');
       } catch (e) {
