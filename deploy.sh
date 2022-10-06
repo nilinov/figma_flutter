@@ -1,1 +1,1 @@
- flutter build web; dart .\lib\prepare.dart; git push deploy
+ flutter build web; dart .\lib\prepare.dart; git add *; git commit -m "deploy"; git push deploy
