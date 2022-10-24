@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.3
   collection: ^1.15.0-nullsafety.4
   recase: ^4.0.0
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   flutter_test:

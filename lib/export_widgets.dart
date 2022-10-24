@@ -1,7 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_visible/get_data.dart';
 import 'package:flutter_visible/imports.dart';
-
 import 'package:flutter_visible/utils/download.dart'
     if (dart.library.io) 'package:flutter_visible/utils/download_io.dart'
     if (dart.library.js) 'package:flutter_visible/utils/download_web.dart';
@@ -133,50 +133,121 @@ class _ExportWidgetsState extends State<ExportWidgets> {
 
       print(res?.code);
 
-      // print(res.toWidget());
-      return Row(
-        children: [
-          Expanded(
-              child: Padding(
-            child: Container(
-              child: SingleChildScrollView(child: Column(children: [widget])),
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9, maxWidth: MediaQuery.of(context).size.width / 2),
-            ),
-            padding: EdgeInsets.all(20),
-          )),
-          if (MediaQuery.of(context).size.width > 800)
-            Expanded(
-                child: Column(
-              children: [
-                Divider(),
-                TextFormField(
-                  initialValue: name,
-                  onChanged: (text) => setState(() => name = text),
-                  decoration: InputDecoration(hintText: 'Имя компонента'),
-                ),
-                Divider(),
-                Expanded(
-                  child: ListView(
-                    children: [
-                      ...getDownloadItems([rootFile], label: 'Виджет'),
-                      ...getDownloadItems(componentsFiles, label: 'Вложенные компоненты'),
-                      ...getDownloadItems([declareAssetsFile], label: 'Файл объявления ресурсов'),
-                      ...getDownloadItems(iconsFiles, label: 'Файлы иконок'),
-                      ...getDownloadItems(imagesFiles, label: 'Файлы изображений'),
-                      ...getDownloadItems([importFile], label: 'Файл объявления импортов'),
-                      ...getDownloadItems(stylesFiles, label: 'Файлы стилей'),
-                    ],
-                  ),
-                ),
-                Divider(),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.start,
-            )),
-        ],
-      );
+      final items = [
+        DemoWidgetContainer(widget: widget),
+        DownloadContainer(
+          name: name ?? '',
+          onChangeName: (text) => setState(() => name = text),
+          iconsExport: iconsExport,
+          imagesExport: imagesExport,
+          componentsFiles: componentsFiles,
+          stylesFiles: stylesFiles,
+          iconsFiles: iconsFiles,
+          imagesFiles: imagesFiles,
+          rootFile: rootFile,
+          importFile: importFile,
+          declareAssetsFile: declareAssetsFile,
+        )
+      ];
+
+      if (MediaQuery.of(context).size.width > 800) {
+        return Row(
+          children: items,
+        );
+      } else {
+        return CarouselSlider(
+          options: CarouselOptions(
+            height: MediaQuery.of(context).size.height - 100,
+            enlargeCenterPage: false,
+            viewportFraction: 1.0,
+          ),
+          items: items.map((e) => Container(padding: EdgeInsets.all(10), constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width * 0.9), child: e)).toList(),
+        );
+      }
     }
 
     return Center(child: CircularProgressIndicator());
+  }
+}
+
+class DemoWidgetContainer extends StatelessWidget {
+  final Widget widget;
+
+  const DemoWidgetContainer({Key? key, required this.widget}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Padding(
+      child: Container(
+        child: SingleChildScrollView(child: Column(children: [widget])),
+        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.9, maxWidth: MediaQuery.of(context).size.width / 2),
+      ),
+      padding: EdgeInsets.all(20),
+    ));
+  }
+}
+
+class DownloadContainer extends StatelessWidget {
+  final String name;
+  final Function(String) onChangeName;
+
+  final ImageExportEnum iconsExport;
+  final ImageExportEnum imagesExport;
+
+  final List<GWidget> componentsFiles;
+  final List<GWidget> stylesFiles;
+  final List<GWidget> iconsFiles;
+  final List<GWidget> imagesFiles;
+
+  final GWidget rootFile;
+  final GWidget importFile;
+  final GWidget declareAssetsFile;
+
+  const DownloadContainer(
+      {Key? key,
+      required this.name,
+      required this.onChangeName,
+      required this.iconsExport,
+      required this.imagesExport,
+      required this.componentsFiles,
+      required this.stylesFiles,
+      required this.iconsFiles,
+      required this.imagesFiles,
+      required this.rootFile,
+      required this.importFile,
+      required this.declareAssetsFile})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Column(
+      children: [
+        Divider(),
+        TextFormField(
+          initialValue: name,
+          onChanged: onChangeName,
+          decoration: InputDecoration(hintText: 'Name component'),
+        ),
+        Divider(),
+        Expanded(
+          child: ListView(
+            children: [
+              ...getDownloadItems([rootFile], label: 'Widget'),
+              ...getDownloadItems(componentsFiles, label: 'Nested Components'),
+              ...getDownloadItems([declareAssetsFile], label: 'Resource declaration file'),
+              ...getDownloadItems(iconsFiles, label: 'Icon files'),
+              ...getDownloadItems(imagesFiles, label: 'Images files'),
+              ...getDownloadItems([importFile], label: 'Import Declaration File'),
+              ...getDownloadItems(stylesFiles, label: 'Styles files'),
+            ],
+          ),
+        ),
+        Divider(),
+      ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+    ));
   }
 }
 
@@ -222,11 +293,11 @@ class ExportSettingImage extends StatelessWidget {
 String getTitleExportImage(ImageExportEnum iconsExport) {
   switch (iconsExport) {
     case ImageExportEnum.inline:
-      return 'Встроенные';
+      return 'Embedded';
     case ImageExportEnum.consts:
-      return 'Константы';
+      return 'Constants';
     case ImageExportEnum.file:
-      return 'Файл';
+      return 'File';
   }
 }
 
