@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_visible/export_styles.dart';
-import 'package:flutter_visible/export_styles_scss.dart';
-import 'package:flutter_visible/export_widgets.dart';
-import 'package:flutter_visible/demo_widget1.dart';
 import 'package:flutter_visible/demo_widget_list.dart';
 import 'package:flutter_visible/env.dart';
+import 'package:flutter_visible/export_styles.dart';
+import 'package:flutter_visible/export_styles_scss.dart';
 import 'package:flutter_visible/export_type.dart';
+import 'package:flutter_visible/export_widgets.dart';
+import 'package:flutter_visible/view_code.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,6 +30,10 @@ class MyApp extends StatelessWidget {
         '/view_properties': (context) => PluginPage(
               isSample: AppEnv.fromAssets,
               exportType: ExportType.properties,
+            ),
+        '/view_code': (context) => PluginPage(
+              isSample: AppEnv.fromAssets,
+              exportType: ExportType.only_code,
             ),
         '/export_styles': (context) => PluginPage(
               isSample: AppEnv.fromAssets,
@@ -59,21 +63,20 @@ class PluginPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (exportType == ExportType.scss_styles)
-              Expanded(
-                  child: Container(child: ExportStylesScss(isSample: isSample)))
+              Expanded(child: Container(child: ExportStylesScss(isSample: isSample)))
             else if (exportType == ExportType.only_files)
               Expanded(
                 child: Column(
                   children: [
                     Text('Export only files'),
-                    Expanded(
-                        child: Container(child: ExportStyles(isSample: isSample))),
+                    Expanded(child: Container(child: ExportStyles(isSample: isSample))),
                   ],
                 ),
               )
-            else if (exportType == ExportType.properties)
+            else if (exportType == ExportType.properties || exportType == ExportType.only_code)
               GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
                 child: Padding(
@@ -98,10 +101,25 @@ class PluginPage extends StatelessWidget {
             if (exportType == ExportType.properties || exportType == ExportType.all)
               Expanded(
                   child: Container(
-                child: exportType == ExportType.properties
-                    ? DemoWidgetList(isSample: isSample)
-                    : ExportWidgets(isSample: isSample),
-              ))
+                child: exportType == ExportType.properties ? DemoWidgetList(isSample: isSample) : ExportWidgets(isSample: isSample),
+              )),
+            if (exportType == ExportType.only_code) Expanded(child: ViewCode(isSample: isSample))
+            else
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/view_code');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('View code'),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12),
             // Expanded(child: Container(child: Widget1())),
           ],
         ),
