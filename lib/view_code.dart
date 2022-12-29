@@ -62,7 +62,7 @@ class _ViewCodeState extends State<ViewCode> {
         },
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(code),
+          child: SelectableText(code),
         ),
       ));
     }
